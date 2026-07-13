@@ -1,71 +1,81 @@
 # HANDOFF — Futures antérieurs (reprise de session)
 
-*À lire en premier pour reprendre le projet à froid. Le 4ᵉ et dernier article de la tétralogie de Cal. Deux choses existent déjà : un **brouillon complet du manuscrit** et une **page web de lecture/itération en ligne**. Pas d'emoji. Français. Registre du #3.*
-
-> **ÉTAT RÉEL DES FICHIERS (à vérifier en reprise) — plusieurs versions coexistent :**
-> - **`MANUSCRIT_V6\`** (racine du dossier) : version **plus récente et évoluée**, structure à **5 mouvements** (Le Plomb · Le Relèvement renversé · **La Racine** · La Volte · L'Âtre) + Prologue + Coda + « Pour prolonger ». **Probablement le canon le plus à jour du texte.** (`00_MANUSCRIT_COMPLET.md` = version assemblée.)
-> - `doc input\MANUSCRIT\` : le brouillon produit dans le fil « page web » (4 mouvements : Le Plomb / Le Relèvement renversé / La Volte / L'Âtre + coda) — **antérieur au V6**.
-> - `site/futures/futures.data.js` (repo Nirvalab, live) : le texte de la **page en ligne** — encore une autre copie.
-> - Autres docs de pilotage récents à la racine : `AUDIT_ET_3_PROPOSITIONS.md`, `PLAN_DEVELOPPEMENT_20K.md`, `BRIEF_FUTURES_ANTERIEURS.md`.
-> **Avant de toucher au texte : identifier LA version canon (probablement MANUSCRIT_V6) et réconcilier les autres.** Ce handoff décrit surtout le fil « page web » ; le V6 vient d'ailleurs.
+*Point d'entrée unique pour reprendre à froid. 4ᵉ et dernier article de la tétralogie de Cal (Nicolas). **Ne rien produire avant d'avoir lu les sources en entier** (règle n°1 ci-dessous). Français, aucune emoji, registre du #3 durci par la méthode du #1.*
 
 ---
 
-## 1. Le projet en une page
+## 0. LA RÈGLE N°1 (elle a tué une session)
 
-- **Futures antérieurs** = 4ᵉ article, *l'article de la pratique* (« comment on est sorti »). Le plus long et le plus périlleux. Il remplit **le blanc** entre la méthode des #1-#3 et la lettre du futur : *comment* on sort, et *pourquoi* c'était possible.
-- **Pari** : le deuxième principe de la thermodynamique est le vrai futur antérieur. Le simulacre a **deux métabolismes** (il se dévore ET il dévore le dehors).
-- **Les 3 précédents** (tremplins, jamais réexpliqués) : #1 *Ce que personne ne veut voir* (MELT) · #2 *La Société du Simulacre* (fragments) · #3 *KUBERNÂN* (l'archipel, Focus, la lettre « sortir était possible »).
+Une session a travaillé des heures **sur un résumé** du manuscrit en croyant tenir le texte ; tout était à côté. **Interdiction de proposer ou rédiger avant d'avoir lu INTÉGRALEMENT** le manuscrit canon (V6) et les trois docs de pilotage ci-dessous. Cal détecte immédiatement le travail fait sur résumé.
 
-## 2. Où sont les choses
+**Ordre de lecture (strict) :**
+1. **`BRIEF_FUTURES_ANTERIEURS.md`** (13 juil. 2026) — le brief de fond : contexte tétralogie, pièces non négociables, les 5 versions jetées (à ne pas refaire), la méthode de travail avec Cal, les pièges.
+2. **`AUDIT_ET_3_PROPOSITIONS.md`** (13 juil.) — l'audit (4 défauts), la chaîne invariante, les 4 coutures manquantes, **4 anecdotes-ponts neuves** (xz-utils, banane Gros Michel, Kessler, Svalbard), et les **3 angles** (Temps / Racine / Vivant).
+3. **`PLAN_DEVELOPPEMENT_20K.md`** (13 juil.) — **le plan retenu** : fusion des 3 angles, le « moteur métaphysique » (ponts d'auteurs), la structure à 5 mouvements, la conclusion « leur survivre », les 3 arbitrages restants.
+4. **`MANUSCRIT_V6/`** — **le manuscrit canon en cours**, exécution du plan 20k. Lire les fichiers individuels (voir §3).
+5. Contexte de fond : `doc input/GENESE_CHEMINEMENT_PENSEE.md`, `doc input/MATIERE_*.md`, `doc input/BLOOM.md`. Les 3 articles précédents : `doc input/INFRASTRUCTURE DU POUVOIR/` (#1 MELT), `KUBERNAN, OU SORTIR/` (#3), `LA SOCIETE DU SIMULACRE/` (#2) — et leurs repos publics (`calculment0r/MELT`, `/simulacre`).
 
-**A. La doc de travail** — `C:\NIRVALAB_TECH\FUTURES ANTERIEURS\doc input\`
-- **`GENESE_CHEMINEMENT_PENSEE.md`** — le raisonnement, les impasses, les figures, la méthode. **À lire en premier.**
-- `00_ARCHITECTURE_SOMMAIRE.md` + `00b_PLAN_ET_SUPERTITRES.md` — la charpente et le plan re-dérivé (super-titres, phrase choc, mini-intro, l'arc énonciatif).
-- `01_STYLE_METHODE.md` · `04_GARDE_FOUS.md` (ligne rouge) · `02_CORPUS_AUTEURS.md` · `03_FIGURES.md`.
-- `MATIERE_*.md` (8) : HACKING, FINANCE (agentique-finance **vérifiée**), MATERIEL_THERMO, POUVOIR_ETAT_ORBITE, REMEDE, ANECDOTES_JE, PHILO_OPERATIONS, **AGENTIQUE** (essaim/La Nuée, Ghost in the Shell).
-- `BLOOM.md` — le projet BLOOM de Cal (source de vérité ; ≠ le Bloom de Tiqqun).
-- `CONVERSATION CLAUDE.md` — l'historique brut du 21 juin (la source).
-- `CLAUDE.md` (racine du dossier) — instructions de tête + ordre de lecture.
+## 1. Où en est le projet (en une page)
 
-**B. Le manuscrit (brouillon complet)** — `doc input\MANUSCRIT\` (un fichier par mouvement)
-- `00_OUVERTURE.md` · `I_LE_PLOMB.md` · `II_LE_RELEVEMENT_RENVERSE.md` · `III_LA_VOLTE.md` · `IV_L_ATRE.md` · `CODA_LA_CHALEUR_RENDUE.md`. (`doc input\MANUSCRIT.md` = index.)
-- ~7 000 mots, **premier jet** au registre #3. Reste : relecture/durcissement, densification possible (matière dispo dans les `MATIERE_*`), vérif des chiffres avant de figer.
+- Le manuscrit du #4 existait, jugé **fort mais illisible** par Cal : **tout y était dé-nommé** (« un chef d'État », « un pape »…), rejouant l'échec du #3 pour un lectorat qui n'a validé que la méthode du #1 (nommer, dater, chiffrer). Sa préface **fermait la porte** ; sa conclusion **refermait sur du connu** ; la dette du #1 (« l'hyperstition fonctionne dans les deux sens ») n'était **pas payée**.
+- La session du 13 juillet a repris à froid → audit → 3 angles → **plan 20k fusionné** → **V6**, qui corrige les 4 défauts : **re-nommé/daté**, porte rouverte au prologue, conclusion neuve (« leur survivre »), dette du #1 encaissée.
 
-**C. La page web (EN LIGNE)** — repo Nirvalab, clone local `C:\NIRVALAB_TECH\_site\`, dossier `site\futures\`
-- **En ligne : https://calculment0r.github.io/Nirvalab/futures/**
-- Repo : `github.com/calculment0r/Nirvalab`. Branche par défaut **et** source GitHub Pages : **`claude/organize-tech-pipeline-ceuCI`** (build par l'Action « Deploy site to GitHub Pages »). Pas de `main`.
-- Fichiers : `site/futures/index.html`, `futures.js`, `futures.data.js` (**le texte, source de vérité de la page**), `futures.data.original.js` (vault), `assets/oblivion.css` + `assets/kubernan.css` (copiés verbatim du repo `simulacre`, le vrai style de Kubernân).
+## 2. Le manuscrit canon — `MANUSCRIT_V6/`
 
-## 3. État actuel
+**C'est la version la plus à jour.** Objet-livre ~20 000 mots, **autonome** (le lecteur n'a pas lu les précédents). Structure = **prologue + 5 mouvements + coda + « pour prolonger »** :
+- `00_PROLOGUE.md` — La boîte du souffleur (le mot *prompt* = le souffleur ; « la machine a pris la boîte » ; Focus défini ; la méthode des référentiels ; exergue *futurum exactum*).
+- `I_LE_PLOMB.md` — descente (les deux métabolismes ; la monade/forclusion ; le laboratoire-finance avec **la banane Gros Michel** ; le corps qui brûle).
+- `II_LE_RELEVEMENT_RENVERSE.md` — la fuite (hyperstition ; Sea Cliff, Vance, dîner 600 Md, Karp ; l'orbite + **Kessler** ; le dépassement ; **la sacralisation** Léon XIV/Olah ; **la Nuée**).
+- `III_LA_RACINE.md` — **mouvement neuf** : la racine de confiance (clé gravée console ; Palantir/lock-in + Maven ; la biométrie/CCC ; **xz-utils**).
+- `IV_LA_VOLTE.md` — le retournement sur place (mètis/cheval de Troie/phreaking ; cordyceps ; rendre révocable ; défaire l'oracle/EGO ; le refus de la graine dormante). **Ligne rouge au plus serré : figure, jamais recette.**
+- `V_L_ATRE.md` — la construction (Common Corpus ; le témoin + **Svalbard** ; magnifier une graine/Arendt-natalité ; BLOOM ; le pôle remède/Taddei ; le critère physique).
+- `VI_CODA_LA_CHALEUR_RENDUE.md` — l'attestation ; « leur survivre » ; la preuve est le médium ; l'adresse finale.
+- `VII_POUR_PROLONGER.md` — liste de références (témoins, pas notes).
+- `00_MANUSCRIT_COMPLET.md` — assemblage. **Attention : cet assemblage présente des coupures/artefacts d'encodage en fin de plusieurs sections (prologue, I.6, II.7, III.3, IV.5 se terminent en milieu de phrase).** → **Se fier aux fichiers individuels**, et vérifier en reprise l'état de complétude réel de chaque mouvement (certains sont peut-être encore inachevés).
 
-- **Manuscrit** : brouillon complet de bout en bout (I → IV + coda). À relire/durcir.
-- **Page web** : **déployée et vérifiée en ligne** (200, assets OK). Autonome (style Kubernân/oblivion, serif, thème clair par défaut), **découplée du thème du site** (volontaire — l'intégration au site viendra quand le texte sera figé).
-- **Décisions tranchées** : super-titres re-dérivés (Le Plomb / Le Relèvement renversé / La Volte / L'Âtre / La Chaleur rendue) ; encyclique de Léon XIV **intégrée** (recentrée sur l'aveu d'Olah « quelque chose émerge, on ne sait pas quoi ») ; « Arche » et « teilster » **abandonnés** ; agentique-finance **vérifiée** (exécution autonome déployée au retail, Kalshi, monoculture nommée par BCE/BoE) ; **BLOOM** intégré (topologie inversée, LMSS=Latour/Meillassoux/Simondon/Stiegler, défaut d'action, Ouroboros) ; **La Nuée** en charnière II.7 ; **Ghost in the Shell** (Tachikoma vs Stand Alone Complex) pour le swarm.
+## 3. La méthode retenue (le cœur — détail dans PLAN_20K §1-2)
 
-## 4. La page web — comment ça marche
+- **Le moteur métaphysique** : chaque section = un fait précis (nommé/daté/chiffré, méthode #1) → un premier référentiel (un auteur) → un second en apparence opposé → **la bascule** (les deux disent le même invariant vu de deux repères — « l'analyse dimensionnelle appliquée aux idées », le geste de Focus) → **la chute** (rabat sur la colonne thermodynamique). C'est ce qui empêche 20 000 mots de baratiner.
+- **Les 3 référentiels** avancent en sous-main : le **Temps** (hyperstition / futur antérieur), la **Racine** (révocabilité), le **Vivant** (mort-vivant). L'arc énonciatif aussi : je → on → eux → je(marge) → nous.
+- **Les ~12 ponts d'auteurs** (le vrai capital) : Bataille×Prigogine, Leibniz×Lacan, Girard×Baudrillard, Kantorowicz×racine, Illich×Bejan, Arendt×Écho/Narcisse, Simondon×Dawkins, Detienne-Vernant×Strauss, etc. (liste + statut « porteur/réserve » en PLAN_20K §2).
+- **Les 4 anecdotes-ponts neuves** (AUDIT §2) : **xz-utils** (la ruse patiente / la racine trahie), **banane Gros Michel** (monoculture = model collapse = finance), **Kessler** (l'orbite a son propre irréversible), **Svalbard** (le témoin/la semence gardée).
+- **Règles dures** : re-nommer/dater/chiffrer partout ; ouvrir la porte au prologue ; densité (un fait neuf + un concept neuf par section, sinon ça saute) ; alternance froid factuel / chaud conceptuel ; autonomie (tout des #1-#3 replié en scène, jamais « comme on l'a vu ») ; **figure jamais recette** (IV surtout) ; pas de signature « Arche », pas de réécriture de la lettre du #3.
+- **La conclusion neuve fusionnée** : « **leur survivre** » = contre-hyperstition (rendre un futur vrai à la main) + révocabilité (le droit de défaire) + survivance (rester vivant, couplé au dehors, divers, mortel). *Pas* « le retournement » (déjà #3).
 
-- **Style** : `oblivion.css` + `kubernan.css` (le thème « oblivion » de Kubernân), fonts Instrument Serif + DM Mono. `body.kub` ; bascule sombre `body.theme-dark` (localStorage `futures-theme`, **clair par défaut**). Menu « la traversée » (sidebar), responsif, barre de progression.
-- **God mode** (bouton `✎ god`, sans IA) : rend chaque **passage ET titre** éditable → fenêtre → *Remplacer* → *▲ sauver*.
-  - Sauvegarde : **jeton GitHub fine-grained** (droit *Contents: write* sur `Nirvalab`) collé au premier save, stocké dans le navigateur (`localStorage 'nirvalab_gh_token'`). Écrit `futures.data.js` sur la **branche live** (`GH.branch` dans `futures.js` = `claude/organize-tech-pipeline-ceuCI`).
-  - **Vault** : au premier save, l'original est copié une fois dans `site/futures/futures.data.original.js`. Pas d'historique (juste original + version courante).
-  - Chaque save déclenche un rebuild Pages : l'édition apparaît en ligne **~1 à 3 min** après.
-- **Re-déployer / modifier la page** : éditer dans `_site/site/futures/`, commit sur une branche `claude/<sujet>` (jamais push direct), PR vers `claude/organize-tech-pipeline-ceuCI`, merge → l'Action redéploie. (C'est ainsi que la page a été mise en ligne : PR #3 mergée.)
+## 4. Les artefacts et leurs DIVERGENCES (à savoir absolument)
 
-> **ATTENTION divergence texte** : dès que Cal itère en ligne (god mode), **`site/futures/futures.data.js` (sur la branche live) devient la version la plus fraîche du texte**. Les `doc input\MANUSCRIT\*.md` sont le brouillon de rédaction et peuvent alors être en retard. Pour toute reprise du texte : d'abord comparer `futures.data.js` (live) et les `MANUSCRIT\*.md`, et prendre la version live comme canon si Cal a édité.
+Trois copies du texte coexistent — **ne pas les confondre** :
+1. **`MANUSCRIT_V6/`** = **le canon** (5 mouvements, re-nommé, ~20k). C'est là qu'on travaille le texte.
+2. **La page web en ligne** (`_site/site/futures/futures.data.js`) = **l'ANCIEN texte à 4 mouvements, dé-nommé** (Le Plomb/Le Relèvement renversé/La Volte/L'Âtre + coda). **Elle est en retard sur le V6.** → À **resynchroniser sur le V6** quand le texte sera figé (ajouter le mouvement La Racine, re-nommer, brancher le prologue/coda/pour-prolonger).
+3. `doc input/MANUSCRIT/` = le brouillon 4-mouvements du fil « page web » — **périmé**, gardé pour trace.
 
-## 5. Comment bosser (méthode de Cal — impérative)
+## 5. La page web (déployée)
 
-- **Déposer les intuitions → approfondir chacune → faire émerger le plan du tout.** Ne jamais dessiner un plan trop tôt.
-- **Lire les sources, jamais reconstruire de mémoire.**
-- **Ton du #3** : froid, déclaratif, périodique (phrases qui montent), un cran Tiqqun ; « nous » de Focus ; l'arc **je → on → eux → je(marge) → nous** en sous-main. **Pas d'aparté, pas de « vous », ni poseur ni familier/pub.** Pas d'emoji.
-- **Technique de la chute** : théorie → scène narrée en entier → conclusion qui rabat sur le sens. Figures non nommées mais identifiables.
-- **Ligne rouge (III surtout)** : la figure, jamais la recette.
-- **Coût/rythme** : Cal est sensible au coût et au sur-travail. Bosser en solo, direct ; pas de workflows multi-agents sauf demande explicite. Livrer, pas délibérer.
+- **En ligne : https://calculment0r.github.io/Nirvalab/futures/** — page autonome, style Kubernân (`oblivion.css` + `kubernan.css`, serif Instrument Serif, thème clair par défaut + bascule sombre), god mode (édite passages/titres, sauve sur GitHub par jeton fine-grained, vault `futures.data.original.js`). Découplée du thème du site (volontaire).
+- Repo : **`calculment0r/Nirvalab`** (privé), clone local `C:\NIRVALAB_TECH\_site`, dossier `site/futures/`. Branche live = **`claude/organize-tech-pipeline-ceuCI`** (défaut + source Pages, pas de `main`). Le god mode commit sur cette branche (`GH.branch` dans `futures.js`) ; chaque save → rebuild Pages ~1-3 min.
+- **Resynchro V6 → page** : régénérer `futures.data.js` (objet `window.FUTURES` : meta/preface/bifurcations[]/coda) à partir du V6, commit sur une branche `claude/<sujet>`, PR vers la branche live, merge (c'est ainsi qu'elle a été mise en ligne : PR #3).
 
-## 6. Reste à faire / ouvert
+## 6. Les dépôts GitHub
 
-- **Texte** : relire/durcir le brouillon (Cal itère probablement en ligne via god mode). Densifier si objet-livre voulu.
-- **Journal du futur** (2ᵉ forme, design fiction, registre *Le Monde/Libé*) : **pas encore construit** — le plan détaillé (rubriques + 4 focales) est dans `CONVERSATION CLAUDE.md`. À faire plus tard.
-- **Intégration au site Nirvalab** : quand le texte est figé (thème, nav) — délibérément reportée.
-- **Petits arbitrages** restés par défaut (révisables) : super-titre d'ouverture (« La Main » ou rien), phrase choc de coda (je vs nous).
+- **`calculment0r/futures-anterieurs`** (PRIVÉ) — **sauvegarde de toute la doc de travail** (ce dossier `FUTURES ANTERIEURS/` est ce repo ; `origin` pointe dessus ; commit/push directs). Contient V6, les docs de pilotage, la matière, la genèse, la conversation source.
+- **`calculment0r/Nirvalab`** (privé) — la page web (`site/futures/`).
+- Publics (référence) : `calculment0r/simulacre` (KUBERNAN, Fragments, le thème oblivion, le god mode d'origine), `calculment0r/MELT` (#1), `calculment0r/NARC6`.
+- **Ne rien pousser d'interne (conversation brute, raisonnement) sur un repo public.**
+
+## 7. Arbitrages ouverts (PLAN_20K §9)
+
+1. **La coda fusionnée** — finir sur « leur survivre » (les 3 en un geste), ou laisser un seul référentiel avoir le dernier mot ?
+2. **« Pour prolonger »** — la liste de références en fin d'ouvrage (le V6 l'inclut ; à confirmer).
+3. **Le mouvement III (La Racine) en propre** (5 mouvements) — ou le refondre dans la Volte (retour à 4, plus resserré) ? Seul choix qui change la silhouette. (Le V6 a tranché pour La Racine en propre — à valider par Cal.)
+
+## 8. Comment bosser avec Cal (BRIEF §5-7)
+
+- **Il garde le lead** : on propose (plans, ponts), il tranche. Ses colères sont de la friction volontaire (grammaire Némésis) : répondre par le contenu, se réaligner vite, **sans sur-excuses ni contrition**. Jamais de flatterie ni de synthèse confortable — il préfère un désaccord argumenté.
+- **Méthode** : déposer → approfondir → faire émerger le plan du tout ; **lire les sources en entier avant de produire**. Rédiger en livraisons (~3 500 mots), noms et dates dedans, `[à sourcer]` autorisé.
+- **Ton** : froid, déclaratif, périodique ; la précision tient lieu de colère ; anecdote posée à plat puis retournée d'une phrase ; clausules qui coupent ; si une phrase console ou explique gentiment, elle saute. **Ne pas dé-nommer. Ne pas raccourcir. Pas d'emoji.**
+- **Ne pas re-proposer la thermodynamique comme « angle trouvé »** (c'est la colonne, pas l'angle). Ne pas refaire les formes brûlées (enquête #1, fragments #2, carte #3, lettre-coda) ni les formes jetées (thèses, glossaire, dérive, dossier judiciaire).
+- Cal est **sensible au coût** : solo, direct ; pas de workflows multi-agents sauf demande explicite.
+
+---
+
+*Ce handoff est le point d'entrée. Le fond vit dans BRIEF + AUDIT + PLAN_20K + MANUSCRIT_V6. Première action d'une reprise : les lire en entier, puis demander à Cal où il en est (a-t-il édité en ligne ? le V6 est-il complet ? les 3 arbitrages sont-ils tranchés ?).*
