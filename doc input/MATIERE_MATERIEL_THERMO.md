@@ -1,0 +1,36 @@
+# MATIÈRE — MATÉRIEL & THERMO (substrat, chaleur, limite)
+
+> Sert **I.5-I.7 (le corps, le substrat, le fond)**, **II.3-II.5 (orbite, ciel qui ne refroidit pas, dépassement)**, et la colonne du **2ᵉ principe**. Motif : le simulacre se vend apesanteur ; sa vérité est qu'il est **la chose la plus lourde, la plus chaude, la plus assoiffée**.
+
+## Le RAMmageddon (la mémoire mangée)
+
+- Le projet **Stargate** (OpenAI), via LOI avec Samsung et SK Hynix, consommerait à lui seul jusqu'à **~40 % de la production mondiale de DRAM** (~900 000 wafers/mois).
+- Prix de la DRAM **+172 % sur 2025** ; **SK Hynix** a verrouillé toute sa capacité 2026 (sold-out) ; **Micron** quitte le grand public (marque **Crucial**) en **février 2026** pour servir les datacenters ; **Nvidia** ne fournit plus la VRAM avec ses puces (les fabricants de cartes s'approvisionnent sur des usines pleines).
+- Effet « pas de GPU gamer en 2026 » : à **corriger** — pas un arrêt décrété, un **étranglement** (marché joueur asphyxié ; Steam Machine de Valve retardée à cause du prix de la mémoire). Surnom : **RAMmageddon** ; selon Kearney, dure jusqu'en 2030 au moins. *(TrendForce : +50-55 % attendu Q1 2026.)*
+
+## Jevons / TurboQuant (l'efficacité qui ne libère rien)
+
+- **TurboQuant** (Google, **24 mars 2026**) : compression mémoire pour LLM/recherche vectorielle, **~6× moins de mémoire**, ~8× de perf sur H100, drop-in en inférence. Conséquence immédiate : chute des actions des fabricants de mémoire (SanDisk, Micron, WD, Seagate), reflux des prix (restés gonflés).
+- **La figure** : ce n'est pas « ils sont tarés », c'est une **fragilité d'action collective** — accaparer est individuellement rationnel même quand c'est collectivement absurde ; le pari sur l'échelle est exposé à **l'avance algorithmique qui le dévalue en un après-midi** (le « moment DeepSeek » de janv. 2025 qui se répète). **Effet rebond (Jevons)** : chaque gain d'efficacité ouvre un usage de plus ; la machine plus sobre n'éteint pas la centrale, elle en fait construire une autre. → II.5.
+
+## La matière comme arme (guerre des puces / terres rares / Taïwan)
+
+- **Côté US (puces avancées)** : ordre à **TSMC** d'arrêter les livraisons IA 7 nm+ vers la Chine (nov. 2024) ; entités chinoises en liste noire (42 en mars 2025, +23 en sept.) ; licence requise pour le **H20** ; **janv. 2026** : licences **au cas par cas** pour H200 (Nvidia) et MI325X (AMD). Autorisation à ~10 firmes chinoises (Alibaba, Tencent, ByteDance) d'acheter le H200, plafond 75 000/client — **aucune livraison**, accord en suspens.
+- **Côté Chine (la matière)** : contrôles à l'export sur les **terres rares** entrés en vigueur le **1ᵉʳ décembre 2025** — licence pour tout produit contenant ne serait-ce que **0,1 %** de matériau d'origine chinoise ; aimants à approbation de Pékin ; usage militaire **refusé d'office**. Marchandage explicite (Lutnick tisse puces ↔ terres rares).
+- **Taïwan** : recaler « protectorat » (trop fort) — **dépendance irremplaçable**, le **« bouclier de silicium »**. La Chine a accès à des fonderies à Taïwan ; **Huawei** a trompé TSMC via sociétés-écrans pour faire produire **~2 M de chiplets** (Ascend 910). Coût du découplage : ITIF ~**77 Md $** de ventes perdues pour les fabricants US ; la Chine s'indigénise (SMIC, Huawei, Biren) et publie déjà **2× plus** d'articles que les US sur la conception de puces. → I.6.
+
+## Le 2ᵉ principe (le fond, la facture)
+
+- L'entropie est **l'irréversible** : ce qui aura été dissipé ne se redissipe pas ; l'eau bue ne se reboit pas ; le minerai dispersé ne se recompose pas. Le nuage est **une dette tirée sur le dehors, racontée comme déjà acquittée** — c'est une **facture physique, libellée en chaleur**.
+- **Le vide ne refroidit pas** : dans le vide, la chaleur ne peut qu'être **rayonnée** (pas de convection ni conduction), lentement ; le corps brûlant reste brûlant. Les **orbites déclinent** (il faut les relever). Les **horloges se décalent** en altitude (relativité générale ; le GPS corrige ~38 µs/jour) — *déjà posé au #3* ; pour le calcul orbital, c'est de la **synchronisation, pas un verrou**. → I.7, II.4.
+
+## L'horizon matériel (le dépassement matériel — plus de capture, pas moins)
+
+- **Photonique** : Lightmatter (processeur photonique, 65,5 T ops/s, 78 W élec / 1,6 W optique) ; Shanghai, sept. 2025, puce IA photonique <1 mm² en niobate de lithium, traitement nanoseconde. **Contresens à éviter** : la photonique résout le mur **énergétique** et l'**interconnexion** → permet des clusters **plus grands**. Elle abaisse le coût de la concentration, **ne la décentralise pas**. Soulagement pour les hyperscalers, pas pour les gens.
+- **Quantique** : en 2026, hybride (le classique fait l'apprentissage de masse ; le quantique = sous-problèmes étroits). Matérialité = **concentration extrême** (qubits fragiles, décohérence, correction d'erreurs, refroidissement quasi 0 K, accès cloud premium). Méfiance du battage (beaucoup d'« avantages quantiques » s'effondrent en validation croisée). Signaux : Google/Caltech (Zhao, Preskill, McClean, Huang) — avantage exponentiel revendiqué 2026 ; Lockheed–Xanadu (fév. 2026, modèles génératifs quantiques pour **défense, finance, pharma**). **Intuition de Cal exacte** : s'il advient, le quantique naîtra **encore plus concentré, sécurisé d'État, loin des usagers**.
+- **Matière programmable / essaims** : le champ le plus **spéculatif**. Claytronics — micro-robots (« catoms ») ; concept Carnegie Mellon (Goldstein, Mowry) ; forte **école française** (Institut **FEMTO-ST**, Julien Bourgeois & Benoit Piranda, ANR 2016-2022). État réel **modeste** (formation de forme loin de la vision). **Essaims + agentique + edge/ambiant** → **dispersion** du calcul, mais au prix de l'**ingouvernabilité** (output imprévisible, émergence — le « milieu indécidable » / Berkman Klein).
+- **À disjoindre soigneusement** (intuition de Cal qui mélange deux choses) : la **fusion par laser** (confinement inertiel) est une affaire d'**énergie** (alimenter les datacenters) ; le **calcul quantique photonique** (Xanadu, PsiQuantum) où des lasers manipulent des états est autre chose. Les deux usent de lasers, ils ne se rejoignent pas. Fil cohérent : le **mur énergétique** et ses sorties prétendues (fusion côté production, photonique côté consommation).
+
+## La synthèse (« ce qui fait tenir », lu thermodynamiquement)
+
+Ce qui fait tenir l'IA fermée et défendue par les États : un **substrat matériel concentré** (compute, mémoire HBM — Samsung/SK Hynix/Micron, énergie, fonderies TSMC) adossé au **capital** (engagements 100 Md+, Stargate) et à l'**État** (le dîner, la dérégulation, le contrôle export). Cette concentration est sa force *et* sa fragilité (exposée à l'avance algorithmique). Elle est présentée comme **nécessité physique** (« mur mémoire », « lois d'échelle ») alors qu'elle est aussi un **choix politique** et parfois du **pur théâtre** (le chiffre de Zuckerberg). Les paradigmes émergents **bifurquent sur un seul axe — la concentration** : photonique/quantique l'**approfondissent** ; essaim/edge/matière programmable inclinent vers la **dispersion**, au prix de la gouvernabilité. → *Qui tient la matière du calcul tient l'IA — et la rhétorique de la nécessité masque que cette tenue est révocable, performative, déjà fissurée.*
