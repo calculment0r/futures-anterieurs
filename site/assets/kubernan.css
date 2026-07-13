@@ -1,0 +1,337 @@
+/* ════════════════════════════════════════════════════════════════
+   KUBERNÂN — appoint lecture longue (sur le thème Oblivion partagé)
+   Tout vient de ../assets/oblivion.css ; ici, uniquement le strict
+   nécessaire pour le texte rédigé (mesure de ligne, sommaire, suite).
+   ════════════════════════════════════════════════════════════════ */
+
+/* mesure de ligne confortable (~66-72 caractères) */
+.kub .container { max-width: 720px; }
+
+/* lexique en couleur (BRIEF_concepts_en_couleur) : l'épine conceptuelle brille
+   discrètement — couleur accent + glow très léger (sombre only), pas de fond. */
+.concept { color: var(--accent); }
+body.kub.theme-dark .concept { text-shadow: 0 0 14px rgba(201, 255, 60, 0.18); }
+
+/* ════════════════════════════════════════════════════════════════
+   THÈME — clair par défaut (papier), sombre en bascule (Oblivion).
+   Scopé à .kub : n'affecte que Kubernân, pas le site Simulacre.
+   On redéfinit les variables d'Oblivion sur le <body>.
+   ════════════════════════════════════════════════════════════════ */
+body.kub {
+  --bg: #f7f5ee;        /* papier chaud */
+  --bg2: #efece2;       /* panneaux / sidebar */
+  --bg3: #e7e3d6;       /* survol */
+  --border: #e3dfd2;
+  --border2: #d1ccbb;
+  --text: #1c1b22;      /* presque noir, chaud */
+  --muted: #565568;
+  --dim: #7c7b90;
+  --accent: #5c7d0a;    /* chartreuse foncé, lisible sur clair */
+  --accentDim: #7e9636;
+}
+body.kub.theme-dark {
+  --bg: #0a0a0c;
+  --bg2: #111114;
+  --bg3: #18181d;
+  --border: #1e1e26;
+  --border2: #2a2a36;
+  --text: #e8e8f0;
+  --muted: #9090a8;
+  --dim: #4a4a62;
+  --accent: #c9ff3c;
+  --accentDim: #8aad1e;
+}
+/* en clair, le grain (calque sombre) doit rester très discret */
+body.kub:not(.theme-dark)::before { opacity: 0.5; mix-blend-mode: multiply; }
+
+/* bouton bascule de thème */
+.theme-btn {
+  position: fixed;
+  top: 16px; right: 16px;
+  z-index: 200;
+  width: 44px; height: 44px;
+  background: var(--bg2);
+  border: 1px solid var(--border2);
+  color: var(--accent);
+  font-size: 19px;
+  line-height: 1;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: color 0.18s, border-color 0.18s, background 0.18s;
+}
+.theme-btn:hover { border-color: var(--accent); }
+@media (max-width: 920px) { .theme-btn { right: 70px; } }     /* dégage le bouton menu */
+body.coda-view .theme-btn { right: 16px; }                    /* en coda, pas de bouton menu */
+
+/* ── sidebar : sous-titre nautique sous chaque bifurcation ──────── */
+.chapters a .nm small {
+  display: block;
+  font-family: var(--mono);
+  font-style: normal;
+  font-size: 9.5px;
+  letter-spacing: 0.04em;
+  line-height: 1.5;
+  color: var(--dim);
+  margin-top: 4px;
+  text-transform: none;
+}
+.chapters a.active .nm small { color: var(--muted); }
+
+/* séparateur de nav : « au-delà de la passe » (avant la coda) */
+.chapters .nav-sep {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 16px 4px 8px;
+  font-family: var(--mono);
+  font-size: 8.5px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--dim);
+}
+.chapters .nav-sep::before,
+.chapters .nav-sep::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+.chapters a.coda-nav .num { font-size: 13px; color: var(--dim); }
+.chapters a.coda-nav.active .num { color: var(--accentDim); }
+
+/* mini-sommaire latéral de la bifurcation active (I.1, I.2…) */
+.subnav {
+  list-style: none;
+  margin: 4px 0 6px 4px;
+  padding-left: 16px;
+  border-left: 1px solid var(--border2);
+  display: flex;
+  flex-direction: column;
+}
+.subnav a {
+  display: grid;
+  grid-template-columns: 30px 1fr;
+  gap: 8px;
+  align-items: baseline;
+  text-decoration: none;
+  padding: 5px 6px 5px 4px;
+  transition: color 0.15s, background 0.15s;
+}
+.subnav a .sn-num { font-family: var(--mono); font-size: 9.5px; color: var(--dim); }
+.subnav a .sn-nm {
+  font-family: var(--serif);
+  font-size: 13.5px;
+  line-height: 1.3;
+  color: var(--muted);
+}
+.subnav a:hover { background: var(--bg3); }
+.subnav a:hover .sn-nm { color: var(--text); }
+.subnav a.cur .sn-num { color: var(--accent); }
+.subnav a.cur .sn-nm { color: var(--accent); }
+
+/* ── corps rédigé (prose discursive) ────────────────────────────── */
+.prose p {
+  font-family: var(--serif);
+  font-size: 19px;
+  line-height: 1.78;
+  letter-spacing: 0.002em;
+  color: var(--text);
+  margin-bottom: 22px;
+}
+.prose p:last-child { margin-bottom: 0; }
+
+/* paragraphe d'attaque (intro de bifurcation) */
+.lead p { color: var(--text); }
+.lead p:first-child::first-letter {
+  font-size: 1.05em;
+}
+
+/* l'intro de bifurcation, posée juste sous le titre, sans étiquette */
+.bif-intro { margin-bottom: 64px; }
+
+/* sous-section : on réutilise .entry / .entry-label du thème.
+   numéro de section en accent, comme les n° de fragment du Simulacre. */
+.entry-label .sn { color: var(--accent); }
+
+/* conclusion-pont : légèrement détachée */
+.entry.concl { margin-top: 12px; }
+.entry.concl .entry-label .sn { color: var(--accentDim); }
+.entry.concl .prose p:first-child { color: var(--text); }
+
+/* lien « suite » proéminent en bas de bifurcation */
+.suite {
+  margin-top: 8px;
+  display: block;
+  text-decoration: none;
+  border: 1px solid var(--border2);
+  border-left: 3px solid var(--accent);
+  background: var(--bg2);
+  padding: 20px 24px;
+  transition: background 0.18s, border-color 0.18s;
+}
+.suite:hover { background: var(--bg3); border-left-color: var(--accent); }
+.suite .suite-k {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--dim);
+  display: block;
+  margin-bottom: 8px;
+}
+.suite .suite-t {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 23px;
+  line-height: 1.2;
+  color: var(--text);
+}
+.suite:hover .suite-t { color: var(--accent); }
+.suite .suite-t .arr { color: var(--accent); font-style: normal; }
+
+/* ════════════ SEUIL (accueil / cover) ════════════ */
+.cover { padding-top: 8px; }
+.cover .cover-kicker {
+  font-family: var(--mono);
+  font-size: 10.5px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--dim);
+  margin-bottom: 30px;
+}
+.cover h1 {
+  font-family: var(--serif);
+  font-style: italic;
+  font-weight: 400;
+  font-size: clamp(44px, 8vw, 84px);
+  line-height: 1;
+  letter-spacing: -0.035em;
+  color: var(--text);
+  margin-bottom: 30px;
+}
+.cover h1 .lp { color: var(--accent); }
+/* « nous sommes ici » — le « vous êtes ici » de la carte */
+.cover-here {
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: clamp(23px, 3.2vw, 32px);
+  line-height: 1.2;
+  color: var(--text);
+  margin: 4px 0 54px;
+}
+.cover-here::before {
+  content: '';
+  width: 9px; height: 9px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 0 4px rgba(201, 255, 60, 0.14);
+  flex: 0 0 auto;
+}
+
+/* la préface coule directement sous le titre */
+.cover-preface { border-top: 1px solid var(--border); padding-top: 50px; }
+
+/* signature de la préface : « — Focus » (le collectif se signe, à l'accent) */
+.sig {
+  margin-top: 36px;
+  font-family: var(--mono);
+  font-size: 13px;
+  letter-spacing: 0.14em;
+  color: var(--muted);
+}
+.sig .concept { letter-spacing: 0.14em; }
+
+/* ════════════ CODA — « ENFIN DEHORS » (au-delà de la passe) ════════════
+   On a quitté l'atlas : page seule, sans la barre latérale, registre épistolaire
+   réchauffé (interligne plus ample, accent en sourdine). Thème Oblivion conservé. */
+body.coda-view .sidebar { display: none; }
+body.coda-view .menu-btn { display: none; }
+body.coda-view .reader { margin-left: 0; }
+body.coda-view .container { max-width: 700px; padding-top: 60px; }
+
+.coda-back {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--dim);
+  text-decoration: none;
+  display: inline-block;
+  margin-bottom: 70px;
+  transition: color 0.18s;
+}
+.coda-back:hover { color: var(--muted); }
+
+/* le seuil : l'ellipse — un vrai vide, puis la liaison, centrée et sobre */
+.coda-seuil { text-align: center; padding: 10px 0 70px; }
+.coda-void {
+  width: 1px; height: 90px;
+  margin: 0 auto 56px;
+  background: linear-gradient(var(--border2), transparent);
+}
+.seuil-prose p {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 19px;
+  line-height: 1.85;
+  color: var(--muted);
+  max-width: 540px;
+  margin: 0 auto 20px;
+}
+.seuil-prose p:first-child { color: var(--text); font-size: 21px; }
+.seuil-prose p:last-child { margin-bottom: 0; }
+
+/* la lettre : objet distinct, plus chaud que la carte */
+.coda-letter {
+  border-top: 1px solid var(--border);
+  padding-top: 72px;
+}
+.coda-letter h1 {
+  font-family: var(--serif);
+  font-style: italic;
+  font-weight: 400;
+  font-size: clamp(38px, 6vw, 60px);
+  line-height: 1.02;
+  letter-spacing: -0.03em;
+  color: var(--text);
+  margin-bottom: 12px;
+}
+.coda-sub {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  color: var(--accentDim);          /* accent en sourdine */
+  margin-bottom: 50px;
+}
+.letter-prose { max-width: 624px; }
+.letter-prose p {
+  font-size: 20px;
+  line-height: 1.95;
+  color: var(--text);
+  margin-bottom: 26px;
+}
+.letter-prose p:last-child {        /* l'envoi : « Nous t'attendons dehors. » */
+  font-style: italic;
+  margin-top: 8px;
+}
+
+/* signature de la lettre : « — Nicolas » (la main qui écrit, registre chaud) */
+.coda-sig {
+  margin-top: 44px;
+  text-align: right;
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 22px;
+  color: var(--text);
+}
+
+/* le bouton menu mobile ne doit pas masquer le titre du seuil/cover */
+@media (max-width: 920px) {
+  .cover .cover-kicker { padding-right: 52px; }
+}
+@media (max-width: 600px) {
+  .coda-back { margin-bottom: 44px; }
+  .coda-seuil { padding: 4px 0 54px; }
+  .coda-void { height: 60px; margin-bottom: 40px; }
+  .seuil-prose p:first-child { font-size: 19px; }
+  .coda-letter { padding-top: 52px; }
+  .letter-prose p { font-size: 18px; line-height: 1.9; }
+}
