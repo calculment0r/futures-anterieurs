@@ -1,9 +1,13 @@
 #!/usr/bin/env python3
-# Génère site/futures/futures.data.js (+ vault) depuis MANUSCRIT_V6/.
-import json, re, sys
+# Génère site/futures.data.js (+ vault) depuis MANUSCRIT_V6/.
+# Par défaut : SRC = <repo>/MANUSCRIT_V6, DST = <repo>/site (repo = parent de outils/).
+# Surcharge : gen_futures_data.py [SRC] [DST] — ex. pour régénérer la copie Nirvalab,
+# passer DST = <clone Nirvalab>/site/futures.
+import json, os, re, sys
 
-SRC = "/home/user/futures-anterieurs/MANUSCRIT_V6"
-DST = "/workspace/nirvalab/site/futures"
+REPO = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+SRC = sys.argv[1] if len(sys.argv) > 1 else os.path.join(REPO, "MANUSCRIT_V6")
+DST = sys.argv[2] if len(sys.argv) > 2 else os.path.join(REPO, "site")
 
 def blocks(text):
     """Découpe un markdown en blocs (séparés par lignes vides), en ignorant les '---'."""
