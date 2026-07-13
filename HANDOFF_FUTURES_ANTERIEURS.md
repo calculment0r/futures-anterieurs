@@ -31,7 +31,8 @@ Une session a travaillé des heures **sur un résumé** du manuscrit en croyant 
 - `V_L_ATRE.md` — la construction (Common Corpus ; le témoin + **Svalbard** ; magnifier une graine/Arendt-natalité ; BLOOM ; le pôle remède/Taddei ; le critère physique).
 - `VI_CODA_LA_CHALEUR_RENDUE.md` — l'attestation ; « leur survivre » ; la preuve est le médium ; l'adresse finale.
 - `VII_POUR_PROLONGER.md` — liste de références (témoins, pas notes).
-- `00_MANUSCRIT_COMPLET.md` — assemblage. **Attention : cet assemblage présente des coupures/artefacts d'encodage en fin de plusieurs sections (prologue, I.6, II.7, III.3, IV.5 se terminent en milieu de phrase).** → **Se fier aux fichiers individuels**, et vérifier en reprise l'état de complétude réel de chaque mouvement (certains sont peut-être encore inachevés).
+- `00_MANUSCRIT_COMPLET.md` — assemblage, **régénéré le 13 juil. 2026 depuis les fichiers individuels** (l'ancien était tronqué : I.7, II.8, III.4, IV.6 manquaient). Les fichiers individuels restent la source ; re-régénérer l'assemblage après toute retouche (simple concaténation, séparateur `---`).
+- **État de complétude vérifié (13 juil.)** : les 8 fichiers individuels sont **structurellement complets** — aucune coupure, chaque mouvement se ferme sur son pont. Mais le total fait **~13 000 mots pour une cible de ~19 900** (PLAN_20K §5) : prologue 780/1 200, I 2 970/3 500, II 2 990/4 000, III 1 730/3 200, IV 1 720/3 200, V 1 820/3 400, coda 600/1 400. Le V6 est donc un **premier jet complet du plan, à densifier** — pas un texte troué.
 
 ## 3. La méthode retenue (le cœur — détail dans PLAN_20K §1-2)
 
