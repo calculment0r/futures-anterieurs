@@ -46,15 +46,15 @@ Une session a travaillé des heures **sur un résumé** du manuscrit en croyant 
 ## 4. Les artefacts et leurs DIVERGENCES (à savoir absolument)
 
 Trois copies du texte coexistent — **ne pas les confondre** :
-1. **`MANUSCRIT_V6/`** = **le canon** (5 mouvements, re-nommé, ~20k). C'est là qu'on travaille le texte.
-2. **La page web en ligne** (`_site/site/futures/futures.data.js`) = **l'ANCIEN texte à 4 mouvements, dé-nommé** (Le Plomb/Le Relèvement renversé/La Volte/L'Âtre + coda). **Elle est en retard sur le V6.** → À **resynchroniser sur le V6** quand le texte sera figé (ajouter le mouvement La Racine, re-nommer, brancher le prologue/coda/pour-prolonger).
+1. **`MANUSCRIT_V6/`** = **le canon** (5 mouvements, re-nommé, ~13k figés le 13 juil.). C'est là qu'on travaille le texte.
+2. **La page web en ligne** (`Nirvalab/site/futures/futures.data.js`) = **resynchronisée sur le V6 le 13 juil. 2026** (PR Nirvalab #4, mergée) : prologue + 5 mouvements + coda + vue « Pour prolonger » ; vault (`futures.data.original.js`) réaligné sur ce nouvel original. **Après toute retouche du V6** : régénérer les deux fichiers avec **`outils/gen_futures_data.py`** (chemins SRC/DST en tête de script) et pousser sur la branche live de Nirvalab. Si une retouche passe par le god mode, la reporter dans le V6 — sinon les copies divergent de nouveau.
 3. `doc input/MANUSCRIT/` = le brouillon 4-mouvements du fil « page web » — **périmé**, gardé pour trace.
 
 ## 5. La page web (déployée)
 
 - **En ligne : https://calculment0r.github.io/Nirvalab/futures/** — page autonome, style Kubernân (`oblivion.css` + `kubernan.css`, serif Instrument Serif, thème clair par défaut + bascule sombre), god mode (édite passages/titres, sauve sur GitHub par jeton fine-grained, vault `futures.data.original.js`). Découplée du thème du site (volontaire).
 - Repo : **`calculment0r/Nirvalab`** (privé), clone local `C:\NIRVALAB_TECH\_site`, dossier `site/futures/`. Branche live = **`claude/organize-tech-pipeline-ceuCI`** (défaut + source Pages, pas de `main`). Le god mode commit sur cette branche (`GH.branch` dans `futures.js`) ; chaque save → rebuild Pages ~1-3 min.
-- **Resynchro V6 → page** : régénérer `futures.data.js` (objet `window.FUTURES` : meta/preface/bifurcations[]/coda) à partir du V6, commit sur une branche `claude/<sujet>`, PR vers la branche live, merge (c'est ainsi qu'elle a été mise en ligne : PR #3).
+- **Resynchro V6 → page** : régénérer `futures.data.js` + `futures.data.original.js` (objet `window.FUTURES` : meta/preface/bifurcations[]/coda/prolonger) avec **`outils/gen_futures_data.py`**, commit sur une branche `claude/<sujet>`, PR vers la branche live, merge (PR #3 = mise en ligne initiale ; **PR #4 = resynchro V6, 13 juil. 2026**). Note : le workflow Pages (`.github/workflows/pages.yml`) se déclenche sur tout push `claude/**`, mais l'environnement `github-pages` ne laisse **déployer** que la branche live — l'échec du job `deploy` sur une branche de travail est normal.
 
 ## 6. Les dépôts GitHub
 
