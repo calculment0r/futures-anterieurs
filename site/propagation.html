@@ -54,6 +54,7 @@
     <button onClick="{{ loosen }}" style="display:inline-flex;align-items:center;height:20px;padding:0 9px;border:1px solid #b8b39c;background:none;color:#4a4a55;font-family:'DM Mono',monospace;font-size:8.5px;cursor:pointer;">−</button>
     <span style="font-family:'DM Mono',monospace;font-size:10px;color:#1a1a1f;min-width:26px;text-align:center;">{{ seuil }}</span>
     <button onClick="{{ tighten }}" style="display:inline-flex;align-items:center;height:20px;padding:0 9px;border:1px solid #b8b39c;background:none;color:#4a4a55;font-family:'DM Mono',monospace;font-size:8.5px;cursor:pointer;">+</button>
+    <span title="Le faisceau règle la part du corpus autorisée à cheminer. Serrer, c'est ne garder que les liens les plus forts — et envoyer le reste en sécession." style="font-family:'DM Mono',monospace;font-size:8.5px;letter-spacing:.1em;color:#4a4a55;white-space:nowrap;">{{ couvLabel }}</span>
     <button onClick="{{ recadrer }}" style="display:inline-flex;align-items:center;height:20px;padding:0 9px;border:1px solid #b8b39c;background:none;color:#4a4a55;font-family:'DM Mono',monospace;font-size:8.5px;letter-spacing:.14em;text-transform:uppercase;cursor:pointer;">Recadrer</button>
   </div>
 
@@ -69,8 +70,8 @@
     <div style="position:absolute;right:13px;top:11px;pointer-events:none;text-align:right;font-family:'DM Mono',monospace;font-size:9px;line-height:1.9;letter-spacing:.04em;">
       <div style="color:#4a4a55;">TRAIT</div>
       <div style="color:#4a4a55;"><span style="color:#3d6600;">━</span><span style="color:#c4283a;">━</span><span style="color:#1f5fc4;">━</span><span style="color:#10357a;">━</span><span style="color:#6b5f4a;">━</span> épais : lien acté — liens.json</div>
-      <div style="color:#4a4a55;"><span style="color:#3d6600;">┈</span><span style="color:#c4283a;">┈</span><span style="color:#1f5fc4;">┈</span><span style="color:#10357a;">┈</span><span style="color:#6b5f4a;">┈</span> pointillé : proximité calculée</div>
-      <div style="color:#1a1a1f;">plein : la chaîne du foyer suivi</div>
+      <div style="color:#4a4a55;"><span style="color:#3d6600;">┈</span><span style="color:#c4283a;">┈</span><span style="color:#1f5fc4;">┈</span><span style="color:#10357a;">┈</span><span style="color:#6b5f4a;">┈</span> pointillé : hors de la chaîne suivie</div>
+      <div style="color:#1a1a1f;">plein : la chaîne du foyer suivi — elle seule</div>
       <div style="color:#4a4a55;">toujours à la couleur de la carte d'arrivée</div>
     </div>
 
@@ -828,10 +829,11 @@ class Component extends DCLogic {
       // par passages.json — et démentait la légende juste à côté.
       c.strokeStyle = TINT[l.carte];
       c.lineWidth = l.acte ? 1.6 : (on ? 1.1 : 0.6);
-      // Le trait plein, c'est la chaîne qu'on suit : dès qu'un foyer est
-      // allumé, sa généalogie devient continue et se lit d'un coup d'œil.
-      // Au repos, seul l'acté est plein — le reste est une proximité calculée.
-      if (l.acte || (lvl && on)) c.setLineDash([]); else c.setLineDash([2, 3]);
+      // Le trait plein ne dit qu'une chose, et seulement celle-là : ce lien
+      // appartient à la chaîne du foyer suivi. Tant que rien n'est survolé ni
+      // épinglé, tout est en pointillé — la carte entière est une proximité
+      // calculée. L'acté ne se signale que par son épaisseur.
+      if (lvl && on) c.setLineDash([]); else c.setLineDash([2, 3]);
       const mid = (a.x + b.x) / 2, bw = l.bow || 0;
       c.beginPath(); c.moveTo(a.x, a.y);
       c.bezierCurveTo(mid, a.y + bw, mid, b.y + bw, b.x, b.y);
@@ -901,13 +903,19 @@ class Component extends DCLogic {
       c.textAlign = "left"; c.globalAlpha = 1;
     }
 
-    if (hov && this.byId[hov] && g.pos[hov]) this.carte(c, w, h, g.pos[hov], this.byId[hov], hov);
+    // La carte ne sert qu'aux fragments, et seulement à ceux qu'un foyer
+    // épinglé a allumés. Ailleurs elle recouvrait le dessin pour répéter une
+    // étiquette déjà lisible à l'écran ; sur un fragment éteint, elle donnerait
+    // à lire ce que la sélection vient précisément d'écarter.
+    if (sel && hov && lvl && lvl["2"][hov] && g.pos[hov] && g.pos[hov].c === "2" && this.byId[hov]) {
+      this.carte(c, w, h, g.pos[hov], this.byId[hov], hov);
+    }
   }
 
   // ── la carte de survol : on lit le fragment, pas son étiquette ───────────
-  // Survoler un point du corpus doit donner le texte. L'ancienne info-bulle
-  // affichait `titre`, qui pour un fragment est le nom de son chapitre : on
-  // survolait deux cent vingt et un points pour lire neuf fois la même chose.
+  // Survoler un fragment doit donner son texte. L'ancienne info-bulle affichait
+  // `titre`, qui pour un fragment est le nom de son chapitre : on survolait
+  // deux cent vingt et un points pour lire neuf fois la même chose.
   lignes(c, txt, maxw, max) {
     const mots = String(txt || "").split(/\s+/);
     const out = [];
@@ -924,12 +932,11 @@ class Component extends DCLogic {
   }
 
   carte(c, w, h, q, u, id) {
-    const tint = TINT[u.carte] || "#4a4a55";
-    const COL = { "1": "un foyer — carte 1", "2": "un fragment — carte 2", "3": "une unité — carte 3", "L": "une porte — la lettre", "4": "un tour — carte 4" };
-    const head = (u.code ? u.code : id) + "  ·  " + (COL[u.carte] || "");
-    const corps = u.carte === "1" ? (u.texte || u.txt)
-      : (u.carte === "L" && u.passage) ? u.passage.citL
-      : (u.txt || u.titre);
+    const tint = TINT["2"];
+    // l'adresse, puis le chapitre d'où le fragment vient — c'est ce que
+    // `titre` porte pour la carte 2, et c'est utile à côté de l'adresse
+    const head = id + (u.titre ? "  ·  " + u.titre : "");
+    const corps = u.txt || "";
 
     const bw = Math.min(392, Math.max(210, w - 40));
     const pad = 13;
@@ -1002,6 +1009,9 @@ class Component extends DCLogic {
       hudW: this.state.sel ? "calc(100% - 420px)" : "66%",
       statW: this.state.sel ? "calc(100% - 440px)" : "calc(100% - 30px)",
       seuil: this.state.seuil,
+      // ce que le cran règle vraiment : la part du corpus admise à cheminer.
+      // Le chiffre seul ne dit rien ; la couverture, si. Même formule que beam().
+      couvLabel: "couverture " + Math.round((0.95 - ((this.state.seuil - 1) / 19) * 0.35) * 100) + " %",
       loosen: () => this.setState({ seuil: Math.max(1, this.state.seuil - 1) }, () => this.setState({ links: this.beam() })),
       tighten: () => this.setState({ seuil: Math.min(20, this.state.seuil + 1) }, () => this.setState({ links: this.beam() })),
       recadrer: () => this.setState({ k: 1, x: 0, y: 0 }),
