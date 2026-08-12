@@ -45,6 +45,7 @@ VIRES = ["les Passages", "les Instruments"]
 CORPUS = [
     "1_HYPERSTION.md", "2_FRAGMENTS.md", "3_KUBERNAN.md", "4_ARCHIBALD.md",
     "liens.json", "passages.json", "concepts.json", "evenements.json",
+    "auteurs.json",
 ]
 
 PROPS = {"index.html": "{ scrollLisse: true }"}
