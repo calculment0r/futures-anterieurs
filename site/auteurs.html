@@ -45,6 +45,8 @@
     background:none;color:var(--tx2);font-family:var(--mono);font-size:9px;letter-spacing:.14em;
     text-transform:uppercase;cursor:pointer;transition:color .2s,border-color .2s;}
   .btn:hover{color:var(--tx);border-color:var(--tx2);}
+  /* l'outil où l'on se trouve : présent dans le menu, mais pas cliquable */
+  .btn.ici{color:var(--tx);border-color:var(--tx);cursor:default;}
 
   .subbar{display:flex;align-items:center;min-height:30px;flex:none;background:var(--bar);
     border-bottom:1px solid var(--fil);padding:5px 11px;gap:6px;flex-wrap:wrap;user-select:none;}
@@ -119,7 +121,9 @@
     <span class="marque">Futures<i>·</i>Antérieurs</span>
     <span class="lieu">les auteurs</span>
     <span class="grow"></span>
+    <a class="btn" href="index.html#cartes">Les cartes</a>
     <a class="btn" href="propagation.html">La propagation</a>
+    <span class="btn ici">Les auteurs</span>
     <a class="btn" href="index.html">← La Porte</a>
   </div>
 
