@@ -140,8 +140,8 @@
 
     <div class="hud">
       <div><b>LES AUTEURS — soixante noms, et ce qui les relie.</b></div>
-      <div id="methode">Les liens ne s'affichent pas d'eux-mêmes : ils s'allument quand deux auteurs se rapprochent. <b>Prenez un auteur et promenez-le</b> — c'est en le traînant vers les autres qu'on découvre de qui il hérite, à qui il s'oppose, avec qui il converge.</div>
-      <div><span class="touche">glisser un rond</span> le promener · <span class="touche">glisser le fond</span> déplacer · <span class="touche">molette</span> échelle · <span class="touche">survol</span> tout son voisinage · <span class="touche">clic</span> la fiche</div>
+      <div id="methode">Les auteurs dérivent, et un lien ne se dessine que si deux d'entre eux sont assez proches : il se noue, se tend, puis se défait quand ils s'éloignent. <b>Prenez-en un et promenez-le</b> — c'est en le traînant au milieu des autres qu'on découvre de qui il hérite, à qui il s'oppose, avec qui il converge.</div>
+      <div><span class="touche">glisser un rond</span> le promener · <span class="touche">glisser le fond</span> déplacer · <span class="touche">molette</span> échelle · <span class="touche">clic</span> la fiche</div>
     </div>
 
     <div class="legende">
@@ -353,13 +353,14 @@
     }
   }
 
-  // Un lien est-il allumé, et à quelle force ? Trois régimes : le voisinage
-  // d'un auteur tenu (survol, clic, traîné) est montré en entier ; sinon la
-  // proximité décide. Ce qui est loin n'existe pas.
+  // LA SEULE RÈGLE : un lien n'existe que si les deux auteurs sont assez
+  // proches, et son intensité décroît avec la distance. Il se noue et se
+  // dénoue tout seul pendant qu'ils dérivent. Rien ne s'éteint quand on en
+  // tient un — le reste de la carte continue de vivre autour, et c'est en
+  // promenant un auteur au milieu des autres qu'on découvre son voisinage.
+  // Sous filtre, le sous-graphe est petit : on montre tous ses liens.
   function force(l) {
-    const tenu = hov || sel || prise;
-    if (tenu && (l.a === tenu || l.b === tenu)) return 1;
-    if (tenu) return 0;
+    if (axeActif !== 'all' || presActif !== 'all') return 0.55;
     const d = Math.hypot(l.a.x - l.b.x, l.a.y - l.b.y);
     if (d > CD) return 0;
     return 1 - d / CD;
@@ -367,7 +368,7 @@
 
   function dessiner() {
     ctx.clearRect(0, 0, W, H);
-    const tenu = hov || sel || prise;
+    const tenu = hov || sel || prise;   // sert au relief, jamais à éteindre
     let allumes = 0;
 
     liens.forEach((l) => {
@@ -386,20 +387,20 @@
       ctx.beginPath(); ctx.moveTo(A.x, A.y); ctx.lineTo(B.x, B.y); ctx.stroke();
       ctx.restore();
 
-      // L'étiquette ne sort que si l'on tient un auteur ou le lien lui-même.
-      // Au repos, la proximité allume déjà des dizaines de fils : les nommer
-      // tous couvrirait la carte de mots posés sur les ronds.
-      if (tenu || vif) {
+      // L'étiquette naît avec le lien et s'efface avec lui : c'est au moment
+      // où deux auteurs se croisent qu'on lit ce qui les tient.
+      if (f > 0.2 || vif) {
         const mx = (A.x + B.x) / 2, my = (A.y + B.y) / 2;
         ctx.save();
-        ctx.globalAlpha = vif ? 1 : 0.85;
+        const av = vif ? 1 : Math.min(0.95, (f - 0.15) * 1.9);
+        ctx.globalAlpha = av;
         ctx.fillStyle = col;
         ctx.font = '500 9px ' + "'DM Mono', monospace";
         ctx.textAlign = 'center';
         const t = l.type.toUpperCase();
         const tw = ctx.measureText(t).width;
         ctx.fillStyle = '#f7f5ef'; ctx.fillRect(mx - tw / 2 - 3, my - 12, tw + 6, 12);
-        ctx.globalAlpha = vif ? 1 : 0.85;
+        ctx.globalAlpha = av;
         ctx.fillStyle = col; ctx.fillText(t, mx, my - 3);
         ctx.restore();
       }
@@ -410,16 +411,14 @@
     vus.forEach((n) => {
       const s = w2s(n.x, n.y), r = n.r * camZ;
       const col = AX[n.axis] || '#4a4a55';
-      const lie = tenu && (n === tenu || (tenu.liens || []).some((l) => l.a === n || l.b === n));
-      const eteint = tenu && !lie;
       ctx.save();
-      ctx.globalAlpha = eteint ? 0.2 : 1;
+      ctx.globalAlpha = 1;
 
       if (n.favorite) {                       // le halo : les neuf de Cal
         ctx.beginPath(); ctx.arc(s.x, s.y, r + 5, 0, 6.2832);
-        ctx.strokeStyle = col; ctx.globalAlpha = eteint ? 0.08 : 0.22;
+        ctx.strokeStyle = col; ctx.globalAlpha = 0.22;
         ctx.lineWidth = 3; ctx.setLineDash([]); ctx.stroke();
-        ctx.globalAlpha = eteint ? 0.2 : 1;
+        ctx.globalAlpha = 1;
       }
       ctx.beginPath(); ctx.arc(s.x, s.y, r, 0, 6.2832);
       ctx.fillStyle = (n === sel || n === tenu) ? col : '#f7f5ef';
@@ -450,11 +449,9 @@
     ctx.textAlign = 'left'; ctx.setLineDash([]);
     ordre.forEach((n) => {
       const s = w2s(n.x, n.y), r = n.r * camZ;
-      const lie = tenu && (n === tenu || (tenu.liens || []).some((l) => l.a === n || l.b === n));
-      const eteint = tenu && !lie;
       // zoom sémantique : sous un certain seuil, seuls les plus liés se nomment
       const seuil = camZ < 0.7 ? 7 : (camZ < 1 ? 4 : 0);
-      if (eteint || (n.deg < seuil && n !== tenu)) return;
+      if (n.deg < seuil && n !== tenu) return;
       ctx.font = (n === tenu ? '500 12px ' : '400 11px ') + "'Host Grotesk', sans-serif";
       const tw = ctx.measureText(n.court).width;
       const x0 = s.x - tw / 2, y0 = s.y + r + 3;
@@ -469,7 +466,8 @@
       (axeActif !== 'all' ? ' · axe ' + axeActif + ' — ' + axeParId[axeActif].label : '') +
       (presActif !== 'all' ? ' · ' + presActif : '') +
       ' · ' + allumes + ' liens allumés sur ' + liens.length +
-      (tenu ? ' · ' + tenu.name + ' — ' + tenu.liens.length + ' liens' : ' · approchez deux auteurs, ou traînez-en un');
+      (tenu ? ' · ' + tenu.name + ' — ' + tenu.liens.length + ' liens en tout' : '') +
+      ' · les liens se nouent et se dénouent avec la distance';
   }
 
   function boucle() { pas(); dessiner(); requestAnimationFrame(boucle); }

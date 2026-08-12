@@ -60,9 +60,12 @@ Ses données, en revanche, suivent le même chemin que le reste :
 est copié vers `site/corpus/` par le build. Le schéma est documenté dans
 `design/corpus/README-auteurs.md`.
 
-Elle reprend le système de la page NECTAR « théorie politique » — des ronds qui
-dérivent, des liens qui ne s'allument qu'à proximité, et le geste central :
-prendre un auteur et le promener pour découvrir son voisinage. La peau, elle,
+Elle reprend le système de la page NECTAR « théorie politique », à la lettre :
+les auteurs dérivent, et un lien n'existe que si deux d'entre eux sont assez
+proches — il se noue, se tend, se défait quand ils s'éloignent. Rien ne
+s'éteint jamais : tenir un auteur ne met pas le reste de la carte en veille,
+sinon le geste central perd son objet. Ce geste, c'est de prendre un auteur et
+de le promener au milieu des autres pour voir ce qui s'allume sur son passage. La peau, elle,
 est celle du site : papier `#f7f5ef`, Host Grotesk et DM Mono, une couleur par
 axe. Le §5 du README des auteurs prescrivait un thème Oblivion ; Cal a tranché
 pour la DA du site.
