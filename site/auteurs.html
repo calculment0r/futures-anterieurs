@@ -1,0 +1,701 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light only">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23f7f5ef'/%3E%3Ccircle cx='16' cy='16' r='7' fill='%231a1a1f'/%3E%3C/svg%3E">
+<title>Les auteurs — Futures Antérieurs</title>
+<meta name="description" content="Soixante auteurs, leurs filiations et leurs désaccords. On prend un auteur, on le promène : les liens s'allument quand il approche.">
+<link rel="stylesheet" href="assets/fonts.css">
+<style>
+  /* Le thème est verrouillé en clair : ces pages s'ouvrent dans des contextes
+     qui assombrissent les fonds sans toucher au texte, et deviennent illisibles. */
+  :root{
+    color-scheme: light only;
+    --pap:#f7f5ef; --bar:#efece2; --fil:#d0ccbb; --fil2:#b8b39c;
+    --tx:#1a1a1f; --tx2:#4a4a55; --tx3:#8a8a92;
+    --sans:'Host Grotesk',system-ui,sans-serif; --mono:'DM Mono',monospace;
+  }
+  *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+  html,body{height:100%;overflow:hidden;background-color:#f7f5ef;}
+  body{background:var(--pap);color:var(--tx);font-family:var(--sans);font-size:12px;-webkit-font-smoothing:antialiased;}
+  a{color:inherit;text-decoration:none;}
+  canvas{display:block;width:100%;height:100%;touch-action:none;cursor:grab;}
+  canvas.prise{cursor:grabbing;}
+  ::selection{background:var(--tx);color:var(--pap);}
+  ::-webkit-scrollbar{width:9px;height:9px;}
+  ::-webkit-scrollbar-track{background:transparent;}
+  ::-webkit-scrollbar-thumb{background:var(--fil2);border:2px solid transparent;background-clip:content-box;border-radius:5px;}
+  @media (prefers-color-scheme: dark){
+    /* toute la palette est réaffirmée : rien ne doit basculer */
+    :root{--pap:#f7f5ef;--bar:#efece2;--fil:#d0ccbb;--fil2:#b8b39c;--tx:#1a1a1f;--tx2:#4a4a55;--tx3:#8a8a92;}
+    html,body{background-color:#f7f5ef;color:#1a1a1f;}
+  }
+
+  .app{position:fixed;inset:0;display:flex;flex-direction:column;background:var(--pap);}
+
+  .topbar{display:flex;align-items:center;height:34px;flex:none;background:var(--bar);
+    border-bottom:1px solid var(--fil);padding:0 11px;gap:8px;user-select:none;}
+  .marque{font-family:var(--mono);font-weight:500;font-size:11px;letter-spacing:.22em;text-transform:uppercase;}
+  .marque i{font-style:normal;color:#3d6600;}
+  .lieu{font-family:var(--mono);font-size:9px;letter-spacing:.1em;color:var(--tx2);}
+  .grow{flex:1;}
+  .btn{display:inline-flex;align-items:center;height:21px;padding:0 10px;border:1px solid var(--fil2);
+    background:none;color:var(--tx2);font-family:var(--mono);font-size:9px;letter-spacing:.14em;
+    text-transform:uppercase;cursor:pointer;transition:color .2s,border-color .2s;}
+  .btn:hover{color:var(--tx);border-color:var(--tx2);}
+
+  .subbar{display:flex;align-items:center;min-height:30px;flex:none;background:var(--bar);
+    border-bottom:1px solid var(--fil);padding:5px 11px;gap:6px;flex-wrap:wrap;user-select:none;}
+  .lbl{font-family:var(--mono);font-size:8.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--tx2);}
+  .chip{display:inline-flex;align-items:center;height:20px;padding:0 9px;border:1px solid var(--fil2);
+    background:none;color:var(--tx2);font-family:var(--mono);font-size:9px;letter-spacing:.08em;
+    cursor:pointer;transition:border-color .2s,color .2s,background .2s;}
+  .chip:hover{border-color:var(--tx2);color:var(--tx);}
+  .chip.on{color:var(--pap);}
+  .sep{width:1px;height:16px;background:var(--fil);margin:0 5px;}
+
+  .stage{flex:1;position:relative;overflow:hidden;}
+  .hud{position:absolute;left:0;top:0;padding:10px 13px;pointer-events:none;font-family:var(--mono);
+    font-size:9px;line-height:1.85;color:var(--tx2);letter-spacing:.04em;max-width:min(660px,58%);
+    background:linear-gradient(var(--pap) 66%,transparent);}
+  .hud b{color:var(--tx);font-weight:400;}
+  .touche{border:1px solid var(--fil2);padding:1px 4px;color:var(--tx);}
+  .legende{position:absolute;right:13px;top:11px;pointer-events:none;text-align:right;
+    font-family:var(--mono);font-size:9px;line-height:1.85;letter-spacing:.04em;color:var(--tx2);}
+  .legende b{color:var(--tx);font-weight:400;}
+  .stat{position:absolute;left:13px;bottom:11px;pointer-events:none;font-family:var(--mono);
+    font-size:9px;line-height:1.85;color:var(--tx2);max-width:calc(100% - 30px);}
+  .vide{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+    font-family:var(--mono);font-size:12px;color:var(--tx2);background:var(--pap);}
+  .vide.err{color:#c4283a;text-align:center;padding:30px;line-height:1.8;}
+
+  .pan{position:absolute;right:0;top:0;bottom:0;width:400px;max-width:92vw;background:var(--bar);
+    border-left:1px solid var(--fil2);z-index:70;display:none;flex-direction:column;}
+  .pan.on{display:flex;}
+  .pan-h{flex:none;background:var(--bar);border-bottom:1px solid var(--fil);padding:12px 15px 13px;position:relative;}
+  .pan-kind{font-family:var(--mono);font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--tx2);margin-bottom:8px;}
+  .pan-t{font-weight:700;text-transform:uppercase;letter-spacing:-.028em;line-height:.98;
+    font-size:clamp(19px,2.1vw,28px);text-wrap:pretty;}
+  .pan-s{font-family:var(--mono);font-size:9.5px;letter-spacing:.09em;color:var(--tx2);margin-top:9px;}
+  .pan-x{position:absolute;right:11px;top:11px;width:19px;height:19px;border:1px solid var(--fil2);
+    background:none;color:var(--tx2);cursor:pointer;font-family:var(--mono);font-size:9px;
+    display:flex;align-items:center;justify-content:center;padding:0;}
+  .pan-b{flex:1;overflow-y:auto;padding:15px 15px 40px;display:flex;flex-direction:column;gap:19px;}
+  .bloc{display:flex;flex-direction:column;gap:9px;}
+  .bloc>h3{font-family:var(--mono);font-size:9px;letter-spacing:.18em;text-transform:uppercase;
+    color:var(--tx2);font-weight:400;}
+  .these{font-size:15.5px;line-height:1.58;text-wrap:pretty;}
+  .puces{display:flex;flex-wrap:wrap;gap:5px;}
+  .puce{font-family:var(--mono);font-size:10px;border:1px solid var(--fil2);border-radius:20px;
+    padding:3px 9px;color:var(--tx2);}
+  .oeuvre{font-family:var(--mono);font-size:11.5px;line-height:1.75;color:var(--tx);}
+  .ancre{border-left:2px solid var(--fil2);padding:1px 0 1px 11px;display:flex;flex-direction:column;gap:4px;}
+  .ancre-h{font-family:var(--mono);font-size:10.5px;letter-spacing:.05em;}
+  .ancre-p{font-size:13.5px;line-height:1.45;color:#3a3a44;text-wrap:pretty;}
+  .voisin{display:flex;gap:9px;align-items:baseline;cursor:pointer;padding:2px 0;}
+  .voisin:hover .voisin-n{color:#3d6600;}
+  .voisin-t{font-family:var(--mono);font-size:9px;letter-spacing:.1em;text-transform:uppercase;
+    color:var(--tx3);flex:none;width:82px;}
+  .voisin-n{font-size:13.5px;line-height:1.5;}
+  .note{font-family:var(--mono);font-size:10.5px;line-height:1.8;color:var(--tx2);
+    border-top:1px solid var(--fil);padding-top:13px;}
+
+  @media(max-width:820px){
+    .topbar,.subbar{flex-wrap:nowrap;overflow-x:auto;}
+    .topbar::-webkit-scrollbar,.subbar::-webkit-scrollbar{height:0;}
+    .subbar>*{flex:none;}
+    .hud{max-width:100%;font-size:8.5px;}
+    .legende{display:none;}
+    .pan{width:100%;}
+  }
+</style>
+</head>
+<body>
+<div class="app">
+
+  <div class="topbar">
+    <span class="marque">Futures<i>·</i>Antérieurs</span>
+    <span class="lieu">les auteurs</span>
+    <span class="grow"></span>
+    <a class="btn" href="propagation.html">La propagation</a>
+    <a class="btn" href="index.html">← La Porte</a>
+  </div>
+
+  <div class="subbar">
+    <span class="lbl">Axes</span>
+    <span id="chips" style="display:contents"></span>
+    <span class="sep"></span>
+    <button class="chip" id="tous">Tous</button>
+    <span class="grow" style="min-width:10px"></span>
+    <span class="lbl">Présence</span>
+    <span id="chipsPres" style="display:contents"></span>
+    <span class="sep"></span>
+    <button class="chip" id="recadrer">Recadrer</button>
+  </div>
+
+  <div class="stage" id="stage">
+    <canvas id="cv"></canvas>
+
+    <div class="hud">
+      <div><b>LES AUTEURS — soixante noms, et ce qui les relie.</b></div>
+      <div id="methode">Les liens ne s'affichent pas d'eux-mêmes : ils s'allument quand deux auteurs se rapprochent. <b>Prenez un auteur et promenez-le</b> — c'est en le traînant vers les autres qu'on découvre de qui il hérite, à qui il s'oppose, avec qui il converge.</div>
+      <div><span class="touche">glisser un rond</span> le promener · <span class="touche">glisser le fond</span> déplacer · <span class="touche">molette</span> échelle · <span class="touche">survol</span> tout son voisinage · <span class="touche">clic</span> la fiche</div>
+    </div>
+
+    <div class="legende">
+      <div>TRAIT</div>
+      <div><b>━</b> filiation, source</div>
+      <div><b>╌</b> opposition</div>
+      <div><b>┈</b> convergence, milieu, dialogue</div>
+      <div style="margin-top:6px">ROND</div>
+      <div>taille : nombre de liens</div>
+      <div>plein : <b>nommé</b> · tireté : <b>masqué</b></div>
+      <div>fin : <b>affine</b>, hors du texte</div>
+    </div>
+
+    <div class="stat" id="stat"></div>
+    <div class="vide" id="vide">Lecture du corpus des auteurs…</div>
+
+    <aside class="pan" id="pan">
+      <div class="pan-h">
+        <div class="pan-kind" id="panKind"></div>
+        <div class="pan-t" id="panT"></div>
+        <div class="pan-s" id="panS"></div>
+        <button class="pan-x" id="panX" type="button" aria-label="fermer">✕</button>
+      </div>
+      <div class="pan-b" id="panB"></div>
+    </aside>
+  </div>
+</div>
+
+<script>
+(function () {
+  'use strict';
+
+  // ── palette des sept axes, dans la gamme du site ───────────────────────
+  const AX = { A1:'#c4283a', A2:'#10357a', A3:'#6b5f4a', A4:'#a8551c',
+               A5:'#1f5fc4', A6:'#3d6600', A7:'#7d2b7a' };
+  // le style du fil dit le type de lien ; son épaisseur, le poids
+  const TRAIT = { filiation:[], source:[], opposition:[6,4], reprise:[9,3],
+                  milieu:[2,3], convergence:[2,3], dialogue:[2,3] };
+  // quelques patronymes composés que « dernier mot » couperait mal
+  const COMPOSE = { mbk:'Belhaj Kacem' };
+
+  const $ = (s) => document.querySelector(s);
+  const cv = $('#cv'), ctx = cv.getContext('2d'), stage = $('#stage');
+  const esc = (s) => String(s == null ? '' : s)
+    .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+
+  let W = 0, H = 0, DPR = 1;
+  function resize() {
+    const r = stage.getBoundingClientRect();
+    W = r.width; H = r.height;
+    DPR = Math.min(2, window.devicePixelRatio || 1);
+    cv.width = Math.round(W * DPR); cv.height = Math.round(H * DPR);
+    ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+  }
+
+  // ── caméra ─────────────────────────────────────────────────────────────
+  let camX = 0, camY = 0, camZ = 1;
+  const w2s = (x, y) => ({ x: (x - camX) * camZ + W / 2, y: (y - camY) * camZ + H / 2 });
+  const s2w = (x, y) => ({ x: (x - W / 2) / camZ + camX, y: (y - H / 2) / camZ + camY });
+
+  let D = null, noeuds = [], parId = {}, liens = [], axeParId = {}, artParId = {};
+  let axeActif = 'all', presActif = 'all';
+  let hov = null, hovLien = null, sel = null, selLien = null, prise = null;
+
+  // La distance de révélation : au-delà, un lien n'existe pas à l'écran. C'est
+  // elle qui fait de la lecture un geste — on approche deux auteurs pour voir
+  // s'il y a quelque chose entre eux.
+  const CD = 230;
+  let RX = 600, RY = 340;   // demi-axes de la répartition, posés au recadrage
+
+  fetch('corpus/auteurs.json', { cache: 'no-cache' })
+    .then((r) => { if (!r.ok) throw new Error('corpus/auteurs.json — ' + r.status); return r.json(); })
+    .then(demarrer)
+    .catch((e) => {
+      const v = $('#vide');
+      v.className = 'vide err';
+      v.innerHTML = 'Le corpus des auteurs n\'a pas pu être lu : ' + esc(e.message) +
+        '<br><span style="color:var(--tx2)">Le site doit être servi, pas ouvert en file://.</span>';
+    });
+
+  function courtNom(a) {
+    if (COMPOSE[a.id]) return COMPOSE[a.id];
+    const t = a.name.split(/\s+/);
+    return t.length === 1 ? a.name : t[t.length - 1];
+  }
+
+  function demarrer(data) {
+    D = data;
+    $('#vide').style.display = 'none';
+    data.axes.forEach((a) => { axeParId[a.id] = a; });
+    data.articles.forEach((a) => { artParId[a.id] = a; });
+
+    const deg = {};
+    data.liens_auteurs.forEach((l) => { deg[l.s] = (deg[l.s]||0)+1; deg[l.t] = (deg[l.t]||0)+1; });
+
+    noeuds = data.auteurs.map((a) => {
+      const n = Object.assign({}, a, {
+        court: courtNom(a), deg: deg[a.id] || 0,
+        r: 13 + Math.min(12, deg[a.id] || 0) * 1.35,
+        x: 0, y: 0, vx: 0, vy: 0, visible: true, tire: false
+      });
+      parId[a.id] = n;
+      return n;
+    });
+
+    liens = data.liens_auteurs.map((l) => Object.assign({}, l, { a: parId[l.s], b: parId[l.t] }))
+      .filter((l) => l.a && l.b);
+    noeuds.forEach((n) => { n.liens = liens.filter((l) => l.a === n || l.b === n); });
+
+    construireChips();
+    resize();
+    disperser();
+    boucle();
+  }
+
+  // ── les pastilles de filtre ────────────────────────────────────────────
+  function styleChip(el, on, couleur) {
+    el.classList.toggle('on', on);
+    el.style.background = on ? couleur : 'none';
+    el.style.borderColor = on ? couleur : '';
+    el.style.color = on ? 'var(--pap)' : '';
+  }
+  function construireChips() {
+    const c = $('#chips');
+    D.axes.forEach((a) => {
+      const b = document.createElement('button');
+      b.className = 'chip'; b.textContent = a.court; b.title = a.label + ' — ' + a.definition;
+      b.onclick = () => { axeActif = (axeActif === a.id) ? 'all' : a.id; majChips(); disperser(); };
+      b.dataset.axe = a.id;
+      c.appendChild(b);
+    });
+    const p = $('#chipsPres');
+    [['explicite','nommés'],['masque','masqués'],['affine','affines']].forEach((x) => {
+      const b = document.createElement('button');
+      b.className = 'chip'; b.textContent = x[1];
+      b.title = D.legende.presence[x[0]];
+      b.onclick = () => { presActif = (presActif === x[0]) ? 'all' : x[0]; majChips(); disperser(); };
+      b.dataset.pres = x[0];
+      p.appendChild(b);
+    });
+    $('#tous').onclick = () => { axeActif = 'all'; presActif = 'all'; majChips(); disperser(); };
+    $('#recadrer').onclick = () => { camX = 0; camY = 0; camZ = 1; };
+    $('#panX').onclick = () => { sel = null; selLien = null; majPanneau(); };
+    majChips();
+  }
+  function majChips() {
+    document.querySelectorAll('[data-axe]').forEach((b) => {
+      styleChip(b, axeActif === b.dataset.axe, AX[b.dataset.axe]);
+    });
+    document.querySelectorAll('[data-pres]').forEach((b) => {
+      styleChip(b, presActif === b.dataset.pres, '#4a4a55');
+    });
+    styleChip($('#tous'), axeActif === 'all' && presActif === 'all', '#4a4a55');
+  }
+
+  // ── répartition ────────────────────────────────────────────────────────
+  function visible(n) {
+    if (axeActif !== 'all' && n.axes.indexOf(axeActif) < 0) return false;
+    if (presActif !== 'all' && n.presence !== presActif) return false;
+    return true;
+  }
+  function disperser() {
+    noeuds.forEach((n) => { n.visible = visible(n); });
+    const vus = noeuds.filter((n) => n.visible);
+    // Spirale de Vogel, posée sur une ELLIPSE au format de la fenêtre : un
+    // disque déborderait en haut et en bas d'un écran large, et la moitié des
+    // auteurs commencerait hors cadre.
+    RX = Math.max(280, W * 0.42); RY = Math.max(190, H * 0.40);
+    const golden = Math.PI * (3 - Math.sqrt(5));
+    vus.forEach((n, i) => {
+      const rad = Math.sqrt((i + 0.5) / vus.length);
+      const ang = i * golden;
+      n.x = Math.cos(ang) * rad * RX; n.y = Math.sin(ang) * rad * RY;
+      n.vx = (Math.random() - 0.5) * 0.14; n.vy = (Math.random() - 0.5) * 0.14;
+    });
+    camX = 0; camY = 0; camZ = 1;
+    sel = null; selLien = null; hov = null; hovLien = null;
+    majPanneau();
+  }
+
+  // ── dérive et séparation ───────────────────────────────────────────────
+  function pas() {
+    for (let i = 0; i < noeuds.length; i++) {
+      const n = noeuds[i];
+      if (!n.visible || n.tire) continue;
+      n.x += n.vx; n.y += n.vy;
+      const bx = RX * 1.12, by = RY * 1.12;
+      if (n.x < -bx) n.vx = Math.abs(n.vx);
+      if (n.x > bx) n.vx = -Math.abs(n.vx);
+      if (n.y < -by) n.vy = Math.abs(n.vy);
+      if (n.y > by) n.vy = -Math.abs(n.vy);
+      n.vx += (Math.random() - 0.5) * 0.01; n.vy += (Math.random() - 0.5) * 0.01;
+      n.vx *= 0.997; n.vy *= 0.997;
+      const s = Math.hypot(n.vx, n.vy);
+      if (s > 0.24) { n.vx = n.vx / s * 0.24; n.vy = n.vy / s * 0.24; }
+    }
+    for (let i = 0; i < noeuds.length; i++) {
+      const a = noeuds[i]; if (!a.visible) continue;
+      for (let j = i + 1; j < noeuds.length; j++) {
+        const b = noeuds[j]; if (!b.visible) continue;
+        const dx = b.x - a.x, dy = b.y - a.y;
+        const d = Math.hypot(dx, dy), m = a.r + b.r + 16;
+        if (d < m && d > 0.01) {
+          const f = (m - d) / d * 0.22;
+          if (!a.tire) { a.x -= dx * f; a.y -= dy * f; }
+          if (!b.tire) { b.x += dx * f; b.y += dy * f; }
+        }
+      }
+    }
+  }
+
+  // Un lien est-il allumé, et à quelle force ? Trois régimes : le voisinage
+  // d'un auteur tenu (survol, clic, traîné) est montré en entier ; sinon la
+  // proximité décide. Ce qui est loin n'existe pas.
+  function force(l) {
+    const tenu = hov || sel || prise;
+    if (tenu && (l.a === tenu || l.b === tenu)) return 1;
+    if (tenu) return 0;
+    const d = Math.hypot(l.a.x - l.b.x, l.a.y - l.b.y);
+    if (d > CD) return 0;
+    return 1 - d / CD;
+  }
+
+  function dessiner() {
+    ctx.clearRect(0, 0, W, H);
+    const tenu = hov || sel || prise;
+    let allumes = 0;
+
+    liens.forEach((l) => {
+      if (!l.a.visible || !l.b.visible) return;
+      const f = force(l);
+      if (f < 0.06) return;
+      allumes++;
+      const A = w2s(l.a.x, l.a.y), B = w2s(l.b.x, l.b.y);
+      const col = AX[l.axes && l.axes[0]] || '#4a4a55';
+      const vif = (l === selLien || l === hovLien);
+      ctx.save();
+      ctx.globalAlpha = vif ? 0.95 : Math.min(0.8, 0.16 + f * 0.62);
+      ctx.strokeStyle = col;
+      ctx.lineWidth = (vif ? 1.4 : 0) + (0.5 + (l.w || 3) * 0.28) * Math.min(1.6, camZ);
+      ctx.setLineDash((TRAIT[l.type] || [2, 3]).map((v) => v * Math.min(1.6, camZ)));
+      ctx.beginPath(); ctx.moveTo(A.x, A.y); ctx.lineTo(B.x, B.y); ctx.stroke();
+      ctx.restore();
+
+      // L'étiquette ne sort que si l'on tient un auteur ou le lien lui-même.
+      // Au repos, la proximité allume déjà des dizaines de fils : les nommer
+      // tous couvrirait la carte de mots posés sur les ronds.
+      if (tenu || vif) {
+        const mx = (A.x + B.x) / 2, my = (A.y + B.y) / 2;
+        ctx.save();
+        ctx.globalAlpha = vif ? 1 : 0.85;
+        ctx.fillStyle = col;
+        ctx.font = '500 9px ' + "'DM Mono', monospace";
+        ctx.textAlign = 'center';
+        const t = l.type.toUpperCase();
+        const tw = ctx.measureText(t).width;
+        ctx.fillStyle = '#f7f5ef'; ctx.fillRect(mx - tw / 2 - 3, my - 12, tw + 6, 12);
+        ctx.globalAlpha = vif ? 1 : 0.85;
+        ctx.fillStyle = col; ctx.fillText(t, mx, my - 3);
+        ctx.restore();
+      }
+    });
+
+    // les ronds, puis les noms — pour qu'aucun nom ne passe sous un rond
+    const vus = noeuds.filter((n) => n.visible);
+    vus.forEach((n) => {
+      const s = w2s(n.x, n.y), r = n.r * camZ;
+      const col = AX[n.axis] || '#4a4a55';
+      const lie = tenu && (n === tenu || (tenu.liens || []).some((l) => l.a === n || l.b === n));
+      const eteint = tenu && !lie;
+      ctx.save();
+      ctx.globalAlpha = eteint ? 0.2 : 1;
+
+      if (n.favorite) {                       // le halo : les neuf de Cal
+        ctx.beginPath(); ctx.arc(s.x, s.y, r + 5, 0, 6.2832);
+        ctx.strokeStyle = col; ctx.globalAlpha = eteint ? 0.08 : 0.22;
+        ctx.lineWidth = 3; ctx.setLineDash([]); ctx.stroke();
+        ctx.globalAlpha = eteint ? 0.2 : 1;
+      }
+      ctx.beginPath(); ctx.arc(s.x, s.y, r, 0, 6.2832);
+      ctx.fillStyle = (n === sel || n === tenu) ? col : '#f7f5ef';
+      ctx.fill();
+      // le contour dit comment l'auteur apparaît dans les textes publiés
+      ctx.strokeStyle = col;
+      ctx.setLineDash(n.presence === 'masque' ? [3, 3] : []);
+      ctx.lineWidth = n.presence === 'explicite' ? 2.2 : (n.presence === 'masque' ? 1.5 : 0.9);
+      ctx.stroke();
+      ctx.restore();
+    });
+
+    // placement anti-recouvrement : on mesure, on réserve, on refuse
+    const pris = [];
+    const libre = (x0, y0, w, h) => {
+      for (let i = 0; i < pris.length; i++) {
+        const p = pris[i];
+        if (x0 < p[2] && x0 + w > p[0] && y0 < p[3] && y0 + h > p[1]) return false;
+      }
+      pris.push([x0, y0, x0 + w, y0 + h]);
+      return true;
+    };
+    // les plus liés d'abord : à échelle serrée, ce sont eux qui doivent rester
+    const ordre = vus.slice().sort((a, b) => {
+      const pa = (a === tenu ? 100 : 0) + a.deg, pb = (b === tenu ? 100 : 0) + b.deg;
+      return pb - pa;
+    });
+    ctx.textAlign = 'left'; ctx.setLineDash([]);
+    ordre.forEach((n) => {
+      const s = w2s(n.x, n.y), r = n.r * camZ;
+      const lie = tenu && (n === tenu || (tenu.liens || []).some((l) => l.a === n || l.b === n));
+      const eteint = tenu && !lie;
+      // zoom sémantique : sous un certain seuil, seuls les plus liés se nomment
+      const seuil = camZ < 0.7 ? 7 : (camZ < 1 ? 4 : 0);
+      if (eteint || (n.deg < seuil && n !== tenu)) return;
+      ctx.font = (n === tenu ? '500 12px ' : '400 11px ') + "'Host Grotesk', sans-serif";
+      const tw = ctx.measureText(n.court).width;
+      const x0 = s.x - tw / 2, y0 = s.y + r + 3;
+      if (!libre(x0 - 3, y0, tw + 6, 13)) return;
+      ctx.fillStyle = '#f7f5ef'; ctx.fillRect(x0 - 3, y0, tw + 6, 13);
+      ctx.fillStyle = (n === tenu) ? '#1a1a1f' : '#3a3a44';
+      ctx.fillText(n.court, x0, y0 + 10);
+    });
+
+    const nv = vus.length;
+    $('#stat').textContent = nv + ' auteurs' +
+      (axeActif !== 'all' ? ' · axe ' + axeActif + ' — ' + axeParId[axeActif].label : '') +
+      (presActif !== 'all' ? ' · ' + presActif : '') +
+      ' · ' + allumes + ' liens allumés sur ' + liens.length +
+      (tenu ? ' · ' + tenu.name + ' — ' + tenu.liens.length + ' liens' : ' · approchez deux auteurs, ou traînez-en un');
+  }
+
+  function boucle() { pas(); dessiner(); requestAnimationFrame(boucle); }
+
+  // ── saisie ─────────────────────────────────────────────────────────────
+  const pos = (e) => {
+    const r = cv.getBoundingClientRect();
+    const t = e.touches ? (e.touches[0] || e.changedTouches[0]) : e;
+    return { x: t.clientX - r.left, y: t.clientY - r.top };
+  };
+  function noeudSous(sx, sy) {
+    const w = s2w(sx, sy);
+    let best = null, bd = Infinity;
+    noeuds.forEach((n) => {
+      if (!n.visible) return;
+      const d = Math.hypot(n.x - w.x, n.y - w.y);
+      if (d < n.r + 10 / camZ && d < bd) { bd = d; best = n; }
+    });
+    return best;
+  }
+  function lienSous(sx, sy) {
+    const w = s2w(sx, sy);
+    let best = null, bd = 14 / camZ;
+    liens.forEach((l) => {
+      if (!l.a.visible || !l.b.visible) return;
+      if (force(l) < 0.06) return;
+      const dx = l.b.x - l.a.x, dy = l.b.y - l.a.y, l2 = dx * dx + dy * dy;
+      if (!l2) return;
+      let t = ((w.x - l.a.x) * dx + (w.y - l.a.y) * dy) / l2;
+      t = Math.max(0, Math.min(1, t));
+      const d = Math.hypot(w.x - (l.a.x + t * dx), w.y - (l.a.y + t * dy));
+      if (d < bd) { bd = d; best = l; }
+    });
+    return best;
+  }
+
+  let pan = false, panS = null, camS = null, bouge = 0;
+  cv.addEventListener('mousedown', (e) => {
+    const p = pos(e); bouge = 0;
+    const n = noeudSous(p.x, p.y);
+    if (n) { prise = n; n.tire = true; cv.classList.add('prise'); return; }
+    pan = true; panS = p; camS = { x: camX, y: camY }; cv.classList.add('prise');
+  });
+  window.addEventListener('mousemove', (e) => {
+    const p = pos(e);
+    if (prise) { const w = s2w(p.x, p.y); prise.x = w.x; prise.y = w.y; bouge += 4; return; }
+    if (pan) {
+      bouge += Math.abs(p.x - panS.x) + Math.abs(p.y - panS.y);
+      camX = camS.x - (p.x - panS.x) / camZ; camY = camS.y - (p.y - panS.y) / camZ;
+      return;
+    }
+    const n = noeudSous(p.x, p.y);
+    hov = n;
+    hovLien = n ? null : lienSous(p.x, p.y);
+    cv.style.cursor = (n || hovLien) ? 'pointer' : 'grab';
+  });
+  window.addEventListener('mouseup', () => {
+    if (prise) { prise.tire = false; prise.vx = (Math.random()-0.5)*0.05; prise.vy = (Math.random()-0.5)*0.05; prise = null; }
+    pan = false; cv.classList.remove('prise');
+  });
+  cv.addEventListener('click', (e) => {
+    if (bouge > 6) return;
+    const p = pos(e);
+    const n = noeudSous(p.x, p.y);
+    if (n) { sel = (sel === n) ? null : n; selLien = null; majPanneau(); return; }
+    const l = lienSous(p.x, p.y);
+    if (l) { selLien = (selLien === l) ? null : l; sel = null; majPanneau(); return; }
+    sel = null; selLien = null; majPanneau();      // le vide réaffiche tout
+  });
+  cv.addEventListener('wheel', (e) => {
+    e.preventDefault();
+    const p = pos(e), avant = s2w(p.x, p.y);
+    camZ = Math.max(0.35, Math.min(3.2, camZ * Math.exp(-e.deltaY * 0.0016)));
+    const apres = s2w(p.x, p.y);
+    camX += avant.x - apres.x; camY += avant.y - apres.y;
+  }, { passive: false });
+
+  // tactile : un doigt promène ou déplace, deux doigts pincent
+  let pz = 0, pc = null;
+  const ecart = (t) => Math.hypot(t[0].clientX - t[1].clientX, t[0].clientY - t[1].clientY);
+  cv.addEventListener('touchstart', (e) => {
+    bouge = 0;
+    if (e.touches.length === 1) {
+      const p = pos(e); const n = noeudSous(p.x, p.y);
+      if (n) { prise = n; n.tire = true; }
+      else { pan = true; panS = p; camS = { x: camX, y: camY }; }
+    } else if (e.touches.length === 2) {
+      pan = false; if (prise) { prise.tire = false; prise = null; }
+      pz = ecart(e.touches);
+      pc = { x: (e.touches[0].clientX + e.touches[1].clientX) / 2,
+             y: (e.touches[0].clientY + e.touches[1].clientY) / 2 };
+    }
+  }, { passive: true });
+  cv.addEventListener('touchmove', (e) => {
+    e.preventDefault(); bouge += 8;
+    if (e.touches.length === 2 && pz) {
+      const d = ecart(e.touches);
+      camZ = Math.max(0.35, Math.min(3.2, camZ * (d / pz)));
+      const c = { x: (e.touches[0].clientX + e.touches[1].clientX) / 2,
+                  y: (e.touches[0].clientY + e.touches[1].clientY) / 2 };
+      camX -= (c.x - pc.x) / camZ; camY -= (c.y - pc.y) / camZ;
+      pz = d; pc = c; return;
+    }
+    const p = pos(e);
+    if (prise) { const w = s2w(p.x, p.y); prise.x = w.x; prise.y = w.y; return; }
+    if (pan) { camX = camS.x - (p.x - panS.x) / camZ; camY = camS.y - (p.y - panS.y) / camZ; }
+  }, { passive: false });
+  cv.addEventListener('touchend', (e) => {
+    if (prise) { prise.tire = false; prise = null; }
+    if (e.touches.length === 0) {
+      pan = false; pz = 0;
+      if (bouge <= 8) {
+        const p = pos(e); const n = noeudSous(p.x, p.y);
+        if (n) { sel = (sel === n) ? null : n; selLien = null; hov = sel; }
+        else { const l = lienSous(p.x, p.y); selLien = (l && l !== selLien) ? l : null; sel = null; hov = null; }
+        majPanneau();
+      }
+    }
+  }, { passive: true });
+
+  window.addEventListener('resize', resize);
+  // un clic hors du panneau le referme ; dedans, il ne se passe rien
+  document.addEventListener('mousedown', (e) => {
+    if (!sel && !selLien) return;
+    if ($('#pan').contains(e.target) || cv.contains(e.target)) return;
+    sel = null; selLien = null; majPanneau();
+  });
+
+  // ── le panneau ─────────────────────────────────────────────────────────
+  function bloc(titre, corps) {
+    return '<div class="bloc"><h3>' + esc(titre) + '</h3>' + corps + '</div>';
+  }
+  function majPanneau() {
+    const p = $('#pan');
+    if (!sel && !selLien) { p.classList.remove('on'); return; }
+    p.classList.add('on');
+    if (sel) ficheAuteur(sel); else ficheLien(selLien);
+    $('#panB').scrollTop = 0;
+  }
+
+  function ficheAuteur(n) {
+    const col = AX[n.axis] || '#4a4a55';
+    $('#panKind').textContent = 'Auteur · ' + (axeParId[n.axis] ? axeParId[n.axis].label : n.axis);
+    $('#panT').textContent = n.name;
+    $('#panT').style.color = col;
+    $('#panS').textContent = [n.years, n.tradition].filter(Boolean).join('  ·  ');
+
+    let h = '';
+    h += '<p class="these">' + esc(n.thesis) + '</p>';
+
+    h += bloc('Ce qu\'il traverse',
+      '<div class="puces">' + n.axes.map((a) =>
+        '<span class="puce" style="border-color:' + AX[a] + ';color:' + AX[a] + '">' +
+        esc(axeParId[a] ? axeParId[a].court : a) + '</span>').join('') +
+      '<span class="puce">' + esc(D.legende.presence[n.presence].split(' —')[0]) + '</span>' +
+      (n.favorite ? '<span class="puce" style="border-color:#3d6600;color:#3d6600">auteur de référence</span>' : '') +
+      '</div>');
+
+    if (n.works && n.works.length) {
+      h += bloc('Œuvres pivots',
+        '<div class="oeuvre">' + n.works.map(esc).join('<br>') + '</div>');
+    }
+
+    const anc = (n.articles || []).slice().sort((a, b) => b.w - a.w);
+    if (anc.length) {
+      h += bloc('Où il entre dans le corpus', anc.map((a) => {
+        const art = artParId[a.art] || {};
+        return '<div class="ancre" style="border-color:' + (AX[a.axis] || '#b8b39c') + '">' +
+          '<span class="ancre-h" style="color:' + (AX[a.axis] || '#4a4a55') + '">' +
+          esc(art.code || ('article ' + a.art)) + '  ·  ' + esc(a.anchor) +
+          '  ·  poids ' + a.w + '/5</span>' +
+          '<span class="ancre-p">' + esc(a.why) + '</span></div>';
+      }).join(''));
+    }
+
+    const vs = n.liens.slice().sort((a, b) => b.w - a.w);
+    h += bloc('Son voisinage — ' + vs.length + ' liens', vs.map((l) => {
+      const o = (l.a === n) ? l.b : l.a;
+      return '<div class="voisin" data-vers="' + esc(o.id) + '">' +
+        '<span class="voisin-t" style="color:' + (AX[l.axes && l.axes[0]] || '#8a8a92') + '">' +
+        esc(l.type) + '</span>' +
+        '<span class="voisin-n">' + esc(o.name) + '</span></div>';
+    }).join(''));
+
+    h += '<div class="note">La taille du rond suit le nombre de liens ; son contour, la façon dont l\'auteur apparaît dans les textes publiés. Un lien n\'est pas une citation : c\'est une filiation, un désaccord ou une convergence entre deux pensées.</div>';
+
+    $('#panB').innerHTML = h;
+    $('#panB').querySelectorAll('[data-vers]').forEach((el) => {
+      el.onclick = () => {
+        const o = parId[el.dataset.vers];
+        if (!o) return;
+        // suivre un voisin : on le sélectionne et on l'amène sous les yeux
+        if (!o.visible) { axeActif = 'all'; presActif = 'all'; majChips(); noeuds.forEach((k) => { k.visible = visible(k); }); }
+        sel = o; selLien = null; camX = o.x; camY = o.y; majPanneau();
+      };
+    });
+  }
+
+  function ficheLien(l) {
+    const col = AX[l.axes && l.axes[0]] || '#4a4a55';
+    $('#panKind').textContent = 'Lien · ' + l.type;
+    $('#panT').textContent = l.a.court + ' — ' + l.b.court;
+    $('#panT').style.color = col;
+    $('#panS').textContent = l.a.name + '  ·  ' + l.b.name;
+
+    let h = '<p class="these">' + esc(l.note) + '</p>';
+    h += bloc('Ce que ce type de lien veut dire',
+      '<div class="oeuvre">' + esc(D.legende.types_de_lien[l.type] || '') + '</div>');
+    h += bloc('Axes communs',
+      '<div class="puces">' + (l.axes || []).map((a) =>
+        '<span class="puce" style="border-color:' + AX[a] + ';color:' + AX[a] + '">' +
+        esc(axeParId[a] ? axeParId[a].court : a) + '</span>').join('') +
+      '<span class="puce">poids ' + l.w + '/5</span></div>');
+    h += bloc('Les deux auteurs',
+      [l.a, l.b].map((n) => '<div class="voisin" data-vers="' + esc(n.id) + '">' +
+        '<span class="voisin-t" style="color:' + (AX[n.axis] || '#8a8a92') + '">' +
+        esc(axeParId[n.axis] ? axeParId[n.axis].court : n.axis) + '</span>' +
+        '<span class="voisin-n">' + esc(n.name) + '</span></div>').join(''));
+    h += '<div class="note">' + esc(D.legende.poids) + '</div>';
+
+    $('#panB').innerHTML = h;
+    $('#panB').querySelectorAll('[data-vers]').forEach((el) => {
+      el.onclick = () => { const o = parId[el.dataset.vers]; if (o) { sel = o; selLien = null; majPanneau(); } };
+    });
+  }
+})();
+</script>
+</body>
+</html>

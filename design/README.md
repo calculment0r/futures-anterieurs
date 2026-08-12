@@ -45,3 +45,24 @@ ce qu'on lit ici est ce qui est servi, au wrapper près.
 
 `support.js` n'est pas archivé : c'est du code généré, non servi, et sans lui
 les `.dc.html` restent lisibles — ils se prévisualisent dans Claude Design.
+
+---
+
+## Une page qui ne vient pas de Claude Design
+
+`site/auteurs.html` est écrite à la main dans le dépôt : elle n'a pas de
+prototype ici, et `build_portail.py` ne la régénère pas — elle EST sa propre
+source. Le générateur ne la touche jamais ; relancer la conversion ne l'efface
+pas.
+
+Ses données, en revanche, suivent le même chemin que le reste :
+`design/corpus/auteurs.json` (60 auteurs, 133 liens auteur-auteur, 7 axes)
+est copié vers `site/corpus/` par le build. Le schéma est documenté dans
+`design/corpus/README-auteurs.md`.
+
+Elle reprend le système de la page NECTAR « théorie politique » — des ronds qui
+dérivent, des liens qui ne s'allument qu'à proximité, et le geste central :
+prendre un auteur et le promener pour découvrir son voisinage. La peau, elle,
+est celle du site : papier `#f7f5ef`, Host Grotesk et DM Mono, une couleur par
+axe. Le §5 du README des auteurs prescrivait un thème Oblivion ; Cal a tranché
+pour la DA du site.

@@ -77,6 +77,10 @@ la propagation.
 - **Polices auto-hébergées** : `site/assets/fonts/` + `fonts.css` (Host Grotesk,
   DM Mono, OFL 1.1). Aucun CDN tiers — le manifeste de la Porte les range parmi ce
   qu'on ne fera pas.
+- **Les auteurs** : `site/auteurs.html` est écrite à la main, hors du pipeline —
+  `build_portail.py` ne la régénère pas, elle est sa propre source. Ses données
+  (`corpus/auteurs.json`, 60 auteurs et 133 liens) passent par `design/corpus/`
+  comme le reste. Schéma dans `design/corpus/README-auteurs.md`.
 - **Deux corpus distincts** : `site/corpus/` (bundle Design, alimente le portail)
   et `MANUSCRIT_V6/` (alimente le lecteur du manuscrit). Ils ne se régénèrent pas
   l'un l'autre.
@@ -86,6 +90,7 @@ la propagation.
 | `/futures-anterieurs/` | la Porte — les quatre cartes |
 | `/futures-anterieurs/carte-1.html` … `carte-4.html` | les articles |
 | `/futures-anterieurs/propagation.html` | la propagation |
+| `/futures-anterieurs/auteurs.html` | les auteurs — le graphe du corpus |
 | `/futures-anterieurs/manuscrit/` | le lecteur du V6 (inchangé) |
 
 ---

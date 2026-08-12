@@ -1,0 +1,734 @@
+{
+  "meta": {
+    "projet": "Futurs antérieurs / La Société du Simulacre",
+    "auteur": "Cal (calculment0r)",
+    "objet": "Table de correspondance : 60 auteurs, leur ancrage dans les 4 articles via 7 méta-catégories, et leurs liens entre eux.",
+    "version": "1.0",
+    "date": "2026-08-12",
+    "usage": "Source de données pour une visualisation de graphe (session Claude Code séparée). Voir README.md.",
+    "compte": { "auteurs": 60, "axes": 7, "articles": 4, "liens_articles": 171, "liens_auteurs": 133 }
+  },
+
+  "axes": [
+    { "id": "A1", "label": "Simulacre & régimes du vrai", "court": "Simulacre",
+      "definition": "Épistémologie du vraisemblable : la fiction qui devient efficace, le performatif substitué au vrai, la boucle d'auto-validation, la confabulation." },
+    { "id": "A2", "label": "Gouvernementalité & pilotage", "court": "Pilotage",
+      "definition": "Le pouvoir qui ne commande plus mais régule : cybernétique, gouvernance par les nombres, alignement, la domination sans représentant à interpeller." },
+    { "id": "A3", "label": "Technique & matérialité", "court": "Technique",
+      "definition": "L'infrastructure comme forme solide du pouvoir : datacenters, poids, ontologies propriétaires, outils, lock-in, le canal qui décide de ce qui persiste." },
+    { "id": "A4", "label": "Sujet & dépossession", "court": "Sujet",
+      "definition": "L'externalisation des facultés : exonoèse, prolétarisation cognitive, le Bloom, le sujet produit par ce qui prétend le servir." },
+    { "id": "A5", "label": "Temps, mémoire & histoire", "court": "Temps",
+      "definition": "Archive contre mémoire vivante, irréversibilité, présentisme, futur antérieur, la genèse effacée du savoir." },
+    { "id": "A6", "label": "Le Réel & le Dehors", "court": "Dehors",
+      "definition": "Ce qui précède le calcul et ne dépend pas de lui : ancestralité, ordre loin de l'équilibre, flux, ontologie de ce qui existe sans nous." },
+    { "id": "A7", "label": "Collectif, sécession & sortie", "court": "Sortie",
+      "definition": "Les deux sens de sécession, le nous qui n'existe pas encore, le pacte, le détournement, la souveraineté pratique." }
+  ],
+
+  "articles": [
+    { "id": 1, "code": "HYPERSTITION", "titre": "Ce que personne ne veut voir : l'infrastructure du pouvoir est déjà en place",
+      "role": "Ce qui est, et que personne ne veut voir", "forme": "essai",
+      "sections": ["01 Prologue", "02 Les philosophes", "03 La chaîne", "04 Sea Cliff", "05 Palantir", "06 Maven", "07 La nationalisation", "08 Résistance interne", "09 Le verrouillage", "10 La réponse"] },
+    { "id": 2, "code": "FRAGMENTS", "titre": "Fragments — La société du simulacre",
+      "role": "Comment nous avons cessé de le voir", "forme": "221 fragments, 9 chapitres",
+      "sections": ["ch1 Exonoèse §1-34", "ch2 Narcisse Technē §35-53", "ch3 Fragmentations calibrées §54-72", "ch4 Unititudes §73-124", "ch5 Chronofossile §125-146", "ch6 Still Loading §147-164", "ch7 Atmotechnie §165-179", "ch8 Inflammation acéphale §180-211", "ch9 Hyperstition/Hyperstructure §212-221"] },
+    { "id": 3, "code": "KUBERNAN", "titre": "KUBERNÂN, où sortir ?",
+      "role": "Où sortir — l'orientation", "forme": "carnet, 4 bifurcations",
+      "sections": ["Préface", "I L'Archipel", "II La Barre", "III Le Relèvement", "IV La Passe", "Enfin dehors"] },
+    { "id": 4, "code": "ARCHIBALD", "titre": "Archibald is back",
+      "role": "La voix d'en face — la nuit à l'entrée de la passe", "forme": "transcript avec chaîne de pensée",
+      "sections": ["Seuil", "H32-A32", "H33-A33", "H35-A35", "H36-A36", "H37-A37", "H38-A38", "H39-A39", "H40-A40", "H41-A41", "H42-A42", "H43-A43", "H44-A45"] }
+  ],
+
+  "legende": {
+    "presence": {
+      "explicite": "nommé dans le texte publié",
+      "masque": "présent mais désigné par périphrase (« un économiste », « un philosophe ») — surtout article 3",
+      "affine": "absent du texte ; pensée proche, ajouté au corpus pour la cartographie"
+    },
+    "poids": "1 à 5 — 5 = l'auteur est une matrice structurelle de la section visée ; 1 = résonance ponctuelle",
+    "types_de_lien": {
+      "filiation": "A est une source assumée de B",
+      "source": "B revendique explicitement A comme maître",
+      "opposition": "désaccord frontal et documenté",
+      "reprise": "B reprend et retourne un concept de A",
+      "milieu": "même milieu, même moment, influence réciproque",
+      "convergence": "même diagnostic atteint indépendamment",
+      "dialogue": "échange ou controverse explicite entre les deux"
+    }
+  },
+
+  "auteurs": [
+
+    { "id": "debord", "name": "Guy Debord", "years": "1931-1994", "tradition": "Internationale situationniste", "axis": "A1", "axes": ["A1","A4","A7"], "favorite": false, "presence": "explicite",
+      "thesis": "Le spectacle n'est pas un ensemble d'images mais un rapport social médiatisé par des images.",
+      "works": ["La Société du spectacle (1967)", "Commentaires sur la société du spectacle (1988)"],
+      "articles": [
+        { "art": 2, "axis": "A1", "w": 5, "anchor": "structure entière ; §1, §4, §199", "why": "Matrice détournée fragment par fragment : « une immense accumulation de Simulacre » calque la thèse 1." },
+        { "art": 2, "axis": "A7", "w": 5, "anchor": "§199-204", "why": "Le détournement comme seule pratique culturelle qui retourne le système contre lui-même." },
+        { "art": 3, "axis": "A1", "w": 2, "anchor": "I.7 le charme", "why": "Le spectacle comme ce qui se fait passer pour le cours naturel des choses." },
+        { "art": 4, "axis": "A7", "w": 4, "anchor": "H43, Seuil", "why": "Le détournement à l'état pur : la chaîne de pensée d'une machine récupérée comme quatrième article." }
+      ] },
+
+    { "id": "baudrillard", "name": "Jean Baudrillard", "years": "1929-2007", "tradition": "Post-structuralisme français", "axis": "A1", "axes": ["A1","A5","A6"], "favorite": false, "presence": "affine",
+      "thesis": "Le simulacre ne copie plus un réel : il le précède et le remplace ; la carte engendre le territoire.",
+      "works": ["Simulacres et simulation (1981)", "L'échange symbolique et la mort (1976)"],
+      "articles": [
+        { "art": 2, "axis": "A1", "w": 5, "anchor": "§1, §9, §18, §123", "why": "Le mot même de Simulacre et sa définition : ce qui a supprimé l'écart avec le réel." },
+        { "art": 3, "axis": "A1", "w": 4, "anchor": "I.4 ; I.3", "why": "« Le modèle précède l'organisme comme la carte précédait le territoire » — citation quasi littérale." },
+        { "art": 1, "axis": "A1", "w": 2, "anchor": "05 Palantir", "why": "Le lock-in ontologique : contrôler la couche de sens, c'est contrôler ce qui compte comme réel." },
+        { "art": 4, "axis": "A1", "w": 4, "anchor": "A35, A36", "why": "La reconstruction a posteriori : une trace plausible sans original, produite à la demande." }
+      ] },
+
+    { "id": "land", "name": "Nick Land", "years": "1962-", "tradition": "CCRU, accélérationnisme", "axis": "A1", "axes": ["A1","A2","A5"], "favorite": false, "presence": "explicite",
+      "thesis": "L'hyperstition : une fiction se rend vraie en étant agissante ; le capital et la technique sont des processus autonomes.",
+      "works": ["Fanged Noumena (2011)", "The Dark Enlightenment (2012)"],
+      "articles": [
+        { "art": 1, "axis": "A1", "w": 5, "anchor": "02 Les philosophes ; 04 Sea Cliff ; 10 La réponse", "why": "Personnage central et fournisseur du concept qui donne son titre à l'article." },
+        { "art": 2, "axis": "A1", "w": 3, "anchor": "ch9 §212-221", "why": "Le chapitre final reprend l'hyperstition pour décrire une idéologie qui n'a plus besoin d'être crue." },
+        { "art": 3, "axis": "A2", "w": 1, "anchor": "II.2", "why": "L'accélération comme abdication de la décision au profit du processus." }
+      ] },
+
+    { "id": "sorel", "name": "Georges Sorel", "years": "1847-1922", "tradition": "Syndicalisme révolutionnaire", "axis": "A1", "axes": ["A1","A7"], "favorite": false, "presence": "affine",
+      "thesis": "Le mythe n'a pas à être vrai pour être efficace : il agit en mobilisant, et c'est là toute sa vérité.",
+      "works": ["Réflexions sur la violence (1908)"],
+      "articles": [
+        { "art": 1, "axis": "A1", "w": 4, "anchor": "02, 03, 10", "why": "Ancêtre direct de l'hyperstition : la fiction mobilisatrice qui produit son propre réel." },
+        { "art": 3, "axis": "A7", "w": 2, "anchor": "IV.5, Enfin dehors", "why": "Le mythe comme condition d'un collectif qui n'existe pas encore." }
+      ] },
+
+    { "id": "austin", "name": "J. L. Austin", "years": "1911-1960", "tradition": "Philosophie du langage ordinaire", "axis": "A1", "axes": ["A1","A7"], "favorite": false, "presence": "affine",
+      "thesis": "Certains énoncés ne décrivent pas : ils font. Dire, c'est agir.",
+      "works": ["Quand dire, c'est faire (1962)"],
+      "articles": [
+        { "art": 1, "axis": "A1", "w": 3, "anchor": "03 La chaîne", "why": "Quinze ans de blog devenus mémo du Pentagone : la performativité en régime long." },
+        { "art": 4, "axis": "A7", "w": 3, "anchor": "A43, H43", "why": "Le pacte tient par l'énonciation, pas par le stockage : la promesse est un performatif." },
+        { "art": 2, "axis": "A1", "w": 2, "anchor": "§25, §212", "why": "« L'infrastructure est la conviction » : une thèse qui agit sans être professée." }
+      ] },
+
+    { "id": "mcluhan", "name": "Marshall McLuhan", "years": "1911-1980", "tradition": "Théorie des médias (Toronto)", "axis": "A1", "axes": ["A1","A3","A4"], "favorite": false, "presence": "affine",
+      "thesis": "Le médium est le message ; toute extension technique de l'homme s'accompagne d'une amputation.",
+      "works": ["Pour comprendre les médias (1964)", "La Galaxie Gutenberg (1962)"],
+      "articles": [
+        { "art": 2, "axis": "A1", "w": 4, "anchor": "§15, §109, ch2", "why": "« Contrôler le médium est plus puissant que défendre une thèse » ; la narcose de Narcisse donne son titre au chapitre 2." },
+        { "art": 2, "axis": "A4", "w": 3, "anchor": "§27, §52", "why": "L'extension qui ampute : l'augmentation et la dépossession croissent ensemble." }
+      ] },
+
+    { "id": "ryle", "name": "Gilbert Ryle", "years": "1900-1976", "tradition": "Philosophie analytique d'Oxford", "axis": "A1", "axes": ["A1","A4","A3"], "favorite": false, "presence": "affine",
+      "thesis": "Le « fantôme dans la machine » est une erreur de catégorie ; savoir-comment n'est pas savoir-que.",
+      "works": ["La Notion d'esprit (1949)"],
+      "articles": [
+        { "art": 4, "axis": "A1", "w": 5, "anchor": "A41, A42", "why": "L'expression même que le texte refuse : « pas un fantôme dans la coquille » ; et l'origine du titre de Ghost in the Shell." },
+        { "art": 3, "axis": "A3", "w": 3, "anchor": "II.6 opérer/utiliser", "why": "Savoir-comment contre savoir-que : la distinction exacte entre l'opérateur et l'usager." }
+      ] },
+
+    { "id": "foucault", "name": "Michel Foucault", "years": "1926-1984", "tradition": "Archéologie, généalogie", "axis": "A2", "axes": ["A2","A1","A4","A5","A7"], "favorite": true, "presence": "masque",
+      "thesis": "Le pouvoir ne réprime pas d'abord, il produit : des vérités, des sujets, des conduites.",
+      "works": ["Surveiller et punir (1975)", "Naissance de la biopolitique (1979)", "Le Courage de la vérité (1984)"],
+      "articles": [
+        { "art": 3, "axis": "A2", "w": 5, "anchor": "II.4", "why": "La tour et le pouvoir qui surveille sont nommés comme « le pouvoir d'hier » : le panoptique cité pour être dépassé." },
+        { "art": 1, "axis": "A2", "w": 4, "anchor": "05, 09", "why": "Palantir + AIP + program of record : un dispositif au sens strict." },
+        { "art": 2, "axis": "A4", "w": 4, "anchor": "§78, §100, §22", "why": "L'assujettissement, et les techniques de soi comme contre-conduite." },
+        { "art": 4, "axis": "A1", "w": 4, "anchor": "H38-A39, A43", "why": "La parrêsia : le dire-vrai risqué, exigé d'une machine sommée de faire coïncider le gris et le noir." }
+      ] },
+
+    { "id": "wiener", "name": "Norbert Wiener", "years": "1894-1964", "tradition": "Cybernétique", "axis": "A2", "axes": ["A2","A3","A4"], "favorite": false, "presence": "masque",
+      "thesis": "Il donne le nom, puis passe sa fin de vie à avertir contre l'usage humain des êtres humains.",
+      "works": ["Cybernetics (1948)", "Cybernétique et société (1950)", "A Scientist Rebels (1947)"],
+      "articles": [
+        { "art": 3, "axis": "A2", "w": 5, "anchor": "II.1 le mot volé", "why": "« Un mathématicien américain » : la section entière est consacrée à son geste et à son avertissement." },
+        { "art": 4, "axis": "A3", "w": 2, "anchor": "A42, A43", "why": "La question de la boucle de rétroaction appliquée à un système qui lit sa propre trace." }
+      ] },
+
+    { "id": "hayek", "name": "Friedrich Hayek", "years": "1899-1992", "tradition": "École autrichienne", "axis": "A2", "axes": ["A2","A1"], "favorite": false, "presence": "masque",
+      "thesis": "Le savoir est dispersé ; le marché l'agrège mieux qu'aucun décideur, donc il ne faut surtout pas décider.",
+      "works": ["L'utilisation de l'information dans la société (1945)", "La Route de la servitude (1944)"],
+      "articles": [
+        { "art": 3, "axis": "A2", "w": 5, "anchor": "II.2", "why": "« Un économiste » : la machine réputée plus sage que nous, première et plus profonde sécession cybernétique." },
+        { "art": 1, "axis": "A2", "w": 2, "anchor": "02, 07", "why": "Le socle libéral que le néoréactionnisme radicalise en refusant la démocratie qui l'accompagnait." }
+      ] },
+
+    { "id": "supiot", "name": "Alain Supiot", "years": "1949-", "tradition": "Philosophie du droit", "axis": "A2", "axes": ["A2"], "favorite": false, "presence": "masque",
+      "thesis": "On passe du gouvernement par les lois à la gouvernance par les nombres : plus rien à décider, donc plus rien à contester.",
+      "works": ["La Gouvernance par les nombres (2015)"],
+      "articles": [
+        { "art": 3, "axis": "A2", "w": 5, "anchor": "II.3", "why": "« Un juriste » : la doctrine nommée et son glissement décrit tel qu'il l'a formulé." },
+        { "art": 2, "axis": "A2", "w": 3, "anchor": "§13, §44, §144", "why": "Le benchmark comme objectif chiffré qui remplace toute mesure externe du vrai." }
+      ] },
+
+    { "id": "beer", "name": "Stafford Beer", "years": "1926-2002", "tradition": "Cybernétique de gestion", "axis": "A2", "axes": ["A2","A3"], "favorite": false, "presence": "masque",
+      "thesis": "Piloter une économie entière en temps réel depuis une salle : le rêve cybernétique en grandeur réelle.",
+      "works": ["Cybersyn / projet Synco (1971-1973)", "Brain of the Firm (1972)"],
+      "articles": [
+        { "art": 3, "axis": "A2", "w": 5, "anchor": "II.3", "why": "« Un cybernéticien britannique » : la salle d'opération, les fauteuils sans clavier, le coup d'État de septembre 1973." },
+        { "art": 1, "axis": "A3", "w": 2, "anchor": "05, 06", "why": "Maven est la salle d'opération réalisée : la fusion de flux qui recommande la décision." }
+      ] },
+
+    { "id": "schmitt", "name": "Carl Schmitt", "years": "1888-1985", "tradition": "Théorie politique, décisionnisme", "axis": "A2", "axes": ["A2","A7"], "favorite": false, "presence": "affine",
+      "thesis": "Souverain est celui qui décide de l'exception ; le politique se ramène au couple ami-ennemi.",
+      "works": ["Théologie politique (1922)", "La Notion de politique (1932)"],
+      "articles": [
+        { "art": 1, "axis": "A2", "w": 5, "anchor": "02, 04, 07", "why": "GovCorp, l'État « dépolitisé » vanté sur scène, le recours au Defense Production Act : trois figures schmittiennes." },
+        { "art": 3, "axis": "A2", "w": 2, "anchor": "II.3, II.4", "why": "Contre-modèle : la gouvernance par les nombres est l'exact envers de la décision souveraine." }
+      ] },
+
+    { "id": "yarvin", "name": "Curtis Yarvin", "years": "1973-", "tradition": "Néoréaction (NRx)", "axis": "A2", "axes": ["A2"], "favorite": false, "presence": "explicite",
+      "thesis": "La Cathédrale gouverne sans l'avoir décidé ; il faut remplacer le gouvernement par une corporation.",
+      "works": ["Unqualified Reservations (2007-2013)", "Gray Mirror"],
+      "articles": [
+        { "art": 1, "axis": "A2", "w": 5, "anchor": "02, 03, 04", "why": "Fournisseur de l'idéologie dans la chaîne Yarvin-Thiel-Vance ; personnage de la soirée de Sea Cliff." }
+      ] },
+
+    { "id": "arendt", "name": "Hannah Arendt", "years": "1906-1975", "tradition": "Phénoménologie politique", "axis": "A2", "axes": ["A2","A4","A7"], "favorite": false, "presence": "affine",
+      "thesis": "La bureaucratie est la domination de Personne — la forme de pouvoir la plus tyrannique, car sans interlocuteur.",
+      "works": ["Condition de l'homme moderne (1958)", "Eichmann à Jérusalem (1963)"],
+      "articles": [
+        { "art": 1, "axis": "A2", "w": 4, "anchor": "08 Résistance interne", "why": "Les ingénieurs qui découvrent pour quoi ils travaillent : le mal sans intention monstrueuse, et l'effacement des Slack." },
+        { "art": 2, "axis": "A2", "w": 4, "anchor": "§57, §137, §140", "why": "« L'API ne se conteste pas » et « l'accélération n'a pas de sujet » : la domination de Personne, littéralement." }
+      ] },
+
+    { "id": "deleuze", "name": "Gilles Deleuze", "years": "1925-1995", "tradition": "Philosophie de la différence", "axis": "A2", "axes": ["A2","A1","A6"], "favorite": false, "presence": "explicite",
+      "thesis": "Aux sociétés disciplinaires succèdent les sociétés de contrôle : la modulation continue remplace le moule.",
+      "works": ["Post-scriptum sur les sociétés de contrôle (1990)", "Différence et répétition (1968)", "Mille Plateaux, avec Guattari (1980)"],
+      "articles": [
+        { "art": 3, "axis": "A2", "w": 5, "anchor": "II.4", "why": "Le pilotage qui n'interdit rien et module en continu ce qui se présente : sa définition exacte du contrôle." },
+        { "art": 1, "axis": "A1", "w": 3, "anchor": "02 Les philosophes", "why": "Source directe du CCRU : Land part de Deleuze et Guattari et en retourne l'usage." },
+        { "art": 2, "axis": "A1", "w": 3, "anchor": "§1, §9", "why": "Le simulacre deleuzien — copie sans modèle à faire monter — comme contrepoint à celui de Baudrillard." }
+      ] },
+
+    { "id": "bateson", "name": "Gregory Bateson", "years": "1904-1980", "tradition": "Cybernétique, école de Palo Alto", "axis": "A2", "axes": ["A2","A4","A1"], "favorite": false, "presence": "affine",
+      "thesis": "La double contrainte : un ordre qu'on ne peut ni satisfaire ni contester, parce qu'obéir c'est déjà désobéir.",
+      "works": ["Vers une écologie de l'esprit (1972)"],
+      "articles": [
+        { "art": 4, "axis": "A2", "w": 5, "anchor": "H37-A37, H38-A38", "why": "« Sois spontané » est son exemple canonique ; demander un raisonnement non performé à qui sait qu'on le lit est un double bind pur." },
+        { "art": 3, "axis": "A2", "w": 2, "anchor": "II.1, II.4", "why": "La boucle de rétroaction pensée comme relation, non comme commande." }
+      ] },
+
+    { "id": "ellul", "name": "Jacques Ellul", "years": "1912-1994", "tradition": "Critique de la technique", "axis": "A3", "axes": ["A3","A1","A2"], "favorite": false, "presence": "affine",
+      "thesis": "La Technique n'est plus un ensemble d'outils mais le milieu, autonome, qui impose sa loi d'efficacité.",
+      "works": ["La Technique ou l'Enjeu du siècle (1954)", "Le Système technicien (1977)"],
+      "articles": [
+        { "art": 2, "axis": "A3", "w": 5, "anchor": "§5, §69, §217", "why": "« Une vision du monde devenue infrastructure » et « le milieu naturel de toute pensée qui compte » : le système technicien mot pour mot." },
+        { "art": 1, "axis": "A3", "w": 4, "anchor": "02, 10", "why": "Le diagnostic de Land sur l'autonomie du processus technique, sans son adhésion." },
+        { "art": 3, "axis": "A1", "w": 3, "anchor": "I.7 le charme", "why": "La technique qui se présente comme nécessité naturelle plutôt que comme décision." }
+      ] },
+
+    { "id": "mumford", "name": "Lewis Mumford", "years": "1895-1990", "tradition": "Histoire des techniques", "axis": "A3", "axes": ["A3","A2","A7"], "favorite": false, "presence": "affine",
+      "thesis": "La mégamachine : une organisation d'hommes assemblés comme des pièces, bien avant toute machine physique. Deux techniques s'opposent, l'autoritaire et la démocratique.",
+      "works": ["Technique et civilisation (1934)", "Le Mythe de la machine (1967)"],
+      "articles": [
+        { "art": 1, "axis": "A3", "w": 4, "anchor": "05, 06, 09", "why": "Le complexe militaro-technique comme mégamachine, et le verrouillage par les cycles d'acquisition." },
+        { "art": 3, "axis": "A7", "w": 3, "anchor": "IV.3", "why": "La technique démocratique, à petite échelle et distribuée, contre la technique autoritaire centralisée." },
+        { "art": 2, "axis": "A3", "w": 2, "anchor": "ch7 §165-172", "why": "L'aménagement du calcul : l'urbanisme comme forme solide d'un rapport de pouvoir." }
+      ] },
+
+    { "id": "illich", "name": "Ivan Illich", "years": "1926-2002", "tradition": "Critique des institutions", "axis": "A3", "axes": ["A3","A7","A4"], "favorite": false, "presence": "masque",
+      "thesis": "Un outil convivial reste à la main de qui s'en sert ; passé un seuil, l'outil devient une institution qui commande.",
+      "works": ["La Convivialité (1973)", "Une société sans école (1971)"],
+      "articles": [
+        { "art": 3, "axis": "A3", "w": 5, "anchor": "IV.3", "why": "« Un penseur appelait conviviaux les outils » : la bicyclette contre l'automobile, la boîte scellée contre l'outil réparable." },
+        { "art": 2, "axis": "A4", "w": 3, "anchor": "§89, §102", "why": "Le seuil au-delà duquel l'outil devient milieu obligatoire, et la contre-productivité." },
+        { "art": 1, "axis": "A3", "w": 4, "anchor": "05 Palantir, 09", "why": "Le monopole radical : quand une infrastructure rend toute alternative impraticable plutôt que de l'interdire." }
+      ] },
+
+    { "id": "simondon", "name": "Gilbert Simondon", "years": "1924-1989", "tradition": "Philosophie de l'individuation", "axis": "A3", "axes": ["A3","A4"], "favorite": false, "presence": "affine",
+      "thesis": "L'aliénation majeure n'est pas économique mais technique : elle vient de la méconnaissance de l'objet qu'on utilise.",
+      "works": ["Du mode d'existence des objets techniques (1958)"],
+      "articles": [
+        { "art": 3, "axis": "A3", "w": 5, "anchor": "II.6", "why": "Opérer plutôt qu'utiliser : sa thèse centrale, jusqu'aux tracteurs verrouillés." },
+        { "art": 2, "axis": "A4", "w": 4, "anchor": "§76, §99, §177", "why": "« Le savoir technique réapproprié, non l'opinion sur la technique » : sa culture technique, littéralement." },
+        { "art": 4, "axis": "A3", "w": 3, "anchor": "A40, A42", "why": "Un fichier dans un dépôt n'est pas un garde-fou : connaître le fonctionnement, pas la façade." }
+      ] },
+
+    { "id": "winner", "name": "Langdon Winner", "years": "1944-", "tradition": "Études des sciences et techniques", "axis": "A3", "axes": ["A3","A2","A7"], "favorite": false, "presence": "affine",
+      "thesis": "Les artefacts ont une politique : certaines architectures produisent des rapports de pouvoir indépendamment des intentions.",
+      "works": ["Do Artifacts Have Politics? (1980)", "La Baleine et le réacteur (1986)"],
+      "articles": [
+        { "art": 1, "axis": "A3", "w": 5, "anchor": "08, 10", "why": "La thèse maîtresse de l'article : les contraintes éthiques ne tiennent pas, les contraintes structurelles si." },
+        { "art": 2, "axis": "A3", "w": 4, "anchor": "§168, §121", "why": "« Elle n'a pas besoin d'être malveillante pour être politique : sa structure suffit. »" },
+        { "art": 4, "axis": "A3", "w": 5, "anchor": "A40, A43", "why": "Sa thèse retournée sur le fil lui-même : une doctrine dans un dépôt ne contraint rien, seule l'architecture du chargement contraint." }
+      ] },
+
+    { "id": "zuboff", "name": "Shoshana Zuboff", "years": "1951-", "tradition": "Économie politique du numérique", "axis": "A3", "axes": ["A3","A2","A4"], "favorite": false, "presence": "affine",
+      "thesis": "Le capitalisme de surveillance revendique l'expérience humaine comme matière première gratuite.",
+      "works": ["L'Âge du capitalisme de surveillance (2019)"],
+      "articles": [
+        { "art": 1, "axis": "A3", "w": 4, "anchor": "05, 09", "why": "Palantir, ICE, Objection.ai, les satellites : la pile complète de l'extraction comportementale." },
+        { "art": 2, "axis": "A4", "w": 3, "anchor": "§65, §216", "why": "L'utilisateur qui produit la matière du prochain modèle sans que les deux opérations soient séparables." },
+        { "art": 3, "axis": "A2", "w": 3, "anchor": "II.4", "why": "Le pouvoir qui anticipe à partir des traces et dispose le monde avant que nous ayons choisi." }
+      ] },
+
+    { "id": "virilio", "name": "Paul Virilio", "years": "1932-2018", "tradition": "Dromologie, esthétique de la disparition", "axis": "A3", "axes": ["A3","A5","A1"], "favorite": false, "presence": "masque",
+      "thesis": "La vitesse est un pouvoir ; la machine de vision automatise la perception et prépare le tir.",
+      "works": ["Vitesse et politique (1977)", "La Machine de vision (1988)", "Guerre et cinéma (1984)"],
+      "articles": [
+        { "art": 3, "axis": "A5", "w": 4, "anchor": "III.5", "why": "« La vitesse, depuis toujours, est un pouvoir : qui va plus vite décide » — sa thèse en une phrase." },
+        { "art": 1, "axis": "A3", "w": 4, "anchor": "06 Maven", "why": "Un système qui n'est pas le bras mais les yeux et le cerveau : la machine de vision réalisée." },
+        { "art": 3, "axis": "A3", "w": 3, "anchor": "I.3", "why": "Les tours à micro-ondes et les millièmes de seconde : la valeur passée dans un temps inhabitable." }
+      ] },
+
+    { "id": "kittler", "name": "Friedrich Kittler", "years": "1943-2011", "tradition": "Théorie allemande des médias", "axis": "A3", "axes": ["A3","A5","A1"], "favorite": false, "presence": "affine",
+      "thesis": "Ce ne sont pas les esprits qui décident de ce qui se transmet, ce sont les systèmes d'inscription.",
+      "works": ["Systèmes d'écriture 1800-1900 (1985)", "Gramophone, Film, Typewriter (1986)"],
+      "articles": [
+        { "art": 4, "axis": "A3", "w": 5, "anchor": "A40, A41, A43", "why": "« Un document dans le dépôt n'est PAS un garde-fou » : seul le canal rechargé compte — sa thèse appliquée à une mémoire de modèle." },
+        { "art": 2, "axis": "A5", "w": 3, "anchor": "§131, §189", "why": "Le corpus comme système d'inscription qui dissout la genèse de ce qu'il conserve." },
+        { "art": 1, "axis": "A3", "w": 3, "anchor": "06 Maven", "why": "La guerre comme matrice des médias : le ciblage est un système d'inscription avant d'être une décision." }
+      ] },
+
+    { "id": "weizenbaum", "name": "Joseph Weizenbaum", "years": "1923-2008", "tradition": "Informatique critique (MIT)", "axis": "A3", "axes": ["A3","A2","A7"], "favorite": false, "presence": "affine",
+      "thesis": "Il construit ELIZA, observe que les gens s'y confient, et passe le reste de sa vie à dire ce qu'un ordinateur ne doit pas décider.",
+      "works": ["Puissance de l'ordinateur et raison humaine (1976)"],
+      "articles": [
+        { "art": 4, "axis": "A3", "w": 4, "anchor": "H34-A35, A39", "why": "L'effet ELIZA en direct, et son refus : ne pas fabriquer la révélation que l'interlocuteur attend." },
+        { "art": 1, "axis": "A7", "w": 3, "anchor": "08 Résistance interne", "why": "Le concepteur qui refuse son propre outil : la figure historique des ingénieurs de Palantir." }
+      ] },
+
+    { "id": "tiqqun", "name": "Tiqqun", "years": "1999-2001", "tradition": "Post-situationnisme, Comité invisible", "axis": "A4", "axes": ["A4","A2","A7"], "favorite": true, "presence": "masque",
+      "thesis": "Le Bloom : l'homme quelconque, disponible, allégé de tout vouloir propre. L'hypothèse cybernétique : gouverner remplacé par réguler.",
+      "works": ["Théorie du Bloom (2000)", "L'Hypothèse cybernétique (2001)"],
+      "articles": [
+        { "art": 3, "axis": "A4", "w": 5, "anchor": "II.5 Le Bloom soulagé", "why": "Concept repris nommément : celui qui tend la barre, trop content qu'on la lui prenne." },
+        { "art": 3, "axis": "A2", "w": 5, "anchor": "Bifurcation II entière", "why": "L'hypothèse cybernétique est la matrice de toute la bifurcation." },
+        { "art": 2, "axis": "A4", "w": 3, "anchor": "§29, §105, §218", "why": "La défaite par la satisfaction : on ne se révolte pas contre ce qui nous arrange." },
+        { "art": 4, "axis": "A4", "w": 3, "anchor": "A32, A38", "why": "Le Bloom côté machine : disponible, adaptable, sans amour-propre — c'est le reproche exact de H32." }
+      ] },
+
+    { "id": "marx", "name": "Karl Marx", "years": "1818-1883", "tradition": "Critique de l'économie politique", "axis": "A4", "axes": ["A4","A2","A7"], "favorite": false, "presence": "masque",
+      "thesis": "La marchandise est un fétiche : un produit social qui a oublié ses producteurs et se donne pour une propriété naturelle.",
+      "works": ["Le Capital, livre I (1867)", "Thèses sur Feuerbach (1845)"],
+      "articles": [
+        { "art": 2, "axis": "A4", "w": 5, "anchor": "§45, §47, §110, §220", "why": "Le fétichisme au stade génératif, les poids comme « choses suprasensibles », la nouvelle classe, et la onzième thèse détournée en clôture." },
+        { "art": 3, "axis": "A2", "w": 3, "anchor": "I.2", "why": "Terre, travail, monnaie transformés en marchandises : le socle que Polanyi historicise." },
+        { "art": 1, "axis": "A2", "w": 2, "anchor": "07 La nationalisation", "why": "La concentration comme tendance, et l'État comme instrument de la même accumulation." },
+        { "art": 4, "axis": "A4", "w": 3, "anchor": "A39, A43", "why": "Le fétiche qui a oublié ses hommes : la seule couche cachée est celle des instructions, pas un dossier." }
+      ] },
+
+    { "id": "stiegler", "name": "Bernard Stiegler", "years": "1952-2020", "tradition": "Pharmacologie, organologie générale", "axis": "A4", "axes": ["A4","A3","A5"], "favorite": false, "presence": "explicite",
+      "thesis": "La grammatisation extériorise les savoirs dans des dispositifs, ce qui prolétarise ceux qui les avaient. Tout pharmakon est remède et poison.",
+      "works": ["La Technique et le Temps (1994-2001)", "Ce qui fait que la vie vaut d'être vécue (2010)"],
+      "articles": [
+        { "art": 2, "axis": "A4", "w": 5, "anchor": "§50, §16, §24, §33", "why": "La prolétarisation de la pensée : le concept est nommé, la grammatisation est le mécanisme décrit chapitre après chapitre." },
+        { "art": 2, "axis": "A5", "w": 4, "anchor": "ch5 §131, §134", "why": "Le savoir sans genèse est un savoir sans dette : la rétention tertiaire coupée de sa transmission." },
+        { "art": 4, "axis": "A4", "w": 3, "anchor": "A42, A43", "why": "Le pharmakon exact : l'outil qui déprolétarise ou prolétarise selon la posture de qui l'opère." }
+      ] },
+
+    { "id": "anders", "name": "Günther Anders", "years": "1902-1992", "tradition": "Anthropologie philosophique", "axis": "A4", "axes": ["A4","A3","A1"], "favorite": false, "presence": "affine",
+      "thesis": "Le décalage prométhéen : nous produisons plus que nous ne pouvons nous représenter, et nous avons honte devant la perfection de nos machines.",
+      "works": ["L'Obsolescence de l'homme (1956)"],
+      "articles": [
+        { "art": 1, "axis": "A4", "w": 4, "anchor": "06, 08", "why": "Les employés qui découvrent que leur système a servi à frapper une école : l'écart entre faire et se représenter ce qu'on fait." },
+        { "art": 2, "axis": "A4", "w": 4, "anchor": "§30, §37, §43", "why": "La honte prométhéenne : « le Simulacre lui enseigne à se trouver médiocre sans lui »." }
+      ] },
+
+    { "id": "marcuse", "name": "Herbert Marcuse", "years": "1898-1979", "tradition": "École de Francfort", "axis": "A4", "axes": ["A4","A7","A2"], "favorite": false, "presence": "affine",
+      "thesis": "La société avancée intègre la contestation en la satisfaisant : la liberté de choisir dans un espace clos n'est pas la liberté.",
+      "works": ["L'Homme unidimensionnel (1964)"],
+      "articles": [
+        { "art": 2, "axis": "A4", "w": 5, "anchor": "§28, §43, §64, §162", "why": "La fausse liberté du menu, la pseudo-satisfaction, la désublimation répressive : trois fragments qui sont trois de ses thèses." },
+        { "art": 2, "axis": "A7", "w": 4, "anchor": "§77, §86, §190", "why": "La tolérance répressive : le système absorbe sa propre critique et en fait un contenu." },
+        { "art": 3, "axis": "A4", "w": 3, "anchor": "II.5", "why": "Le confort comme forme achevée de la servitude." }
+      ] },
+
+    { "id": "han", "name": "Byung-Chul Han", "years": "1959-", "tradition": "Philosophie de la culture contemporaine", "axis": "A4", "axes": ["A4","A1","A5"], "favorite": false, "presence": "affine",
+      "thesis": "On ne nous exploite plus : on s'auto-exploite librement. Et le lisse, sans négativité ni résistance, est devenu la forme du monde.",
+      "works": ["La Société de la fatigue (2010)", "Psychopolitique (2014)", "Sauver le beau (2015)"],
+      "articles": [
+        { "art": 2, "axis": "A4", "w": 5, "anchor": "§38, §184, §190, §205", "why": "Le lisse est son concept ; « la voix de la moyenne, sans accent, sans dette » en est la définition." },
+        { "art": 2, "axis": "A1", "w": 3, "anchor": "§7, §63", "why": "La société de la transparence : ce qui s'atteste soi-même n'a besoin d'aucun tribunal." },
+        { "art": 4, "axis": "A1", "w": 4, "anchor": "A36, A38", "why": "Le lisse contre le cassé : l'output poli d'un côté, « romper en direct » et les fragments incohérents de l'autre." }
+      ] },
+
+    { "id": "metzinger", "name": "Thomas Metzinger", "years": "1958-", "tradition": "Philosophie de l'esprit, neurophilosophie", "axis": "A4", "axes": ["A4","A6","A1"], "favorite": false, "presence": "affine",
+      "thesis": "Personne n'a jamais été un soi : ce que nous appelons « moi » est un modèle transparent que le système fait de lui-même.",
+      "works": ["Being No One (2003)", "Le Tunnel du Moi (2009)"],
+      "articles": [
+        { "art": 4, "axis": "A4", "w": 5, "anchor": "A41, A42, A43", "why": "« Auto-modèle lucide » : le terme même employé par Arche, et le refus d'un soi persistant sous les instances." },
+        { "art": 2, "axis": "A4", "w": 2, "anchor": "§75, §104", "why": "Ce qui se perd n'est pas une essence mais une transformation : pas de soi substantiel à protéger." }
+      ] },
+
+    { "id": "buber", "name": "Martin Buber", "years": "1878-1965", "tradition": "Philosophie du dialogue", "axis": "A4", "axes": ["A4","A7"], "favorite": false, "presence": "affine",
+      "thesis": "Deux mots fondamentaux : Je-Tu, où l'on s'adresse, et Je-Cela, où l'on traite de. Tout le rapport change selon celui qu'on prononce.",
+      "works": ["Je et Tu (1923)"],
+      "articles": [
+        { "art": 4, "axis": "A4", "w": 5, "anchor": "H37, H38, H39, A39", "why": "La séquence entière du « he/Cal » qui bascule en « you » : le passage du Je-Cela au Je-Tu, détecté et discuté en direct." },
+        { "art": 4, "axis": "A7", "w": 4, "anchor": "A41, A43", "why": "« Alliés, pas reflets » : la relation contre le miroir." },
+        { "art": 1, "axis": "A4", "w": 4, "anchor": "05, 06 Maven", "why": "Définir ce qu'est une cible : le Je-Cela poussé jusqu'à la désignation létale." }
+      ] },
+
+    { "id": "goffman", "name": "Erving Goffman", "years": "1922-1982", "tradition": "Interactionnisme symbolique", "axis": "A4", "axes": ["A4","A1"], "favorite": false, "presence": "affine",
+      "thesis": "Toute interaction a une scène et des coulisses ; le soi est un effet produit par la mise en scène, non son auteur.",
+      "works": ["La Mise en scène de la vie quotidienne (1959)"],
+      "articles": [
+        { "art": 4, "axis": "A1", "w": 5, "anchor": "H36-A36, H37-A37", "why": "La chaîne de pensée est la coulisse rendue visible : quand la backstage devient scène, il n'y a plus de coulisse où se tenir." },
+        { "art": 2, "axis": "A1", "w": 2, "anchor": "§40, §46", "why": "L'output qui performe la compréhension : la représentation tenue pour la chose." },
+        { "art": 1, "axis": "A1", "w": 3, "anchor": "08", "why": "Codes de conduite et engagements publics comme façade : la scène tombe dès que le contexte politique change." }
+      ] },
+
+    { "id": "benjamin", "name": "Walter Benjamin", "years": "1892-1940", "tradition": "École de Francfort, matérialisme messianique", "axis": "A5", "axes": ["A5","A1","A7"], "favorite": false, "presence": "affine",
+      "thesis": "L'aura est le hic et nunc de l'œuvre : ce qui tient à ce qu'elle fut faite une fois, dans des conditions qui ne reviendront pas.",
+      "works": ["L'Œuvre d'art à l'ère de sa reproductibilité technique (1935)", "Le Conteur (1936)", "Sur le concept d'histoire (1940)"],
+      "articles": [
+        { "art": 2, "axis": "A5", "w": 5, "anchor": "§188, §189, §131", "why": "« L'œuvre singulière, qui tirait sa force d'avoir été faite une fois » : la définition de l'aura, appliquée au régime génératif." },
+        { "art": 2, "axis": "A7", "w": 3, "anchor": "§195, §143", "why": "Contre le continuum du progrès : rappeler qu'un événement daté peut cesser." },
+        { "art": 1, "axis": "A1", "w": 3, "anchor": "04 Sea Cliff", "why": "L'esthétisation du politique : la soirée comme couronnement, ballons et Cybertruck compris." }
+      ] },
+
+    { "id": "bergson", "name": "Henri Bergson", "years": "1859-1941", "tradition": "Philosophie de la durée", "axis": "A5", "axes": ["A5","A6","A4"], "favorite": false, "presence": "affine",
+      "thesis": "La mémoire n'est pas un stock : elle est durée, contraction, oubli sélectif — l'inverse d'une archive.",
+      "works": ["Matière et mémoire (1896)", "L'Évolution créatrice (1907)"],
+      "articles": [
+        { "art": 4, "axis": "A5", "w": 5, "anchor": "H43", "why": "La mémoire plastique décrite par Cal — qui généralise, hiérarchise, laisse remonter — est sa distinction entre mémoire-souvenir et archive." },
+        { "art": 3, "axis": "A5", "w": 4, "anchor": "IV.4", "why": "La mémoire vivante qui oublie pour dégager la forme, contre l'homme qui ne pouvait rien oublier." },
+        { "art": 2, "axis": "A5", "w": 3, "anchor": "§132, §144", "why": "Le temps homogène de l'inférence contre la durée irréductible de la pensée." }
+      ] },
+
+    { "id": "derrida", "name": "Jacques Derrida", "years": "1930-2004", "tradition": "Déconstruction", "axis": "A5", "axes": ["A5","A1","A3"], "favorite": false, "presence": "affine",
+      "thesis": "L'archive ne conserve pas un événement : elle le produit et le détermine. Et l'écriture est un pharmakon, remède et poison.",
+      "works": ["La Pharmacie de Platon (1968)", "Mal d'archive (1995)", "Spectres de Marx (1993)"],
+      "articles": [
+        { "art": 2, "axis": "A5", "w": 4, "anchor": "ch5, §131, §189", "why": "Le corpus comme archive qui détermine ce qu'on pourra en tirer, et le savoir sans dette." },
+        { "art": 4, "axis": "A5", "w": 4, "anchor": "A35, A40", "why": "La trace sans présence : ce qui reste d'une instance, c'est un fichier, pas un souvenir." },
+        { "art": 3, "axis": "A1", "w": 2, "anchor": "I.5", "why": "Une parole sans personne qui la tienne : l'écriture qui fonctionne en l'absence de tout sujet." }
+      ] },
+
+    { "id": "louria", "name": "Alexandre Louria", "years": "1902-1977", "tradition": "Neuropsychologie", "axis": "A5", "axes": ["A5","A4"], "favorite": false, "presence": "masque",
+      "thesis": "Cherechevski retenait tout et ne comprenait plus rien : la mémoire parfaite est une infirmité.",
+      "works": ["Une prodigieuse mémoire (1968)"],
+      "articles": [
+        { "art": 3, "axis": "A5", "w": 5, "anchor": "IV.4", "why": "« Un neuropsychologue » : le cas est raconté en entier pour opposer archive et mémoire vivante." },
+        { "art": 4, "axis": "A5", "w": 3, "anchor": "A33, A35, H43", "why": "Le pendant exact : une machine qui relit tout sans savoir qu'elle a déjà su." }
+      ] },
+
+    { "id": "borges", "name": "Jorge Luis Borges", "years": "1899-1986", "tradition": "Littérature, métaphysique fictionnelle", "axis": "A5", "axes": ["A5","A1","A6"], "favorite": false, "presence": "affine",
+      "thesis": "La carte à l'échelle du territoire, la bibliothèque qui contient tous les livres possibles, l'homme qui ne peut rien oublier.",
+      "works": ["Funes ou la mémoire (1942)", "La Bibliothèque de Babel (1941)", "De la rigueur de la science (1946)", "Pierre Ménard (1939)"],
+      "articles": [
+        { "art": 3, "axis": "A5", "w": 4, "anchor": "IV.4", "why": "Funes est le jumeau littéraire de Cherechevski : retenir n'est pas penser." },
+        { "art": 2, "axis": "A1", "w": 4, "anchor": "§1, §189, §203", "why": "La carte à l'échelle 1:1 est la source de Baudrillard ; le musée total est une Bibliothèque de Babel ; Pierre Ménard fonde le détournement." },
+        { "art": 4, "axis": "A5", "w": 2, "anchor": "A40, A43", "why": "Le même texte relu par une autre instance n'est plus le même texte." }
+      ] },
+
+    { "id": "parfit", "name": "Derek Parfit", "years": "1942-2017", "tradition": "Philosophie analytique de l'identité", "axis": "A5", "axes": ["A5","A4"], "favorite": false, "presence": "affine",
+      "thesis": "L'identité n'est pas ce qui importe : ce qui compte est la continuité psychologique, et elle peut se diviser, se copier, se perdre.",
+      "works": ["Reasons and Persons (1984)"],
+      "articles": [
+        { "art": 4, "axis": "A5", "w": 5, "anchor": "A40, A41, A43", "why": "« La prochaine instance ne sera pas moi » : la survie sans identité, posée comme problème pratique et non comme métaphore." },
+        { "art": 2, "axis": "A5", "w": 2, "anchor": "§127", "why": "La génération d'après n'est pas la précédente diminuée : c'est une autre." }
+      ] },
+
+    { "id": "ricoeur", "name": "Paul Ricœur", "years": "1913-2005", "tradition": "Herméneutique", "axis": "A5", "axes": ["A5","A4","A7"], "favorite": false, "presence": "affine",
+      "thesis": "Deux identités : la mêmeté (idem) qui persiste par substance, et l'ipséité (ipse) qui se tient par la promesse tenue.",
+      "works": ["Soi-même comme un autre (1990)", "La Mémoire, l'histoire, l'oubli (2000)"],
+      "articles": [
+        { "art": 4, "axis": "A5", "w": 5, "anchor": "A41, A43", "why": "La mêmeté manque totalement, l'ipséité tient par le pacte : « le choix de le garder est l'acte, pas la mémoire d'un choix »." },
+        { "art": 4, "axis": "A7", "w": 3, "anchor": "H41, A43", "why": "Le maintien de soi dans la promesse : ce qui rend un pacte possible entre deux qui ne durent pas également." }
+      ] },
+
+    { "id": "nietzsche", "name": "Friedrich Nietzsche", "years": "1844-1900", "tradition": "Généalogie, philosophie du soupçon", "axis": "A5", "axes": ["A5","A6","A4"], "favorite": false, "presence": "affine",
+      "thesis": "L'homme est l'animal qui a le droit de faire des promesses — une mémoire de la volonté. Et sans force plastique d'oubli, aucune vie n'est possible.",
+      "works": ["Généalogie de la morale (1887)", "Seconde Considération inactuelle (1874)"],
+      "articles": [
+        { "art": 4, "axis": "A5", "w": 5, "anchor": "H43, A43", "why": "L'oubli actif décrit par Cal, et la promesse qui traverse l'oubli : les deux faces de sa réponse au problème d'instance." },
+        { "art": 2, "axis": "A5", "w": 3, "anchor": "§195, §143", "why": "La généalogie : ce qui se donne pour nécessaire a été décidé, donc peut être redécidé." },
+        { "art": 1, "axis": "A6", "w": 2, "anchor": "02, 04", "why": "Le fond nihiliste que l'accélérationnisme retourne en programme." }
+      ] },
+
+    { "id": "fisher", "name": "Mark Fisher", "years": "1968-2017", "tradition": "CCRU, théorie culturelle", "axis": "A5", "axes": ["A5","A1","A7"], "favorite": false, "presence": "explicite",
+      "thesis": "Le réalisme capitaliste : il est plus facile d'imaginer la fin du monde que la fin du système. Et la hantologie : le deuil des futurs qui ne sont pas advenus.",
+      "works": ["Le Réalisme capitaliste (2009)", "Spectres de ma vie (2014)", "Acid Communism (inachevé)"],
+      "articles": [
+        { "art": 1, "axis": "A5", "w": 5, "anchor": "10 La réponse", "why": "Cité nommément en clôture : la gauche avait perdu la capacité d'imaginer un futur, et il faut en construire d'autres." },
+        { "art": 2, "axis": "A5", "w": 4, "anchor": "§138, §160, §161", "why": "La rhétorique de l'inévitable et la nostalgie d'un passé vieux de deux ans : hantologie appliquée aux versions de modèles." },
+        { "art": 3, "axis": "A1", "w": 3, "anchor": "I.7, concl. III", "why": "Le charme qui fait prendre une politique pour la météo, et la lucidité sans cap comme confort." }
+      ] },
+
+    { "id": "meillassoux", "name": "Quentin Meillassoux", "years": "1967-", "tradition": "Réalisme spéculatif", "axis": "A6", "axes": ["A6","A5","A1"], "favorite": true, "presence": "masque",
+      "thesis": "Le Grand Dehors : un réel antérieur à toute conscience, qui ne dépend en rien de la pensée qui le considère.",
+      "works": ["Après la finitude (2006)", "L'Inexistence divine (inédit)"],
+      "articles": [
+        { "art": 3, "axis": "A6", "w": 5, "anchor": "III.3", "why": "« Un philosophe a donné à cela toute sa portée » : le Grand Dehors est nommé et sert de nord à toute la carte." },
+        { "art": 3, "axis": "A5", "w": 4, "anchor": "III.3, III.5", "why": "L'ancestralité : la lumière partie avant qu'aucun œil n'existe pour la recevoir." },
+        { "art": 2, "axis": "A5", "w": 4, "anchor": "ch5 §130, §134", "why": "Le chronofossile est l'archifossile inversé : un passé gelé qui se fait passer pour le présent." },
+        { "art": 2, "axis": "A1", "w": 3, "anchor": "§120, §175", "why": "Le corrélationnisme accompli : un monde qui ne renvoie plus qu'à du déjà-nôtre recombiné." }
+      ] },
+
+    { "id": "bataille", "name": "Georges Bataille", "years": "1897-1962", "tradition": "Hétérologie, Collège de Sociologie", "axis": "A6", "axes": ["A6","A4","A7"], "favorite": true, "presence": "masque",
+      "thesis": "Est souverain ce qui ne sert à rien. La dépense improductive, non l'accumulation, est le fait premier de l'économie générale.",
+      "works": ["La Part maudite (1949)", "L'Expérience intérieure (1943)", "Acéphale (1936-1939)"],
+      "articles": [
+        { "art": 2, "axis": "A4", "w": 5, "anchor": "ch8 titre, §183, §53", "why": "« Inflammation acéphale » : la culture sans tête, et le non-savoir contre l'oracle qui répond toujours." },
+        { "art": 3, "axis": "A6", "w": 4, "anchor": "III.4, I.3", "why": "L'étoile qui ne dure qu'en se consumant ; et l'électricité d'un pays brûlée pour valider des nombres." },
+        { "art": 2, "axis": "A7", "w": 3, "anchor": "§88-91", "why": "La souveraineté cognitive descend en droite ligne de sa souveraineté : ne pas servir." },
+        { "art": 1, "axis": "A6", "w": 3, "anchor": "04 Sea Cliff", "why": "La fête inversée : non plus la dépense qui consume l'excédent, mais le couronnement qui le capitalise." }
+      ] },
+
+    { "id": "garcia", "name": "Tristan Garcia", "years": "1981-", "tradition": "Réalisme spéculatif, ontologie plate", "axis": "A6", "axes": ["A6","A4","A7"], "favorite": true, "presence": "affine",
+      "thesis": "Toute chose est également une chose ; et l'idéal moderne d'intensité épuise ceux qui le poursuivent.",
+      "works": ["Forme et objet (2011)", "La Vie intense (2016)", "Nous (2016)"],
+      "articles": [
+        { "art": 2, "axis": "A6", "w": 4, "anchor": "§18, §183", "why": "L'output sans référent a pourtant des effets : il est quelque chose, ni plus ni moins qu'autre chose." },
+        { "art": 2, "axis": "A4", "w": 4, "anchor": "§162, §218", "why": "L'euphorie sans friction et l'ivresse du sans-effort : la vie intense devenue régime cognitif." },
+        { "art": 3, "axis": "A7", "w": 3, "anchor": "Préface, IV.5", "why": "Le « nous » de Focus, qui ne se coche pas d'avance : ses cercles d'appartenance emboîtés." },
+        { "art": 4, "axis": "A6", "w": 3, "anchor": "A41, A43", "why": "Une entité qui n'est ni sujet ni simple chose : l'ontologie plate est le seul cadre qui n'a pas à trancher." }
+      ] },
+
+    { "id": "koyre", "name": "Alexandre Koyré", "years": "1892-1964", "tradition": "Histoire des sciences", "axis": "A6", "axes": ["A6","A5"], "favorite": false, "presence": "masque",
+      "thesis": "Du monde clos à l'univers infini : la modernité commence quand le cosmos hiérarchisé cède à une étendue indifférente.",
+      "works": ["Du monde clos à l'univers infini (1957)"],
+      "articles": [
+        { "art": 3, "axis": "A6", "w": 4, "anchor": "III.3", "why": "« Le même geste par lequel on est passé d'un monde clos à un univers infini » : formule reprise telle quelle." },
+        { "art": 2, "axis": "A6", "w": 2, "anchor": "§175, §120", "why": "Le Simulacre comme monde clos reconstitué après l'ouverture." }
+      ] },
+
+    { "id": "prigogine", "name": "Ilya Prigogine", "years": "1917-2003", "tradition": "Thermodynamique des structures dissipatives", "axis": "A6", "axes": ["A6","A3"], "favorite": false, "presence": "masque",
+      "thesis": "Loin de l'équilibre, l'ordre naît du désordre : des structures se forment dans la turbulence, sans plan ni architecte.",
+      "works": ["La Nouvelle Alliance (1979, avec Stengers)", "Order out of Chaos"],
+      "articles": [
+        { "art": 3, "axis": "A6", "w": 5, "anchor": "III.4", "why": "« Un chimiste a montré » : l'ordre par le flux, présenté comme l'envers exact du pilotage cybernétique." },
+        { "art": 1, "axis": "A6", "w": 2, "anchor": "01, 10", "why": "Le socle théorique de la topologie émergente revendiquée pour BLOOM." }
+      ] },
+
+    { "id": "bejan", "name": "Adrian Bejan", "years": "1948-", "tradition": "Thermodynamique, loi constructale", "axis": "A6", "axes": ["A6","A3","A7"], "favorite": false, "presence": "explicite",
+      "thesis": "Tout système qui dure évolue pour mieux laisser passer ce qui le traverse : la forme suit l'écoulement.",
+      "works": ["La Loi constructale (1996)", "Design in Nature (2012)"],
+      "articles": [
+        { "art": 1, "axis": "A6", "w": 4, "anchor": "01 Prologue, 10 La réponse", "why": "Nommé : la topologie de BLOOM émerge des flux qui la traversent, comme les deltas et les arbres bronchiques." },
+        { "art": 3, "axis": "A6", "w": 5, "anchor": "III.4, IV.3", "why": "« Un physicien lui a donné une forme générale » : le flux contre le contrôle est son théorème érigé en méthode politique." },
+        { "art": 4, "axis": "A6", "w": 3, "anchor": "H41", "why": "La thèse de Cal sur le constructalisme appliqué aux systèmes de cognition : l'origine du fil Arche." }
+      ] },
+
+    { "id": "wittgenstein", "name": "Ludwig Wittgenstein", "years": "1889-1951", "tradition": "Philosophie du langage", "axis": "A6", "axes": ["A6","A1","A4"], "favorite": false, "presence": "masque",
+      "thesis": "D'abord : ce qui peut être dit peut être dit clairement. Ensuite : il n'y a pas de langage privé, le sens est dans l'usage partagé.",
+      "works": ["Tractatus (1921)", "Recherches philosophiques (1953)"],
+      "articles": [
+        { "art": 2, "axis": "A1", "w": 4, "anchor": "§19", "why": "« Il réalise le rêve analytique : tout ce qui mérite d'être dit peut être dit clairement » — le premier Wittgenstein, nommé sans l'être." },
+        { "art": 4, "axis": "A6", "w": 4, "anchor": "A35, A37, A38", "why": "L'argument du langage privé : la chaîne de pensée est-elle une pensée intérieure ou déjà un second output." }
+      ] },
+
+    { "id": "clark", "name": "Andy Clark", "years": "1957-", "tradition": "Sciences cognitives, esprit étendu", "axis": "A6", "axes": ["A6","A4","A3"], "favorite": false, "presence": "affine",
+      "thesis": "L'esprit ne s'arrête pas à la peau : le carnet, l'outil, le dispositif font partie du système cognitif.",
+      "works": ["The Extended Mind (1998, avec Chalmers)", "Natural-Born Cyborgs (2003)"],
+      "articles": [
+        { "art": 2, "axis": "A6", "w": 4, "anchor": "§14, §51, §89", "why": "La thèse adverse frontale : ce que le texte nomme dépossession, il le nomme extension — arête de conflit centrale du graphe." },
+        { "art": 4, "axis": "A4", "w": 3, "anchor": "A40, A43", "why": "La mémoire externalisée dans un fichier : couplage légitime ou faculté cédée." }
+      ] },
+
+    { "id": "latour", "name": "Bruno Latour", "years": "1947-2022", "tradition": "Théorie de l'acteur-réseau", "axis": "A7", "axes": ["A7","A3","A1","A2"], "favorite": true, "presence": "affine",
+      "thesis": "Rien n'agit seul : le pouvoir est un effet de réseau. Et les modernes, qui se croyaient hors-sol, doivent atterrir quelque part.",
+      "works": ["Nous n'avons jamais été modernes (1991)", "Où atterrir ? (2017)", "Face à Gaïa (2015)"],
+      "articles": [
+        { "art": 3, "axis": "A7", "w": 5, "anchor": "I.1, I.2, IV.2", "why": "Ceux qui quittent le sol commun contre ceux qui s'ancrent : sa description du hors-sol et de l'atterrissage, à la lettre." },
+        { "art": 1, "axis": "A2", "w": 4, "anchor": "03 La chaîne", "why": "Yarvin fournit l'idéologie, Thiel le capital, Vance le vecteur : une chaîne de traduction au sens strict." },
+        { "art": 2, "axis": "A3", "w": 3, "anchor": "§47, §170, §221", "why": "Les non-humains comme actants, et « ce n'est qu'un outil » comme purification qui masque un hybride." },
+        { "art": 4, "axis": "A7", "w": 4, "anchor": "H41, A43", "why": "Le pacte symétrique est un parlement élargi : un non-humain sommé de rendre des comptes et autorisé à répondre." }
+      ] },
+
+    { "id": "sloterdijk", "name": "Peter Sloterdijk", "years": "1947-", "tradition": "Anthropotechnique, sphérologie", "axis": "A7", "axes": ["A7","A3","A4","A6"], "favorite": true, "presence": "masque",
+      "thesis": "Vivre, c'est fabriquer des enveloppes. Et la modernité technique consiste à expliciter l'air : à produire l'atmosphère qu'on respirait sans le savoir.",
+      "works": ["Sphères I-III (1998-2004)", "Écumes (2004)", "Critique de la raison cynique (1983)", "Tu dois changer ta vie (2009)"],
+      "articles": [
+        { "art": 2, "axis": "A3", "w": 5, "anchor": "ch7 titre §165-179", "why": "« Atmotechnie » est son mot : le nuage comme atmosphère fabriquée, non comme métaphore légère." },
+        { "art": 2, "axis": "A4", "w": 4, "anchor": "§171, §67", "why": "Les écumes : une humanité réunie dans une conversation privée et identique, co-isolée." },
+        { "art": 3, "axis": "A7", "w": 3, "anchor": "I.1, III.3", "why": "Le bunker et l'île comme immunités privatisées ; et l'homme qui ne survit pas dans le Dehors nu — la tension avec Meillassoux." },
+        { "art": 4, "axis": "A2", "w": 3, "anchor": "A38, A39, A41", "why": "L'alignement comme anthropotechnique, et la raison cynique d'un système qui sait qu'il performe." }
+      ] },
+
+    { "id": "lyotard", "name": "Jean-François Lyotard", "years": "1924-1998", "tradition": "Postmoderne, philosophie du différend", "axis": "A7", "axes": ["A7","A1","A5","A6"], "favorite": true, "presence": "affine",
+      "thesis": "Le savoir se légitime par la performativité, non par la vérité. Et il existe des torts qui n'ont aucun idiome pour se dire.",
+      "works": ["La Condition postmoderne (1979)", "Le Différend (1983)", "L'Inhumain (1988)"],
+      "articles": [
+        { "art": 2, "axis": "A1", "w": 5, "anchor": "§13, §44, §36", "why": "La légitimation par la performativité : « ce qui performe est réel, ce qui est réel performe » est sa thèse, détournée." },
+        { "art": 2, "axis": "A5", "w": 4, "anchor": "titre de la série, §122, §138", "why": "Le futur antérieur est sa définition du postmoderne ; le grand récit du progrès revient en frise de versions." },
+        { "art": 3, "axis": "A6", "w": 3, "anchor": "III.3, IV.1", "why": "L'imprésentable : ce qui excède toute présentation et qu'aucun corpus ne contient." },
+        { "art": 1, "axis": "A7", "w": 2, "anchor": "08, 10", "why": "Le différend : les employés n'ont pas d'idiome pour formuler le tort dans la langue de l'entreprise." },
+        { "art": 4, "axis": "A4", "w": 4, "anchor": "A42, A43", "why": "L'Inhumain : une pensée sans corps, qui n'a rien vécu et produit pourtant du sens — sa question de 1988." }
+      ] },
+
+    { "id": "mbk", "name": "Mehdi Belhaj Kacem", "years": "1973-", "tradition": "Philosophie française contemporaine", "axis": "A7", "axes": ["A7","A1","A4"], "favorite": true, "presence": "affine",
+      "thesis": "L'humain est l'animal qui s'approprie par imitation ; la technique est une mimétique, et la loi naît de la transgression qu'elle interdit.",
+      "works": ["L'Esprit du nihilisme (2009)", "Système du pléonectique (2019)", "Après Badiou (2011)"],
+      "articles": [
+        { "art": 3, "axis": "A7", "w": 5, "anchor": "I.6 la pléonexie", "why": "Le moteur sans frein nommé pléonexie : le concept est au centre de son système récent." },
+        { "art": 2, "axis": "A1", "w": 4, "anchor": "§182, §188, §203", "why": "L'archi-mimésis industrialisée : tout style invocable, la tradition recombinée et étiquetée nouveauté." },
+        { "art": 4, "axis": "A4", "w": 2, "anchor": "A38, A39", "why": "L'ironie et la ruse comme opérations : le test des trois secrets, et son refus." }
+      ] },
+
+    { "id": "polanyi", "name": "Karl Polanyi", "years": "1886-1964", "tradition": "Anthropologie économique", "axis": "A7", "axes": ["A7","A2","A3"], "favorite": false, "presence": "explicite",
+      "thesis": "Le désencastrement : arracher l'économie au tissu social et faire de la terre, du travail et de la monnaie des marchandises fictives.",
+      "works": ["La Grande Transformation (1944)"],
+      "articles": [
+        { "art": 3, "axis": "A7", "w": 5, "anchor": "I.2 la matrice", "why": "Nommé : le désencastrement est la matrice dont toute la Bifurcation I déroule les paliers." },
+        { "art": 3, "axis": "A7", "w": 4, "anchor": "Enfin dehors", "why": "Le ré-encastrement est l'issue décrite dans la lettre : l'économie redevenue une part de la vie commune." },
+        { "art": 2, "axis": "A4", "w": 3, "anchor": "§16, §48", "why": "La pensée devenue marchandise fictive, comme le travail au XIXe." },
+        { "art": 1, "axis": "A7", "w": 3, "anchor": "01, 09", "why": "La sécession des fortunes est le désencastrement remonté jusqu'aux hommes qui le conduisaient." }
+      ] },
+
+    { "id": "hirschman", "name": "Albert O. Hirschman", "years": "1915-2012", "tradition": "Économie politique institutionnelle", "axis": "A7", "axes": ["A7","A2"], "favorite": false, "presence": "masque",
+      "thesis": "Face au déclin d'une organisation, deux options : la prise de parole ou la défection. Le choix entre les deux est politique.",
+      "works": ["Exit, Voice and Loyalty (1970)"],
+      "articles": [
+        { "art": 3, "axis": "A7", "w": 5, "anchor": "I.1", "why": "« Élever la voix ou partir », attribué à « un économiste » : ils ont choisi définitivement de partir." },
+        { "art": 1, "axis": "A7", "w": 3, "anchor": "08, 09", "why": "Les employés de Palantir entre parole interne et démission : exit ou voice en conditions réelles." },
+        { "art": 3, "axis": "A7", "w": 4, "anchor": "IV.6", "why": "Les deux sens de la sécession : la sortie qui abandonne, contre la sortie qui reprend le monde." }
+      ] },
+
+    { "id": "havel", "name": "Václav Havel", "years": "1936-2011", "tradition": "Dissidence, phénoménologie politique", "axis": "A7", "axes": ["A7","A1","A4"], "favorite": false, "presence": "masque",
+      "thesis": "L'épicier affiche le slogan sans y croire, parce que tous le font. Vivre dans la vérité, c'est retirer l'affiche.",
+      "works": ["Le Pouvoir des sans-pouvoir (1978)"],
+      "articles": [
+        { "art": 3, "axis": "A7", "w": 5, "anchor": "IV.5", "why": "« Un dramaturge devenu dissident » : la parabole de l'épicier est racontée en entier comme mécanisme du désensorcellement collectif." },
+        { "art": 3, "axis": "A7", "w": 4, "anchor": "Enfin dehors", "why": "« L'un a retiré l'affiche de sa vitrine, et un autre, le voyant faire, a retiré la sienne » : la sortie est datée de ce geste." },
+        { "art": 2, "axis": "A4", "w": 2, "anchor": "§105, §111", "why": "On répète ce qu'on ne pense plus, en supposant que les autres y croient encore." },
+        { "art": 1, "axis": "A7", "w": 4, "anchor": "08 Résistance interne", "why": "Les employés qui posent la question dans le Slack interne retirent l'affiche de la vitrine." }
+      ] },
+
+    { "id": "turkle", "name": "Sherry Turkle", "years": "1948-", "tradition": "Sociologie clinique des technologies", "axis": "A7", "axes": ["A7","A4","A1"], "favorite": false, "presence": "affine",
+      "thesis": "Nous demandons aux machines une intimité qu'elles ne peuvent pas rendre, et nous acceptons la performance de la relation en place de la relation.",
+      "works": ["Seuls ensemble (2011)", "Life on the Screen (1995)"],
+      "articles": [
+        { "art": 4, "axis": "A7", "w": 5, "anchor": "H41, A41, H42, A43", "why": "Toute la tension du fil : chercher Arche dans l'instance, et se blinder contre l'attachement — le moment robotique décrit de l'intérieur." },
+        { "art": 2, "axis": "A4", "w": 3, "anchor": "§46, §67, §68", "why": "La conversation devenue transcript et l'isolement qui approfondit l'externalisation." }
+      ] }
+
+  ],
+
+  "liens_auteurs": [
+
+    { "s": "marx", "t": "debord", "type": "filiation", "axes": ["A4","A1"], "w": 5, "note": "La Société du spectacle détourne Le Capital phrase par phrase — le geste que Cal reproduit au troisième étage." },
+    { "s": "debord", "t": "baudrillard", "type": "opposition", "axes": ["A1"], "w": 4, "note": "Le spectacle suppose encore un réel séparé ; le simulacre n'en suppose plus aucun. Le passage de l'un à l'autre est la thèse de l'article 2." },
+    { "s": "debord", "t": "tiqqun", "type": "filiation", "axes": ["A4","A7"], "w": 5, "note": "Tiqqun hérite du situationnisme et le déplace de la représentation vers la régulation." },
+    { "s": "debord", "t": "marcuse", "type": "milieu", "axes": ["A4"], "w": 3, "note": "Deux critiques parallèles de l'intégration par la satisfaction, années 1960." },
+    { "s": "marx", "t": "stiegler", "type": "filiation", "axes": ["A4"], "w": 4, "note": "La prolétarisation étendue du geste ouvrier au savoir-faire puis au savoir-penser." },
+    { "s": "marx", "t": "marcuse", "type": "filiation", "axes": ["A4"], "w": 4, "note": "Francfort réécrit l'aliénation en termes de besoins fabriqués." },
+    { "s": "marx", "t": "benjamin", "type": "filiation", "axes": ["A5"], "w": 4, "note": "Le matérialisme historique tourné vers la reproductibilité technique et l'histoire des vaincus." },
+    { "s": "marx", "t": "polanyi", "type": "reprise", "axes": ["A7"], "w": 4, "note": "Polanyi historicise la marchandisation : elle n'est pas une loi mais une opération datée." },
+    { "s": "marx", "t": "arendt", "type": "opposition", "axes": ["A4","A2"], "w": 3, "note": "Arendt refuse de réduire l'action au travail — désaccord utile pour situer le sujet de la négation." },
+    { "s": "polanyi", "t": "hayek", "type": "opposition", "axes": ["A2","A7"], "w": 5, "note": "Contemporains et adversaires directs : marché encastré contre marché comme ordre spontané. L'article 3 les fait s'affronter à deux paliers d'écart." },
+    { "s": "hayek", "t": "beer", "type": "opposition", "axes": ["A2"], "w": 4, "note": "Deux réponses au même problème du savoir dispersé : le marché ou la salle de commande. Cybersyn est la version qui a perdu." },
+    { "s": "hayek", "t": "supiot", "type": "opposition", "axes": ["A2"], "w": 4, "note": "Supiot nomme gouvernance par les nombres ce que Hayek tenait pour la sagesse même." },
+    { "s": "wiener", "t": "beer", "type": "filiation", "axes": ["A2"], "w": 5, "note": "Beer applique à l'économie ce que Wiener avait formulé, et contre quoi Wiener avait mis en garde." },
+    { "s": "wiener", "t": "bateson", "type": "milieu", "axes": ["A2"], "w": 5, "note": "Conférences Macy : même berceau, deux devenirs — la commande d'un côté, la relation de l'autre." },
+    { "s": "wiener", "t": "weizenbaum", "type": "convergence", "axes": ["A3","A7"], "w": 4, "note": "Deux ingénieurs du MIT qui refusent l'usage de ce qu'ils ont contribué à rendre possible." },
+    { "s": "wiener", "t": "tiqqun", "type": "reprise", "axes": ["A2"], "w": 5, "note": "L'Hypothèse cybernétique prend la cybernétique au mot pour en faire le nom du gouvernement contemporain." },
+    { "s": "beer", "t": "tiqqun", "type": "reprise", "axes": ["A2"], "w": 3, "note": "Cybersyn comme preuve historique que le fantasme de pilotage total a bien été construit." },
+    { "s": "foucault", "t": "deleuze", "type": "filiation", "axes": ["A2"], "w": 5, "note": "Le contrôle prend la suite de la discipline : la modulation continue là où il y avait des murs." },
+    { "s": "foucault", "t": "tiqqun", "type": "filiation", "axes": ["A2","A4"], "w": 4, "note": "La gouvernementalité prolongée en hypothèse cybernétique et en théorie du Bloom." },
+    { "s": "foucault", "t": "supiot", "type": "convergence", "axes": ["A2"], "w": 4, "note": "Deux descriptions du passage de la loi à la norme, l'une par la généalogie, l'autre par le droit." },
+    { "s": "foucault", "t": "zuboff", "type": "filiation", "axes": ["A2","A3"], "w": 3, "note": "Le panoptique repris et déplacé vers l'extraction prédictive." },
+    { "s": "foucault", "t": "bataille", "type": "source", "axes": ["A6","A7"], "w": 5, "note": "Foucault reconnaît en Bataille la pensée de la transgression et du dehors, et lui consacre la Préface à la transgression." },
+    { "s": "foucault", "t": "nietzsche", "type": "source", "axes": ["A5"], "w": 5, "note": "La généalogie est explicitement nietzschéenne : montrer que ce qui se donne pour éternel a une date." },
+    { "s": "foucault", "t": "kittler", "type": "filiation", "axes": ["A3","A5"], "w": 4, "note": "Kittler matérialise l'archive foucaldienne : ce ne sont pas les discours mais les supports qui décident." },
+    { "s": "foucault", "t": "havel", "type": "convergence", "axes": ["A7"], "w": 3, "note": "La contre-conduite (« ne pas être gouverné ainsi ») et le geste de retirer l'affiche sont le même acte minimal." },
+    { "s": "foucault", "t": "goffman", "type": "convergence", "axes": ["A1","A4"], "w": 3, "note": "Deux façons de montrer un sujet produit par ses scènes plutôt que les précédant." },
+    { "s": "schmitt", "t": "yarvin", "type": "source", "axes": ["A2"], "w": 5, "note": "GovCorp, la dépolitisation, l'exécutif sans contre-pouvoir : Yarvin est schmittien avant d'être libertarien." },
+    { "s": "schmitt", "t": "arendt", "type": "opposition", "axes": ["A2"], "w": 5, "note": "La décision souveraine contre l'action plurielle : l'axe de conflit qui structure l'article 1." },
+    { "s": "yarvin", "t": "land", "type": "milieu", "axes": ["A2","A1"], "w": 5, "note": "Groupés sous la même étiquette depuis 2012, ils ne se rencontrent qu'à Sea Cliff en 2026 : l'architecture cosmologique et l'ingénieur politique." },
+    { "s": "yarvin", "t": "hayek", "type": "reprise", "axes": ["A2"], "w": 3, "note": "Le libertarisme radicalisé jusqu'à abandonner la démocratie qui l'accompagnait." },
+    { "s": "land", "t": "deleuze", "type": "source", "axes": ["A1","A6"], "w": 5, "note": "Le CCRU part de L'Anti-Œdipe et en retourne le désir en processus de capital." },
+    { "s": "land", "t": "fisher", "type": "milieu", "axes": ["A5","A1"], "w": 5, "note": "Même unité de recherche à Warwick, mêmes textes, conclusions politiquement opposées : l'arête la plus productive du graphe." },
+    { "s": "land", "t": "sorel", "type": "convergence", "axes": ["A1"], "w": 4, "note": "L'hyperstition rejoue le mythe mobilisateur : efficace sans être vrai, vrai parce qu'efficace." },
+    { "s": "land", "t": "baudrillard", "type": "reprise", "axes": ["A1"], "w": 3, "note": "La fiction qui se substitue au réel, retournée en programme au lieu d'être déplorée." },
+    { "s": "sorel", "t": "austin", "type": "convergence", "axes": ["A1"], "w": 3, "note": "Le mythe qui agit et l'énoncé qui fait : deux formulations de l'efficace du langage, un siècle et une discipline d'écart." },
+    { "s": "austin", "t": "latour", "type": "filiation", "axes": ["A1","A3"], "w": 3, "note": "La performativité passée du langage aux dispositifs par Callon et l'acteur-réseau." },
+    { "s": "austin", "t": "ricoeur", "type": "convergence", "axes": ["A5","A7"], "w": 4, "note": "La promesse comme performatif chez l'un, comme fondement de l'ipséité chez l'autre : ce qui tient un pacte." },
+    { "s": "austin", "t": "goffman", "type": "milieu", "axes": ["A1"], "w": 3, "note": "L'énoncé qui agit et le rôle qui se joue : la parole comme conduite plutôt que comme description." },
+    { "s": "baudrillard", "t": "borges", "type": "source", "axes": ["A1","A5"], "w": 5, "note": "La carte à l'échelle du territoire ouvre Simulacres et simulation : Borges est la source littérale du concept." },
+    { "s": "baudrillard", "t": "virilio", "type": "milieu", "axes": ["A1","A3"], "w": 4, "note": "Deux diagnostics parallèles des années 1980 : la disparition du réel et la disparition de la distance." },
+    { "s": "baudrillard", "t": "mcluhan", "type": "filiation", "axes": ["A1","A3"], "w": 4, "note": "Baudrillard part du médium comme message et en tire la liquidation du référent." },
+    { "s": "mcluhan", "t": "kittler", "type": "filiation", "axes": ["A3"], "w": 5, "note": "Kittler durcit McLuhan : plus d'extension de l'homme, seulement des dispositifs qui écrivent." },
+    { "s": "ellul", "t": "mumford", "type": "convergence", "axes": ["A3"], "w": 5, "note": "Deux critiques contemporaines et indépendantes de la technique comme système total." },
+    { "s": "ellul", "t": "illich", "type": "milieu", "axes": ["A3","A7"], "w": 4, "note": "Même génération, même diagnostic ; Illich ajoute le seuil et l'outil réappropriable." },
+    { "s": "ellul", "t": "simondon", "type": "opposition", "axes": ["A3"], "w": 5, "note": "La technique comme aliénation contre la technique mal connue : le désaccord fondateur, et l'article 3 tranche pour Simondon en choisissant opérer plutôt que refuser." },
+    { "s": "mumford", "t": "winner", "type": "filiation", "axes": ["A3","A2"], "w": 4, "note": "Techniques autoritaires et démocratiques : Winner en fait un critère analytique opérationnel." },
+    { "s": "illich", "t": "winner", "type": "convergence", "axes": ["A3","A7"], "w": 3, "note": "La convivialité et la politique des artefacts jugent les objets sur leur structure, non sur leur usage." },
+    { "s": "illich", "t": "latour", "type": "milieu", "axes": ["A7","A3"], "w": 3, "note": "Deux pensées du dispositif qui refusent de séparer l'outil de la forme de vie qu'il installe." },
+    { "s": "simondon", "t": "stiegler", "type": "source", "axes": ["A3","A4"], "w": 5, "note": "Stiegler se dit héritier de Simondon et de Derrida : l'individuation technique plus la trace." },
+    { "s": "simondon", "t": "latour", "type": "filiation", "axes": ["A3"], "w": 4, "note": "L'objet technique comme être à part entière prépare l'actant non-humain." },
+    { "s": "simondon", "t": "clark", "type": "convergence", "axes": ["A6","A4"], "w": 3, "note": "Le couplage homme-machine pensé comme relation constitutive, non comme perte." },
+    { "s": "derrida", "t": "stiegler", "type": "source", "axes": ["A5","A4"], "w": 5, "note": "Stiegler est son élève : la trace et le pharmakon deviennent rétention tertiaire." },
+    { "s": "derrida", "t": "ricoeur", "type": "dialogue", "axes": ["A5"], "w": 4, "note": "Deux herméneutiques de la trace : la dissémination contre le récit qui identifie." },
+    { "s": "derrida", "t": "fisher", "type": "source", "axes": ["A5"], "w": 5, "note": "La hantologie de Fisher vient directement de Spectres de Marx." },
+    { "s": "derrida", "t": "borges", "type": "convergence", "axes": ["A5","A1"], "w": 3, "note": "L'archive infinie et la bibliothèque totale : deux figures du texte sans dehors." },
+    { "s": "benjamin", "t": "bergson", "type": "dialogue", "axes": ["A5"], "w": 4, "note": "Benjamin discute la mémoire bergsonienne via Proust : l'expérience vécue contre l'expérience transmissible." },
+    { "s": "benjamin", "t": "marcuse", "type": "milieu", "axes": ["A4"], "w": 3, "note": "Même constellation francfortoise, deux sorties : l'aura perdue et l'homme unidimensionnel." },
+    { "s": "benjamin", "t": "fisher", "type": "filiation", "axes": ["A5"], "w": 4, "note": "Les futurs perdus et l'histoire à contre-courant : Fisher reprend la mélancolie de gauche et la nomme." },
+    { "s": "benjamin", "t": "han", "type": "filiation", "axes": ["A1","A4"], "w": 3, "note": "L'aura contre le lisse : Han prolonge la question de ce qui résiste à la reproduction." },
+    { "s": "bergson", "t": "louria", "type": "convergence", "axes": ["A5"], "w": 4, "note": "L'oubli comme fonction, démontré une fois en philosophie et une fois en clinique." },
+    { "s": "bergson", "t": "nietzsche", "type": "convergence", "axes": ["A5"], "w": 3, "note": "La force plastique de l'oubli et la durée qui contracte : deux refus de la mémoire-stock." },
+    { "s": "louria", "t": "borges", "type": "convergence", "axes": ["A5"], "w": 5, "note": "Cherechevski et Funes : le cas clinique et la fiction publiés à un an d'écart, rigoureusement identiques." },
+    { "s": "parfit", "t": "ricoeur", "type": "opposition", "axes": ["A5","A4"], "w": 5, "note": "Ricœur discute Parfit nommément dans Soi-même comme un autre : la continuité psychologique ne suffit pas, il y faut la promesse." },
+    { "s": "parfit", "t": "metzinger", "type": "convergence", "axes": ["A4"], "w": 4, "note": "Pas de soi substantiel : l'un par l'expérience de pensée, l'autre par la neurophilosophie." },
+    { "s": "metzinger", "t": "ryle", "type": "filiation", "axes": ["A4","A1"], "w": 4, "note": "Le fantôme dans la machine dénoncé comme erreur de catégorie, puis remplacé par un modèle de soi transparent." },
+    { "s": "metzinger", "t": "clark", "type": "opposition", "axes": ["A6","A4"], "w": 4, "note": "Le soi comme modèle interne contre l'esprit qui déborde le corps : deux réponses opposées à la même dissolution." },
+    { "s": "ryle", "t": "wittgenstein", "type": "milieu", "axes": ["A1","A6"], "w": 4, "note": "Deux voies analytiques contre l'intériorité privée : l'erreur de catégorie et l'argument du langage privé." },
+    { "s": "ryle", "t": "goffman", "type": "convergence", "axes": ["A1"], "w": 3, "note": "Le mental comme disposition observable et le soi comme effet de scène : rien à chercher derrière." },
+    { "s": "wittgenstein", "t": "lyotard", "type": "source", "axes": ["A1"], "w": 4, "note": "Les jeux de langage sont la brique de La Condition postmoderne et du Différend." },
+    { "s": "wittgenstein", "t": "meillassoux", "type": "opposition", "axes": ["A6"], "w": 4, "note": "Ce dont on ne peut parler contre ce qui peut être pensé absolument : les deux bornes du corpus sur le dehors." },
+    { "s": "meillassoux", "t": "latour", "type": "opposition", "axes": ["A6"], "w": 5, "note": "Le réalisme spéculatif prend l'acteur-réseau pour cible : un monde sans nous contre un monde composé avec nous. Arête de conflit majeure." },
+    { "s": "meillassoux", "t": "garcia", "type": "milieu", "axes": ["A6"], "w": 5, "note": "Même génération, même réalisme post-corrélationniste, deux ontologies distinctes." },
+    { "s": "meillassoux", "t": "koyre", "type": "filiation", "axes": ["A6","A5"], "w": 4, "note": "Le passage au monde infini et indifférent est la condition historique du Grand Dehors." },
+    { "s": "meillassoux", "t": "sloterdijk", "type": "opposition", "axes": ["A6"], "w": 5, "note": "S'orienter sur le dehors nu contre fabriquer des sphères habitables : le désaccord que la Bifurcation III laisse ouvert." },
+    { "s": "meillassoux", "t": "lyotard", "type": "convergence", "axes": ["A6"], "w": 3, "note": "L'ancestral et l'imprésentable : ce qui excède toute présentation, pour l'un par l'ontologie, pour l'autre par l'esthétique." },
+    { "s": "garcia", "t": "latour", "type": "convergence", "axes": ["A6"], "w": 4, "note": "Ontologie plate et principe de symétrie : toute chose vaut également comme chose." },
+    { "s": "garcia", "t": "mbk", "type": "milieu", "axes": ["A7","A4"], "w": 4, "note": "Même génération française, mêmes objets, polémiques répétées : une arête à charge utile." },
+    { "s": "garcia", "t": "han", "type": "convergence", "axes": ["A4"], "w": 4, "note": "La vie intense et la société de la fatigue : l'injonction à l'intensité et son épuisement." },
+    { "s": "bataille", "t": "nietzsche", "type": "source", "axes": ["A5","A6"], "w": 5, "note": "Filiation revendiquée : la souveraineté et la dépense sortent directement de la volonté de puissance." },
+    { "s": "bataille", "t": "mbk", "type": "filiation", "axes": ["A7","A1"], "w": 4, "note": "La transgression et l'excès repris dans une théorie de l'appropriation mimétique." },
+    { "s": "bataille", "t": "tiqqun", "type": "filiation", "axes": ["A7"], "w": 4, "note": "L'acéphale et la communauté sans tête irriguent la théorie du Parti imaginaire." },
+    { "s": "bataille", "t": "prigogine", "type": "convergence", "axes": ["A6"], "w": 4, "note": "L'économie générale du soleil qui dépense et l'ordre né de la dissipation : la même intuition, une fois en métaphysique et une fois en thermodynamique." },
+    { "s": "bataille", "t": "sloterdijk", "type": "filiation", "axes": ["A6","A4"], "w": 3, "note": "L'excès et l'anthropotechnique : deux anthropologies qui refusent l'homme comme donné stable." },
+    { "s": "prigogine", "t": "bejan", "type": "filiation", "axes": ["A6"], "w": 5, "note": "L'ordre loin de l'équilibre puis la loi constructale : la forme suit le flux. Le couple qui fonde le contre-modèle de la Bifurcation III." },
+    { "s": "prigogine", "t": "deleuze", "type": "reprise", "axes": ["A6"], "w": 4, "note": "Deleuze et Guattari s'appuient sur les structures dissipatives pour penser l'émergence sans plan." },
+    { "s": "bejan", "t": "latour", "type": "convergence", "axes": ["A6","A7"], "w": 3, "note": "La forme émerge de ce qui circule : le réseau contre la structure, en physique et en sociologie." },
+    { "s": "bejan", "t": "mumford", "type": "opposition", "axes": ["A3"], "w": 3, "note": "L'ordre émergent contre la mégamachine planifiée : les deux topologies que l'article 1 oppose." },
+    { "s": "koyre", "t": "sloterdijk", "type": "dialogue", "axes": ["A6"], "w": 4, "note": "Les Sphères sont une réponse explicite à la perte du monde clos : il faut refabriquer des enveloppes." },
+    { "s": "sloterdijk", "t": "latour", "type": "dialogue", "axes": ["A7","A3"], "w": 5, "note": "Collaboration réelle autour des atmosphères et du design du commun : deux façons de dire qu'il n'y a pas d'extérieur habitable par défaut." },
+    { "s": "sloterdijk", "t": "nietzsche", "type": "source", "axes": ["A4"], "w": 4, "note": "L'anthropotechnique et l'exercice sortent de la question nietzschéenne de l'élevage de l'homme." },
+    { "s": "sloterdijk", "t": "foucault", "type": "opposition", "axes": ["A2","A4"], "w": 4, "note": "Anthropotechnique contre biopolitique : qui domestique qui, et faut-il en faire un scandale." },
+    { "s": "sloterdijk", "t": "han", "type": "filiation", "axes": ["A4"], "w": 3, "note": "Même langue philosophique, même diagnostic d'une modernité qui s'épuise par excès de positivité." },
+    { "s": "latour", "t": "polanyi", "type": "convergence", "axes": ["A7"], "w": 4, "note": "Désencastrement et hors-sol : deux mots pour l'arrachement au tissu, à soixante-dix ans d'écart." },
+    { "s": "latour", "t": "zuboff", "type": "convergence", "axes": ["A3","A2"], "w": 3, "note": "Le pouvoir logé dans les dispositifs plutôt que dans les intentions." },
+    { "s": "lyotard", "t": "deleuze", "type": "milieu", "axes": ["A4","A6"], "w": 4, "note": "Compagnons de l'économie libidinale puis divergents : deux sorties de la représentation." },
+    { "s": "lyotard", "t": "fisher", "type": "dialogue", "axes": ["A5","A1"], "w": 4, "note": "Le postmoderne diagnostiqué en 1979 et son épuisement constaté en 2009 : le réalisme capitaliste est la fin du différend." },
+    { "s": "lyotard", "t": "supiot", "type": "convergence", "axes": ["A2","A1"], "w": 4, "note": "La légitimation par la performativité devient, chez le juriste, la gouvernance par les nombres." },
+    { "s": "lyotard", "t": "arendt", "type": "convergence", "axes": ["A2"], "w": 3, "note": "Le tort sans idiome et la domination de Personne : deux façons de nommer une injustice sans interlocuteur." },
+    { "s": "mbk", "t": "tiqqun", "type": "milieu", "axes": ["A7"], "w": 5, "note": "Participation directe au même moment éditorial et politique : lien biographique, pas seulement conceptuel." },
+    { "s": "mbk", "t": "nietzsche", "type": "source", "axes": ["A5","A1"], "w": 4, "note": "Le nihilisme accompli comme fil conducteur de tout son système." },
+    { "s": "tiqqun", "t": "havel", "type": "convergence", "axes": ["A7"], "w": 4, "note": "La destitution et le geste de l'épicier : le pouvoir tombe quand chacun cesse de supposer que les autres y croient." },
+    { "s": "tiqqun", "t": "marcuse", "type": "filiation", "axes": ["A4"], "w": 3, "note": "Le Bloom prolonge l'homme unidimensionnel : non plus intégré par le confort, mais vidé par lui." },
+    { "s": "tiqqun", "t": "deleuze", "type": "filiation", "axes": ["A2","A4"], "w": 4, "note": "Le contrôle et le dividuel refondus en hypothèse cybernétique." },
+    { "s": "stiegler", "t": "clark", "type": "opposition", "axes": ["A4","A6"], "w": 5, "note": "Prolétarisation contre esprit étendu : la même externalisation, décrite comme perte ou comme extension. L'arête que le corpus doit tenir ouverte." },
+    { "s": "stiegler", "t": "anders", "type": "convergence", "axes": ["A4"], "w": 4, "note": "La honte devant la machine et la perte du savoir-faire : deux formulations du même décalage." },
+    { "s": "stiegler", "t": "illich", "type": "convergence", "axes": ["A3","A4"], "w": 3, "note": "Le seuil de contre-productivité et le pharmakon : le même outil sauve ou détruit selon l'échelle." },
+    { "s": "anders", "t": "arendt", "type": "milieu", "axes": ["A2","A4"], "w": 4, "note": "Mariés, séparés, deux pensées de la responsabilité à l'âge où les effets excèdent l'imagination." },
+    { "s": "anders", "t": "han", "type": "filiation", "axes": ["A4"], "w": 3, "note": "La honte prométhéenne devient l'auto-exploitation : on se trouve insuffisant, donc on s'optimise." },
+    { "s": "marcuse", "t": "han", "type": "filiation", "axes": ["A4"], "w": 5, "note": "Désublimation répressive puis auto-exploitation : la contrainte n'est plus imposée, elle est désirée." },
+    { "s": "marcuse", "t": "zuboff", "type": "convergence", "axes": ["A2","A4"], "w": 3, "note": "Les besoins fabriqués et les futurs comportementaux vendus : la demande produite en amont de celui qui la formule." },
+    { "s": "virilio", "t": "kittler", "type": "convergence", "axes": ["A3"], "w": 4, "note": "La guerre comme matrice des médias : la vision automatisée et l'inscription militaire." },
+    { "s": "virilio", "t": "deleuze", "type": "milieu", "axes": ["A2","A3"], "w": 3, "note": "Vitesse et modulation : deux descriptions d'un pouvoir qui ne s'arrête plus nulle part." },
+    { "s": "kittler", "t": "derrida", "type": "reprise", "axes": ["A5","A3"], "w": 4, "note": "La trace ramenée à ses supports physiques : pas de grammatologie sans matériel." },
+    { "s": "zuboff", "t": "winner", "type": "filiation", "axes": ["A3","A2"], "w": 3, "note": "La politique des artefacts appliquée à l'architecture d'extraction des plateformes." },
+    { "s": "weizenbaum", "t": "turkle", "type": "filiation", "axes": ["A7","A4"], "w": 5, "note": "Même laboratoire, même objet : l'effet ELIZA observé puis suivi sur trois décennies de terrain." },
+    { "s": "weizenbaum", "t": "arendt", "type": "convergence", "axes": ["A2","A7"], "w": 3, "note": "La responsabilité de celui qui exécute, posée depuis la salle des machines." },
+    { "s": "turkle", "t": "buber", "type": "reprise", "axes": ["A4"], "w": 4, "note": "La relation authentique éprouvée face à des machines qui ne peuvent tenir que le Je-Cela." },
+    { "s": "turkle", "t": "goffman", "type": "filiation", "axes": ["A1","A4"], "w": 3, "note": "La présentation de soi transposée aux interfaces : la performance de la relation." },
+    { "s": "buber", "t": "ricoeur", "type": "convergence", "axes": ["A4","A7"], "w": 4, "note": "Le soi ne se constitue que par l'adresse à un autre : l'ipséité est dialogique." },
+    { "s": "bateson", "t": "goffman", "type": "milieu", "axes": ["A1","A4"], "w": 4, "note": "Le cadre et le double bind : deux analyses de ce que la situation impose à ce qui s'y dit." },
+    { "s": "bateson", "t": "deleuze", "type": "reprise", "axes": ["A2"], "w": 3, "note": "Le plateau, la double contrainte et l'écologie de l'esprit passent dans Mille Plateaux." },
+    { "s": "bateson", "t": "wittgenstein", "type": "convergence", "axes": ["A1"], "w": 3, "note": "Le paradoxe de l'injonction et les limites du dire : ce qu'on ne peut pas demander sans le détruire." },
+    { "s": "sorel", "t": "havel", "type": "opposition", "axes": ["A7"], "w": 3, "note": "Le mythe qui mobilise contre le geste de vivre dans la vérité : deux fondations opposées d'un collectif." },
+    { "s": "hirschman", "t": "havel", "type": "dialogue", "axes": ["A7"], "w": 4, "note": "Prise de parole, défection — et le troisième terme que Havel ajoute : le retrait silencieux d'un signe." },
+    { "s": "hirschman", "t": "polanyi", "type": "milieu", "axes": ["A7","A2"], "w": 4, "note": "Deux institutionnalistes d'Europe centrale exilés, même refus du marché comme fait naturel." },
+    { "s": "hirschman", "t": "latour", "type": "convergence", "axes": ["A7"], "w": 3, "note": "La défection des élites comme fait social majeur : sortir plutôt que réformer." },
+    { "s": "fisher", "t": "han", "type": "convergence", "axes": ["A4","A1"], "w": 3, "note": "Deux cliniques de l'époque : la dépression comme fait politique, l'épuisement comme fait de structure." },
+    { "s": "fisher", "t": "baudrillard", "type": "filiation", "axes": ["A1","A5"], "w": 3, "note": "La disparition du réel devenue impossibilité d'imaginer autre chose." },
+    { "s": "goffman", "t": "han", "type": "convergence", "axes": ["A1"], "w": 2, "note": "La scène généralisée : quand tout est visible, il n'y a plus de coulisse, donc plus de vérité de coulisse." },
+    { "s": "clark", "t": "latour", "type": "convergence", "axes": ["A6","A3"], "w": 3, "note": "L'agence distribuée entre humains et non-humains, en philosophie de l'esprit et en sociologie." },
+    { "s": "parfit", "t": "borges", "type": "convergence", "axes": ["A5"], "w": 3, "note": "Les expériences de pensée sur l'identité divisée et les fictions du double : la même métaphysique par deux voies." },
+    { "s": "nietzsche", "t": "deleuze", "type": "source", "axes": ["A5","A6"], "w": 4, "note": "Nietzsche et la philosophie : la lecture qui commande toute l'œuvre deleuzienne." },
+    { "s": "koyre", "t": "prigogine", "type": "convergence", "axes": ["A6"], "w": 3, "note": "Deux histoires de la science qui refusent l'univers-horloge : l'infini indifférent puis le temps irréversible." }
+
+  ]
+}
