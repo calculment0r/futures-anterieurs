@@ -17,8 +17,8 @@
   const GH = {
     owner: 'calculment0r',
     repo: 'futures-anterieurs',
-    path: 'site/futures.data.js',
-    vault: 'site/futures.data.original.js',
+    path: 'site/manuscrit/futures.data.js',
+    vault: 'site/manuscrit/futures.data.original.js',
     // branche servie par GitHub Pages (live) ; surchargée par localStorage 'fa_branch'
     branch: localStorage.getItem('fa_branch') || 'main',
   };

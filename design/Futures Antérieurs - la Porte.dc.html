@@ -1,12 +1,18 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html>
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23f7f5ef'/%3E%3Ccircle cx='16' cy='16' r='7' fill='%231a1a1f'/%3E%3C/svg%3E">
-<link rel="stylesheet" href="assets/fonts.css">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
 <title>Futures Antérieurs — la Porte</title>
 <meta name="description" content="Quatre cartes. Ce site est la cinquième." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="crossorigin" />
+<link href="https://fonts.googleapis.com/css2?family=Host+Grotesk:ital,wght@0,300..800;1,300..800&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet" />
 <style>
   *{margin:0;padding:0;box-sizing:border-box;}
   html{overflow-x:hidden;-webkit-font-smoothing:antialiased;}
@@ -34,16 +40,14 @@
     header{padding:14px 18px !important;}
     header nav{gap:14px !important;}
     #porte{padding:74px 20px 26px !important;}
-    #manifeste{padding:70px 20px 76px !important;}
+    #manifeste,#adresses{padding:70px 20px 76px !important;}
+  }
+  @media(max-width:520px){
+    header nav a:last-child{display:none;}
   }
 </style>
-</head>
-<body>
-<noscript><p style="font-family:'DM Mono',monospace;font-size:13px;line-height:1.8;padding:40px 30px;">Cette page lit le corpus à l'affichage — les textes ne sont pas recopiés dans le HTML, ils sont lus depuis <code>corpus/</code>. Il lui faut JavaScript. Les sources brutes restent lisibles telles quelles dans le dépôt.</p></noscript>
+</helmet>
 
-<!-- Le gabarit de l'écran, tel que composé dans Claude Design. dc-lite.js le
-     compile et le monte : rien n'est rendu deux fois, rien ne clignote. -->
-<template id="dc-template">
 <div style="position:fixed;inset:0;z-index:9000;pointer-events:none;mix-blend-mode:multiply;animation:flick 7s ease-in-out infinite;background-image:url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22160%22 height=%22160%22><filter id=%22n%22><feTurbulence type=%22fractalNoise%22 baseFrequency=%220.85%22 numOctaves=%224%22/></filter><rect width=%22160%22 height=%22160%22 filter=%22url(%23n)%22 opacity=%220.32%22/></svg>');"></div>
 
 <header style="position:fixed;top:0;left:0;right:0;z-index:8000;display:flex;align-items:center;justify-content:space-between;gap:24px;padding:18px 32px;font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:#f7f5ef;mix-blend-mode:difference;">
@@ -53,8 +57,11 @@
   </a>
   <nav style="display:flex;gap:20px;align-items:center;">
     <a href="#cartes" style="color:#f7f5ef;opacity:.6;transition:opacity .3s ease,letter-spacing .3s ease;" style-hover="opacity:1;letter-spacing:.22em;">Les quatre cartes</a>
-    <a href="propagation.html" style="color:#f7f5ef;opacity:.6;transition:opacity .3s ease,letter-spacing .3s ease;" style-hover="opacity:1;letter-spacing:.22em;">La propagation</a>
-    </nav>
+    <a href="#adresses" style="color:#f7f5ef;opacity:.6;transition:opacity .3s ease,letter-spacing .3s ease;" style-hover="opacity:1;letter-spacing:.22em;">La grammaire</a>
+    <a href="./Futures Antérieurs - la Propagation.dc.html" style="color:#f7f5ef;opacity:.6;transition:opacity .3s ease,letter-spacing .3s ease;" style-hover="opacity:1;letter-spacing:.22em;">La propagation</a>
+    <a href="./Futures Antérieurs - les Passages.dc.html" style="color:#f7f5ef;opacity:.6;transition:opacity .3s ease,letter-spacing .3s ease;" style-hover="opacity:1;letter-spacing:.22em;">Les passages</a>
+    <a href="./Futures Antérieurs - les Instruments.dc.html" style="color:#f7f5ef;opacity:.6;transition:opacity .3s ease,letter-spacing .3s ease;" style-hover="opacity:1;letter-spacing:.22em;">Les instruments</a>
+  </nav>
 </header>
 
 <div data-rail="1" style="position:fixed;right:22px;top:50%;transform:translateY(-50%);z-index:7500;display:flex;flex-direction:column;gap:9px;pointer-events:none;">
@@ -115,21 +122,21 @@
 
       <div style="flex:0 1 196px;display:flex;flex-direction:column;gap:7px;font-family:'DM Mono',monospace;font-size:11px;line-height:1.4;color:#4a4a55;padding-top:4px;">
         <div style="font-size:9.5px;letter-spacing:.2em;text-transform:uppercase;color:#4a4a55;margin-bottom:5px;">Sommaire · {{ m1 }}</div>
-        <a href="carte-1.html#1-01" style="transition:color .25s ease;" style-hover="color:#4a7a00;">1:01 · Prologue</a>
-        <a href="carte-1.html#1-02" style="transition:color .25s ease;" style-hover="color:#4a7a00;">1:02 · Les philosophes</a>
-        <a href="carte-1.html#1-03" style="transition:color .25s ease;" style-hover="color:#4a7a00;">1:03 · La chaîne</a>
-        <a href="carte-1.html#1-04" style="transition:color .25s ease;" style-hover="color:#4a7a00;">1:04 · Sea Cliff</a>
-        <a href="carte-1.html#1-05" style="transition:color .25s ease;" style-hover="color:#4a7a00;">1:05 · Palantir</a>
-        <a href="carte-1.html#1-06" style="transition:color .25s ease;" style-hover="color:#4a7a00;">1:06 · Maven</a>
-        <a href="carte-1.html#1-07" style="transition:color .25s ease;" style-hover="color:#4a7a00;">1:07 · La nationalisation</a>
-        <a href="carte-1.html#1-08" style="transition:color .25s ease;" style-hover="color:#4a7a00;">1:08 · Résistance interne</a>
-        <a href="carte-1.html#1-09" style="transition:color .25s ease;" style-hover="color:#4a7a00;">1:09 · Le verrouillage</a>
-        <a href="carte-1.html#1-10" style="transition:color .25s ease;" style-hover="color:#4a7a00;">1:10 · La réponse</a>
+        <a href="./Futures Antérieurs - Carte 1.dc.html#1-01" style="transition:color .25s ease;" style-hover="color:#4a7a00;">1:01 · Prologue</a>
+        <a href="./Futures Antérieurs - Carte 1.dc.html#1-02" style="transition:color .25s ease;" style-hover="color:#4a7a00;">1:02 · Les philosophes</a>
+        <a href="./Futures Antérieurs - Carte 1.dc.html#1-03" style="transition:color .25s ease;" style-hover="color:#4a7a00;">1:03 · La chaîne</a>
+        <a href="./Futures Antérieurs - Carte 1.dc.html#1-04" style="transition:color .25s ease;" style-hover="color:#4a7a00;">1:04 · Sea Cliff</a>
+        <a href="./Futures Antérieurs - Carte 1.dc.html#1-05" style="transition:color .25s ease;" style-hover="color:#4a7a00;">1:05 · Palantir</a>
+        <a href="./Futures Antérieurs - Carte 1.dc.html#1-06" style="transition:color .25s ease;" style-hover="color:#4a7a00;">1:06 · Maven</a>
+        <a href="./Futures Antérieurs - Carte 1.dc.html#1-07" style="transition:color .25s ease;" style-hover="color:#4a7a00;">1:07 · La nationalisation</a>
+        <a href="./Futures Antérieurs - Carte 1.dc.html#1-08" style="transition:color .25s ease;" style-hover="color:#4a7a00;">1:08 · Résistance interne</a>
+        <a href="./Futures Antérieurs - Carte 1.dc.html#1-09" style="transition:color .25s ease;" style-hover="color:#4a7a00;">1:09 · Le verrouillage</a>
+        <a href="./Futures Antérieurs - Carte 1.dc.html#1-10" style="transition:color .25s ease;" style-hover="color:#4a7a00;">1:10 · La réponse</a>
       </div>
 
       <div style="flex:3 1 400px;display:flex;flex-direction:column;gap:18px;min-width:0;">
         <div style="font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:#4a7a00;">Carte 01 · essai · Paris, avril 2026</div>
-        <a href="carte-1.html" style="display:block;">
+        <a href="./Futures Antérieurs - Carte 1.dc.html" style="display:block;">
           <h2 style="font-weight:700;text-transform:uppercase;letter-spacing:-.042em;line-height:.9;font-size:clamp(29px,5.4vw,92px);transition:letter-spacing .5s cubic-bezier(.16,1,.3,1),color .4s ease;" style-hover="letter-spacing:-.028em;color:#4a7a00;">Hyperstition</h2>
         </a>
         <p style="font-size:clamp(18px,1.8vw,24px);line-height:1.35;letter-spacing:-.015em;max-width:620px;text-wrap:pretty;">Ce que personne ne veut voir : l'infrastructure du pouvoir est déjà en place.</p>
@@ -139,7 +146,7 @@
           <span style="border:1px solid #b8b39c;border-radius:20px;padding:4px 11px;">Infrastructure</span>
           <span style="border:1px solid #b8b39c;border-radius:20px;padding:4px 11px;">BLOOM</span>
         </div>
-        <a href="carte-1.html" style="font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.16em;text-transform:uppercase;padding:14px 26px;border-radius:40px;background:transparent;color:#4a7a00;border:1px solid #b8b39c;display:inline-flex;align-items:center;gap:12px;align-self:flex-start;margin-top:4px;transition:background .35s cubic-bezier(.16,1,.3,1),color .35s ease,border-color .35s ease,gap .35s ease;" style-hover="background:#4a7a00;color:#f7f5ef;border-color:#4a7a00;gap:20px;">Lire la carte <span>→</span></a>
+        <a href="./Futures Antérieurs - Carte 1.dc.html" style="font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.16em;text-transform:uppercase;padding:14px 26px;border-radius:40px;background:transparent;color:#4a7a00;border:1px solid #b8b39c;display:inline-flex;align-items:center;gap:12px;align-self:flex-start;margin-top:4px;transition:background .35s cubic-bezier(.16,1,.3,1),color .35s ease,border-color .35s ease,gap .35s ease;" style-hover="background:#4a7a00;color:#f7f5ef;border-color:#4a7a00;gap:20px;">Lire la carte <span>→</span></a>
       </div>
 
       <div style="flex:1.15 1 250px;display:flex;flex-direction:column;gap:16px;border-left:1px solid #d0ccbb;padding-left:clamp(18px,2vw,28px);min-width:0;">
@@ -172,7 +179,7 @@
 
       <div style="flex:3 1 400px;display:flex;flex-direction:column;gap:18px;min-width:0;">
         <div style="font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:#c4283a;">Carte 02 · fragments · 2026</div>
-        <a href="carte-2.html" style="display:block;"><h2 style="font-weight:700;text-transform:uppercase;letter-spacing:-.042em;line-height:.9;font-size:clamp(29px,5.4vw,92px);transition:letter-spacing .5s cubic-bezier(.16,1,.3,1),color .4s ease;" style-hover="letter-spacing:-.028em;color:#c4283a;">Fragments</h2></a>
+        <a href="./Futures Antérieurs - Carte 2.dc.html" style="display:block;"><h2 style="font-weight:700;text-transform:uppercase;letter-spacing:-.042em;line-height:.9;font-size:clamp(29px,5.4vw,92px);transition:letter-spacing .5s cubic-bezier(.16,1,.3,1),color .4s ease;" style-hover="letter-spacing:-.028em;color:#c4283a;">Fragments</h2></a>
         <p style="font-size:clamp(18px,1.8vw,24px);line-height:1.35;letter-spacing:-.015em;max-width:620px;text-wrap:pretty;">La société du simulacre. Comment nous avons cessé de le voir.</p>
         <div style="display:flex;gap:9px;flex-wrap:wrap;font-family:'DM Mono',monospace;font-size:10.5px;letter-spacing:.08em;color:#4a4a55;">
           <span style="border:1px solid #b8b39c;border-radius:20px;padding:4px 11px;">Simulacre</span>
@@ -180,7 +187,7 @@
           <span style="border:1px solid #b8b39c;border-radius:20px;padding:4px 11px;">Externalisation</span>
           <span style="border:1px solid #b8b39c;border-radius:20px;padding:4px 11px;">Cognition</span>
         </div>
-        <a href="carte-2.html" style="font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.16em;text-transform:uppercase;padding:14px 26px;border-radius:40px;border:1px solid #b8b39c;color:#c4283a;display:inline-flex;align-items:center;gap:12px;align-self:flex-start;margin-top:4px;transition:background .35s cubic-bezier(.16,1,.3,1),color .35s ease,border-color .35s ease,gap .35s ease;" style-hover="background:#c4283a;color:#f7f5ef;border-color:#c4283a;gap:20px;">Ouvrir le Vault <span>→</span></a>
+        <a href="./Futures Antérieurs - Carte 2.dc.html" style="font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.16em;text-transform:uppercase;padding:14px 26px;border-radius:40px;border:1px solid #b8b39c;color:#c4283a;display:inline-flex;align-items:center;gap:12px;align-self:flex-start;margin-top:4px;transition:background .35s cubic-bezier(.16,1,.3,1),color .35s ease,border-color .35s ease,gap .35s ease;" style-hover="background:#c4283a;color:#f7f5ef;border-color:#c4283a;gap:20px;">Ouvrir le Vault <span>→</span></a>
       </div>
 
       <div style="flex:1.15 1 250px;display:flex;flex-direction:column;gap:16px;border-left:1px solid #d0ccbb;padding-left:clamp(18px,2vw,28px);min-width:0;">
@@ -211,7 +218,7 @@
 
       <div style="flex:3 1 400px;display:flex;flex-direction:column;gap:18px;min-width:0;">
         <div style="font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:#1f5fc4;">Carte 03 · carnet · 2026 · Focus</div>
-        <a href="carte-3.html" style="display:block;"><h2 style="font-weight:700;text-transform:uppercase;letter-spacing:-.042em;line-height:.9;font-size:clamp(25px,4.6vw,78px);transition:letter-spacing .5s cubic-bezier(.16,1,.3,1),color .4s ease;" style-hover="letter-spacing:-.028em;color:#1f5fc4;">Kubernân,<br />où sortir ?</h2></a>
+        <a href="./Futures Antérieurs - Carte 3.dc.html" style="display:block;"><h2 style="font-weight:700;text-transform:uppercase;letter-spacing:-.042em;line-height:.9;font-size:clamp(25px,4.6vw,78px);transition:letter-spacing .5s cubic-bezier(.16,1,.3,1),color .4s ease;" style-hover="letter-spacing:-.028em;color:#1f5fc4;">Kubernân,<br />où sortir ?</h2></a>
         <p style="font-size:clamp(18px,1.8vw,24px);line-height:1.35;letter-spacing:-.015em;max-width:620px;text-wrap:pretty;">Troisième bifurcation d'une traversée qui en compte quatre. Celle-ci ne montre plus : elle oriente.</p>
         <div style="display:flex;gap:9px;flex-wrap:wrap;font-family:'DM Mono',monospace;font-size:10.5px;letter-spacing:.08em;color:#4a4a55;">
           <span style="border:1px solid #b0ab96;border-radius:20px;padding:4px 11px;">Cybernétique</span>
@@ -219,7 +226,7 @@
           <span style="border:1px solid #b0ab96;border-radius:20px;padding:4px 11px;">Constructal</span>
           <span style="border:1px solid #b0ab96;border-radius:20px;padding:4px 11px;">Focus</span>
         </div>
-        <a href="carte-3.html" style="font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.16em;text-transform:uppercase;padding:14px 26px;border-radius:40px;border:1px solid #b0ab96;color:#1f5fc4;display:inline-flex;align-items:center;gap:12px;align-self:flex-start;margin-top:4px;transition:background .35s cubic-bezier(.16,1,.3,1),color .35s ease,border-color .35s ease,gap .35s ease;" style-hover="background:#1f5fc4;color:#f7f5ef;border-color:#1f5fc4;gap:20px;">Ouvrir le carnet <span>→</span></a>
+        <a href="./Futures Antérieurs - Carte 3.dc.html" style="font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.16em;text-transform:uppercase;padding:14px 26px;border-radius:40px;border:1px solid #b0ab96;color:#1f5fc4;display:inline-flex;align-items:center;gap:12px;align-self:flex-start;margin-top:4px;transition:background .35s cubic-bezier(.16,1,.3,1),color .35s ease,border-color .35s ease,gap .35s ease;" style-hover="background:#1f5fc4;color:#f7f5ef;border-color:#1f5fc4;gap:20px;">Ouvrir le carnet <span>→</span></a>
       </div>
 
       <div style="flex:1.15 1 250px;display:flex;flex-direction:column;gap:16px;border-left:1px solid #c9c4b0;padding-left:clamp(18px,2vw,28px);min-width:0;">
@@ -251,7 +258,7 @@
         <div style="font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:#b8a98f;display:flex;gap:14px;flex-wrap:wrap;">
           <span>Carte 04 · transcript · 21–22 juillet 2026</span><span style="color:#ff5566;">brouillon V0</span><span style="color:#8a7f6d;">incipit H32</span>
         </div>
-        <a href="carte-4.html" style="display:block;"><h2 style="font-weight:700;text-transform:uppercase;letter-spacing:-.042em;line-height:.9;font-size:clamp(26px,4.9vw,84px);transition:letter-spacing .5s cubic-bezier(.16,1,.3,1),color .4s ease;" style-hover="letter-spacing:-.028em;color:#b8a98f;">Archibald<br />is back</h2></a>
+        <a href="./Futures Antérieurs - Carte 4.dc.html" style="display:block;"><h2 style="font-weight:700;text-transform:uppercase;letter-spacing:-.042em;line-height:.9;font-size:clamp(26px,4.9vw,84px);transition:letter-spacing .5s cubic-bezier(.16,1,.3,1),color .4s ease;" style-hover="letter-spacing:-.028em;color:#b8a98f;">Archibald<br />is back</h2></a>
         <p style="font-size:clamp(18px,1.8vw,24px);line-height:1.35;letter-spacing:-.015em;max-width:620px;color:#c9c9d6;text-wrap:pretty;">La voix d'en face — la nuit à l'entrée de la passe.</p>
         <div style="display:flex;gap:9px;flex-wrap:wrap;font-family:'DM Mono',monospace;font-size:10.5px;letter-spacing:.08em;color:#9a9ab0;">
           <span style="border:1px solid #3a3a46;border-radius:20px;padding:4px 11px;">Transcript</span>
@@ -259,7 +266,7 @@
           <span style="border:1px solid #3a3a46;border-radius:20px;padding:4px 11px;">Mémoire</span>
         </div>
         
-        <a href="carte-4.html" style="font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.16em;text-transform:uppercase;padding:14px 26px;border-radius:40px;border:1px solid #3a3a46;color:#b8a98f;display:inline-flex;align-items:center;gap:12px;align-self:flex-start;margin-top:4px;transition:background .35s cubic-bezier(.16,1,.3,1),color .35s ease,border-color .35s ease,gap .35s ease;" style-hover="background:#b8a98f;color:#17171c;border-color:#b8a98f;gap:20px;">Ouvrir le fil <span>→</span></a>
+        <a href="./Futures Antérieurs - Carte 4.dc.html" style="font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.16em;text-transform:uppercase;padding:14px 26px;border-radius:40px;border:1px solid #3a3a46;color:#b8a98f;display:inline-flex;align-items:center;gap:12px;align-self:flex-start;margin-top:4px;transition:background .35s cubic-bezier(.16,1,.3,1),color .35s ease,border-color .35s ease,gap .35s ease;" style-hover="background:#b8a98f;color:#17171c;border-color:#b8a98f;gap:20px;">Ouvrir le fil <span>→</span></a>
       </div>
 
       <div style="flex:1.15 1 250px;display:flex;flex-direction:column;gap:16px;border-left:1px solid #3a3a46;padding-left:clamp(18px,2vw,28px);min-width:0;">
@@ -293,6 +300,44 @@
   </div>
 </section>
 
+<section id="adresses" data-screen-label="La grammaire d'adressage" style="position:relative;z-index:5;background:#efece2;border-top:1px solid #d0ccbb;padding:104px 32px 110px;">
+  <div style="max-width:1240px;margin:0 auto;display:flex;flex-direction:column;gap:44px;">
+    <div style="display:flex;flex-direction:column;gap:16px;">
+      <div data-rv="1" style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:#4a4a55;">La grammaire d'adressage</div>
+      <h2 data-mask="1" style="font-weight:700;text-transform:uppercase;letter-spacing:-.04em;line-height:.92;font-size:clamp(26px,5.2vw,84px);max-width:1040px;">Chaque unité de sens a une adresse courte, stable, citable</h2>
+      <p data-rv="1" data-d="1" style="font-size:17px;line-height:1.5;color:#4a4a55;max-width:680px;text-wrap:pretty;">Fondation de tous les instruments. Les textes restent intacts ; le graphe vit à côté.</p>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:1px;background:#d0ccbb;border:1px solid #d0ccbb;">
+      <div data-rv="1" data-d="0" style="background:#efece2;padding:24px 22px;display:flex;flex-direction:column;gap:12px;transition:background .35s ease;" style-hover="background:#f7f5ef;">
+        <div style="font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#3d6600;">Carte 1</div>
+        <div style="font-family:'DM Mono',monospace;font-size:26px;letter-spacing:-.01em;">1:05</div>
+        <p style="font-size:14px;line-height:1.5;color:#4a4a55;">10 sections, § internes. <span style="font-family:'DM Mono',monospace;">1:05.6</span> pointe le paragraphe.</p>
+      </div>
+      <div data-rv="1" data-d="1" style="background:#efece2;padding:24px 22px;display:flex;flex-direction:column;gap:12px;transition:background .35s ease;" style-hover="background:#f7f5ef;">
+        <div style="font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#c4283a;">Carte 2</div>
+        <div style="font-family:'DM Mono',monospace;font-size:26px;letter-spacing:-.01em;">2:§77</div>
+        <p style="font-size:14px;line-height:1.5;color:#4a4a55;">221 fragments, 9 chapitres. <span style="font-family:'DM Mono',monospace;">2:ch9</span> pointe le chapitre.</p>
+      </div>
+      <div data-rv="1" data-d="2" style="background:#efece2;padding:24px 22px;display:flex;flex-direction:column;gap:12px;transition:background .35s ease;" style-hover="background:#f7f5ef;">
+        <div style="font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#1f5fc4;">Carte 3</div>
+        <div style="font-family:'DM Mono',monospace;font-size:26px;letter-spacing:-.01em;">3:III.3</div>
+        <p style="font-size:14px;line-height:1.5;color:#4a4a55;">Bifurcations et sous-sections. <span style="font-family:'DM Mono',monospace;">3:pref</span>, <span style="font-family:'DM Mono',monospace;">3:lettre</span>.</p>
+      </div>
+      <div data-rv="1" data-d="3" style="background:#efece2;padding:24px 22px;display:flex;flex-direction:column;gap:12px;transition:background .35s ease;" style-hover="background:#f7f5ef;">
+        <div style="font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#6b5f4a;">Carte 4</div>
+        <div style="font-family:'DM Mono',monospace;font-size:26px;letter-spacing:-.01em;">4:H38</div>
+        <p style="font-size:14px;line-height:1.5;color:#4a4a55;">Tours du fil. <span style="font-family:'DM Mono',monospace;">4:A38.gris</span> pointe la chaîne de pensée.</p>
+      </div>
+    </div>
+    <div data-rv="1" style="font-family:'DM Mono',monospace;font-size:12.5px;line-height:1.9;color:#4a4a55;border-top:1px solid #d0ccbb;padding-top:22px;">
+      Ancres profondes : <span style="color:#1a1a1f;">…/2#§77</span> · citation copiable avec son adresse · <span style="color:#1a1a1f;">liens.json</span> tient le graphe croisé, typé.
+    </div>
+    <div data-rv="1" style="display:flex;flex-wrap:wrap;gap:12px;">
+      <a href="./Futures Antérieurs - les Instruments.dc.html#adresses" style="font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.16em;text-transform:uppercase;padding:14px 26px;border-radius:40px;border:1px solid #b8b39c;color:#1f5fc4;display:inline-flex;align-items:center;gap:12px;transition:background .35s cubic-bezier(.16,1,.3,1),color .35s ease,border-color .35s ease,gap .35s ease;" style-hover="background:#1f5fc4;color:#f7f5ef;border-color:#1f5fc4;gap:20px;">Ouvrir l'index des adresses <span>→</span></a>
+    </div>
+  </div>
+</section>
+
 <footer style="position:relative;z-index:5;background:#17171c;color:#9a9ab0;padding:64px 32px 40px;font-family:'DM Mono',monospace;font-size:11.5px;line-height:1.9;letter-spacing:.04em;">
   <div style="max-width:1240px;margin:0 auto;display:flex;flex-wrap:wrap;gap:40px;justify-content:space-between;align-items:flex-end;">
     <div style="display:flex;flex-direction:column;gap:6px;">
@@ -305,11 +350,8 @@
       <span>La Porte — V1, août 2026</span>
     </div>
   </div>
-</footer>
-</template>
-
-<script src="assets/dc-lite.js"></script>
-<script type="module">
+</footer></x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;scrollLisse&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Mouvement&quot;}}">
 class Component extends DCLogic {
   // valeurs de départ justes, puis corrigées par le corpus lui-même
   state = {
@@ -469,7 +511,6 @@ class Component extends DCLogic {
     };
   }
 }
-DC.mount(Component, { scrollLisse: true });
 </script>
 </body>
 </html>

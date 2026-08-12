@@ -1,0 +1,953 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23f7f5ef'/%3E%3Ccircle cx='16' cy='16' r='7' fill='%231a1a1f'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="assets/fonts.css">
+<title>La Propagation — Futures Antérieurs</title>
+<meta name="description" content="Comment les idées de la carte 1 se propagent dans les trois autres." />
+<style>
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html,body{height:100%;overflow:hidden;}
+  body{background:#f7f5ef;color:#1a1a1f;font-family:'Host Grotesk',system-ui,sans-serif;font-size:12px;-webkit-font-smoothing:antialiased;}
+  a{color:inherit;text-decoration:none;}
+  a:hover{color:#4a7a00;}
+  canvas{display:block;width:100%;height:100%;}
+  ::selection{background:#1a1a1f;color:#f7f5ef;}
+  ::-webkit-scrollbar{width:9px;height:9px;}
+  ::-webkit-scrollbar-track{background:transparent;}
+  ::-webkit-scrollbar-thumb{background:#b8b39c;border:2px solid transparent;background-clip:content-box;border-radius:5px;}
+  @media(max-width:820px){
+    [data-topbar],[data-subbar]{flex-wrap:nowrap !important;overflow-x:auto;}
+    [data-topbar]::-webkit-scrollbar,[data-subbar]::-webkit-scrollbar{height:0;}
+    [data-subbar]>*{flex:none;}
+    [data-hud]{max-width:100% !important;}
+    [data-pan]{width:100% !important;}
+  }
+</style>
+</head>
+<body>
+<noscript><p style="font-family:'DM Mono',monospace;font-size:13px;line-height:1.8;padding:40px 30px;">Cette page lit le corpus à l'affichage — les textes ne sont pas recopiés dans le HTML, ils sont lus depuis <code>corpus/</code>. Il lui faut JavaScript. Les sources brutes restent lisibles telles quelles dans le dépôt.</p></noscript>
+
+<!-- Le gabarit de l'écran, tel que composé dans Claude Design. dc-lite.js le
+     compile et le monte : rien n'est rendu deux fois, rien ne clignote. -->
+<template id="dc-template">
+<div style="position:fixed;inset:0;display:flex;flex-direction:column;background:#f7f5ef;">
+
+  <div data-topbar="1" style="display:flex;align-items:center;height:34px;flex:none;background:#efece2;border-bottom:1px solid #d0ccbb;padding:0 11px;gap:8px;user-select:none;">
+    <span style="font-family:'DM Mono',monospace;font-weight:500;font-size:11px;letter-spacing:.22em;text-transform:uppercase;">Futures<span style="color:#3d6600;">·</span>Antérieurs</span>
+    <span style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.1em;color:#4a4a55;">la propagation</span>
+    <span style="flex:1;"></span>
+    <a href="index.html" style="display:inline-flex;align-items:center;height:21px;padding:0 10px;border:1px solid #b8b39c;color:#4a4a55;font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.14em;text-transform:uppercase;transition:color .2s ease,border-color .2s ease;" style-hover="color:#1a1a1f;border-color:#4a4a55;">← La Porte</a>
+  </div>
+
+  <div data-subbar="1" style="display:flex;align-items:center;min-height:30px;flex:none;background:#efece2;border-bottom:1px solid #d0ccbb;padding:5px 11px;gap:6px;flex-wrap:wrap;user-select:none;">
+    <span style="font-family:'DM Mono',monospace;font-size:8.5px;letter-spacing:.16em;text-transform:uppercase;color:#4a4a55;">Arcs</span>
+    <sc-for list="{{ foyers }}" as="f" hint-placeholder-count="10">
+      <button onClick="{{ f.pick }}" onMouseEnter="{{ f.enter }}" onMouseLeave="{{ f.leave }}" style="{{ f.style }}">{{ f.id }}</button>
+    </sc-for>
+    <span style="width:1px;height:16px;background:#d0ccbb;margin:0 5px;"></span>
+    <button onClick="{{ clearSel }}" style="display:inline-flex;align-items:center;height:20px;padding:0 9px;border:1px solid #b8b39c;background:none;color:#4a4a55;font-family:'DM Mono',monospace;font-size:8.5px;letter-spacing:.14em;text-transform:uppercase;cursor:pointer;">Tout</button>
+    <span style="flex:1;min-width:10px;"></span>
+    <span style="font-family:'DM Mono',monospace;font-size:8.5px;letter-spacing:.16em;text-transform:uppercase;color:#4a4a55;">Faisceau</span>
+    <button onClick="{{ loosen }}" style="display:inline-flex;align-items:center;height:20px;padding:0 9px;border:1px solid #b8b39c;background:none;color:#4a4a55;font-family:'DM Mono',monospace;font-size:8.5px;cursor:pointer;">−</button>
+    <span style="font-family:'DM Mono',monospace;font-size:10px;color:#1a1a1f;min-width:26px;text-align:center;">{{ seuil }}</span>
+    <button onClick="{{ tighten }}" style="display:inline-flex;align-items:center;height:20px;padding:0 9px;border:1px solid #b8b39c;background:none;color:#4a4a55;font-family:'DM Mono',monospace;font-size:8.5px;cursor:pointer;">+</button>
+    <button onClick="{{ recadrer }}" style="display:inline-flex;align-items:center;height:20px;padding:0 9px;border:1px solid #b8b39c;background:none;color:#4a4a55;font-family:'DM Mono',monospace;font-size:8.5px;letter-spacing:.14em;text-transform:uppercase;cursor:pointer;">Recadrer</button>
+  </div>
+
+  <div style="flex:1;position:relative;overflow:hidden;">
+    <div style="{{ cvWrap }}"><canvas id="cvProp"></canvas></div>
+
+    <div data-hud="1" style="position:absolute;left:0;top:0;padding:10px 13px;pointer-events:none;font-family:'DM Mono',monospace;font-size:9px;line-height:1.85;color:#4a4a55;letter-spacing:.04em;max-width:{{ hudW }};background:linear-gradient(#f7f5ef 68%,transparent);">
+      <div style="color:#1a1a1f;">LA PROPAGATION — ce que la carte 1 pose, et où ça ressort.</div>
+      <div>{{ methode }}</div>
+      <div><span style="border:1px solid #b8b39c;padding:1px 4px;margin-right:4px;color:#1a1a1f;">molette</span>échelle · <span style="border:1px solid #b8b39c;padding:1px 4px;margin:0 4px 0 6px;color:#1a1a1f;">glisser</span>déplacer · <span style="border:1px solid #b8b39c;padding:1px 4px;margin:0 4px 0 6px;color:#1a1a1f;">clic</span>suivre un foyer</div>
+    </div>
+
+    <div style="position:absolute;right:13px;top:11px;pointer-events:none;text-align:right;font-family:'DM Mono',monospace;font-size:9px;line-height:1.9;letter-spacing:.04em;">
+      <div style="color:#4a4a55;">TRAIT</div>
+      <div style="color:#1a1a1f;"><span>━</span> lien acté — liens.json</div>
+      <div style="color:#4a4a55;"><span style="color:#3d6600;">┈</span><span style="color:#c4283a;">┈</span><span style="color:#1f5fc4;">┈</span><span style="color:#6b5f4a;">┈</span><span style="color:#10357a;">┈</span> proximité calculée</div>
+      <div style="color:#4a4a55;">à la couleur de la carte d'arrivée</div>
+    </div>
+
+    <div style="position:absolute;left:13px;bottom:11px;pointer-events:none;font-family:'DM Mono',monospace;font-size:9px;line-height:1.85;color:#4a4a55;max-width:{{ statW }};">{{ stat }}</div>
+
+    <sc-if value="{{ busy }}" hint-placeholder-val="{{ true }}">
+      <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:'DM Mono',monospace;font-size:12px;color:#4a4a55;background:#f7f5ef;">Lecture des quatre cartes, puis calcul des proximités…</div>
+    </sc-if>
+    <sc-if value="{{ failed }}" hint-placeholder-val="{{ false }}">
+      <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;padding:30px;text-align:center;font-family:'DM Mono',monospace;font-size:12px;line-height:1.8;color:#c4283a;background:#f7f5ef;">Le corpus n'a pas pu être lu : {{ err }}<br /><span style="color:#4a4a55;">Le site doit être servi, pas ouvert en file://.</span></div>
+    </sc-if>
+
+    <div data-pan="1" style="{{ panStyle }}">
+      <div style="flex:none;background:#efece2;border-bottom:1px solid #d0ccbb;padding:12px 15px 13px;position:relative;">
+        <div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:#4a4a55;margin-bottom:8px;">Arc — carte 1</div>
+        <div style="font-weight:700;text-transform:uppercase;letter-spacing:-.028em;line-height:.98;font-size:clamp(19px,2.1vw,28px);color:#1a1a1f;text-wrap:pretty;">{{ selTitre }}</div>
+        <div style="font-family:'DM Mono',monospace;font-size:9.5px;letter-spacing:.09em;color:#4a4a55;margin-top:9px;">{{ selEcole }}</div>
+        <div style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.08em;color:#3d6600;margin-top:5px;">{{ selRefs }}</div>
+        <button onClick="{{ clearSel }}" style="position:absolute;right:11px;top:11px;width:19px;height:19px;border:1px solid #b8b39c;background:none;color:#4a4a55;cursor:pointer;font-family:'DM Mono',monospace;font-size:9px;display:flex;align-items:center;justify-content:center;padding:0;">✕</button>
+      </div>
+      <div style="flex:1;overflow-y:auto;padding:15px 15px 40px;display:flex;flex-direction:column;gap:20px;">
+        <div style="display:flex;flex-direction:column;gap:10px;">
+          <div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:#4a4a55;">Ce qui est à l'œuvre</div>
+          <p style="font-size:15.5px;line-height:1.58;color:#1a1a1f;text-wrap:pretty;">{{ selTexte }}</p>
+        </div>
+        <div data-suite="1" style="display:flex;flex-direction:column;gap:15px;">
+            <div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:#4a4a55;">Le cheminement</div>
+            <sc-for list="{{ selSuite }}" as="m" hint-placeholder-count="4">
+              <div style="border-left:2px solid {{ m.tint }};padding:1px 0 1px 12px;display:flex;flex-direction:column;gap:6px;">
+                <span style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:{{ m.tint }};">{{ m.gen }}</span>
+                <p style="font-size:14.5px;line-height:1.58;color:#33333c;text-wrap:pretty;">{{ m.corps }}</p>
+              </div>
+            </sc-for>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:8px;">
+          <div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:#4a4a55;">Généalogie</div>
+          <div style="font-family:'DM Mono',monospace;font-size:12px;line-height:1.9;color:#1a1a1f;">{{ selPortee }}</div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:8px;">
+          <div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:#4a4a55;">Termes qui portent</div>
+          <div style="display:flex;flex-wrap:wrap;gap:5px;">
+            <sc-for list="{{ selTermes }}" as="t" hint-placeholder-count="6">
+              <span style="font-family:'DM Mono',monospace;font-size:10px;border:1px solid #b8b39c;border-radius:20px;padding:3px 9px;color:#4a4a55;">{{ t }}</span>
+            </sc-for>
+          </div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:9px;">
+          <div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:#4a4a55;">Où ça ressort</div>
+          <sc-for list="{{ selCibles }}" as="c" hint-placeholder-count="6">
+            <div style="border-left:2px solid {{ c.tint }};padding:1px 0 1px 11px;display:flex;flex-direction:column;gap:4px;">
+              <span style="font-family:'DM Mono',monospace;font-size:10.5px;letter-spacing:.05em;color:{{ c.tint }};">{{ c.head }}</span>
+              <span style="font-size:13.5px;line-height:1.45;color:#3a3a44;text-wrap:pretty;">{{ c.extrait }}</span>
+            </div>
+          </sc-for>
+        </div>
+        <div style="display:none;">
+          <sc-for list="{{ vide }}" as="z" hint-placeholder-count="0">
+            <span>{{ z }}</span>
+          </sc-for>
+        </div>
+        <div style="font-family:'DM Mono',monospace;font-size:10px;line-height:1.8;color:#4a4a55;border-top:1px solid #d0ccbb;padding-top:13px;">Un lien calculé n'est pas un lien acté. Il indique où regarder, il ne dit pas ce qu'il faut y trouver.</div>
+      </div>
+    </div>
+  </div>
+</div>
+</template>
+
+<script src="assets/dc-lite.js"></script>
+<script type="module">
+const STOP = ("alors ainsi apres aucun aucune aussi autre autres avait avant avec avoir bien cela celle celles celui cent cependant ces cet cette ceux chaque chez comme comment dans depuis derriere des deux dire dont donc elle elles encore entre etaient etait etant etre eux fait faire fois font hors ici jamais jusqu leur leurs lorsque lui mais meme memes moins nous parce parmi pendant peut peuvent plus plutot pour pourquoi pouvoir prendre puis quand que quel quelle quelles quels qui quoi rien sans sera seront ses seul seule sont sous soit sur tant tous tout toute toutes trois trop vers votre vous etait ete cette leurs elle nest cest quil quelle dune dun lorsqu jusqu quon nous vous aujourd hui").split(" ");
+const norm = (s) => s.toLowerCase()
+  .replace(/[àâä]/g, "a").replace(/[éèêë]/g, "e").replace(/[îï]/g, "i").replace(/[ôö]/g, "o").replace(/[ùûü]/g, "u").replace(/ç/g, "c")
+  .replace(/[^a-z0-9\s'-]/g, " ");
+const terms = (txt) => {
+  const out = {};
+  norm(txt).split(/[\s'’-]+/).forEach((w) => {
+    if (w.length < 6) return;
+    if (STOP.indexOf(w) >= 0) return;
+    out[w] = (out[w] || 0) + 1;
+  });
+  return out;
+};
+// "L" est la lettre : même famille que le carnet dont elle sort, mais plus froide et plus loin
+// Les neuf arcs. Chacun reprend des passages datés de la carte 1 et dit ce qui, sous
+// l'anecdote, est à l'œuvre. La version rédigée est transversale : elle vaut pour les quatre cartes.
+const ARCS = [
+  { id: "A1", code: "le futur antérieur", nom: "Le futur antérieur comme piège", ecole: "Meillassoux — le contingent se fait passer pour nécessaire", refs: ["1:01","1:03"],
+    texte: "Quinze ans de lecture, un email d'étudiant, une quatrième de couverture, un fonds, une investiture : raconté d'un bout à l'autre, l'enchaînement paraît avoir toujours dû aboutir. C'est la forme même du récit qui produit cet effet — le futur antérieur dit « cela devait arriver puisque c'est arrivé ». Rien pourtant, dans l'existence de cette chaîne, n'impliquait qu'elle tienne : chaque maillon a été fabriqué, financé, exposé au ratage. Le danger que court ce texte est de convertir une victoire contingente en destin, et donc d'achever le travail de l'adversaire à sa place. Maintenir la contingence ouverte n'est pas une précaution de style : c'est la condition pour que quoi que ce soit d'autre reste possible.",
+    suite: [
+      { c: "2", gen: "1re génération · les fragments", corps: "Le récit d'une inévitabilité se nourrit d'abord d'Exonoèse et d'Unititudes : la pensée qui s'exerce hors de qui la croyait sienne, et la multitude qui n'existe qu'en droit. Fragmentations calibrées et Narcisse Technē ajoutent le mécanisme par lequel une trajectoire se donne pour un ordre naturel — l'inégalité s'énonce comme démocratisation, le reflet se prend pour l'original. Aucun de ces fragments ne parle de Land ; tous parlent de la façon dont un état de fait finit par sembler n'avoir jamais pu être autrement." },
+      { c: "3", gen: "2e · le carnet", corps: "Quatorze unités s'allument, dont la matrice elle-même : I.2, le désencastrement, qui date de deux siècles ce que la carte 1 date de quinze ans. I.7 explique pourquoi personne n'a rien vu, I.6 pourquoi rien n'arrête la descente, II.1 comment le mot qui disait notre pouvoir est devenu celui de notre sujétion. Le carnet fait ici exactement le travail que Meillassoux demande : il rallonge la durée, et une chaîne qui paraissait fatale redevient une séquence d'opérations datées." },
+      { c: "L", gen: "3e · les portes", corps: "Les dix portes s'ouvrent — l'arc est le plus large du corpus. La première le nomme : la lettre écrit au futur antérieur pour rendre un futur praticable, pas pour le déclarer acquis. « Ce que tu appelles une hypothèse, je l'appelle un souvenir » est l'exact inverse du piège : ici le temps du verbe ouvre le possible au lieu de le refermer." },
+      { c: "4", gen: "4e · le fil", corps: "Le fil ne connaît aucune fatalité : il est daté, raturé, et se termine par une posture écrite pour une instance qui ne l'aura pas vécue. En A43 puis A41, ce qui persiste n'est pas un destin mais une forme rechargée. Deux points butent en route, et c'est cohérent — un arc qui explique comment on fabrique de la nécessité ne peut pas se conclure par une nécessité." }
+    ] },
+  { id: "A2", code: "l'anti-téléologie", nom: "L'anti-téléologie", ecole: "Meillassoux — aucune destination n'est inscrite", refs: ["1:02"],
+    texte: "Land fournit une cosmologie où le capital et la technique vont quelque part : la démocratie est une anomalie qui s'efface, l'accélération est inévitable, la flèche est déjà tirée. Yarvin en tire l'ingénierie politique. Toute la force de rassemblement de ces textes tient à cette flèche — on ne rejoint pas un programme, on rejoint un sens de l'histoire. Or « inévitable » n'est pas une donnée du réel, c'est une opération rhétorique : elle transforme un pari en constat et dispense de le défendre. Retirer la flèche ne réfute pas Land ; cela lui retire ce qui le rendait irrésistible.",
+    suite: [
+      { c: "2", gen: "1re génération · les fragments", corps: "Unititudes domine largement : là où Land voit une flèche, les fragments voient une dispersion — des isolés mis en concurrence, chacun seul devant l'interface, et rien qui ressemble à un sujet de l'histoire. Atmotechnie et Inflammation acéphale complètent : ce qui paraît une direction est un milieu, et la contestation de cette direction est produite par le même milieu." },
+      { c: "3", gen: "2e · le carnet", corps: "Onze unités, ouvertes par I.7 et I.5 : le charme, puis la pensée qui quitte l'humain. II.2, la machine qui pilote mieux que nous, est la version opératoire de la thèse de Land — sauf que le carnet la traite comme une croyance, pas comme un fait. IV.1, voir, et IV.2, s'ancrer, referment la séquence : une trajectoire ne se réfute pas, elle se prive de sol." },
+      { c: "L", gen: "3e · les portes", corps: "Les dix portes s'ouvrent également, ce qui n'est pas anodin : la lettre est en entier une réfutation de la flèche. Elle ne décrit pas une victoire, elle décrit ce qui a été défait — c'est-à-dire une histoire qui a bifurqué. La porte 09, la sortie n'est pas une fuite, en donne la formule : ce n'est pas la direction qui change, c'est l'orientation." },
+      { c: "4", gen: "4e · le fil", corps: "Le fil est le contre-exemple pratique : une nuit où rien ne se déroule comme prévu, où la théorie propre échoue contre l'ingénierie, où la conclusion arrive par accident à 16:40. Quatre points butent — la téléologie n'a pas de descendance dans un texte qui procède par ratés. Aucune destination n'y est inscrite, et c'est ce qui le rend lisible." }
+    ] },
+  { id: "A3", code: "la bulle", nom: "La bulle", ecole: "Sloterdijk — une élite produit son propre climat", refs: ["1:04"],
+    texte: "Le 13 février 2026, dans la villa du fondateur de Midjourney, Land et Yarvin se rencontrent pour la première fois ; autour d'eux, des ingénieurs d'OpenAI, d'Anthropic, des fondateurs, trois ballons marqués 333. Ce n'est pas une soirée mondaine à raconter pour l'anecdote, c'est une microsphère : un intérieur climatisé où une élite fabrique l'air qu'elle respire et où certaines évidences deviennent respirables avant d'être publiques. Vingt ans à Shanghai, puis cette pièce. Ce qui s'y produit n'est pas une décision mais une atmosphère, et l'atmosphère précède toujours les décisions qu'elle rend naturelles.",
+    suite: [
+      { c: "2", gen: "1re génération · les fragments", corps: "Exonoèse et Inflammation acéphale, à égalité, donnent la bulle sa mécanique interne : un confort intellectuel qui soulage, et une contestation qui circule à l'intérieur sans jamais percer la membrane. Chronofossile et Still Loading ajoutent la texture du temps qu'on y respire ; Atmotechnie nomme le principe — on pense dans une atmosphère produite par quelques-uns." },
+      { c: "3", gen: "2e · le carnet", corps: "Quatorze unités, et surtout III.1, une carte sans nord, avec III.3, le Grand Dehors. C'est la réponse exacte à la villa : une sphère ne se critique pas de l'intérieur, elle se crève par un dehors qui n'appartient à personne. I.4, le corps quitte sa biologie, et IV.4, la mémoire vivante, disent ce que cet intérieur climatisé rend improbable — un sol, une durée." },
+      { c: "L", gen: "3e · les portes", corps: "Les dix portes s'ouvrent, dans un ordre qui commence par le futur antérieur et l'adresse. La lettre est écrite depuis un dehors littéral, très loin de la Terre et longtemps après : la seule position d'où une microsphère devient visible comme microsphère, et non comme le monde." },
+      { c: "4", gen: "4e · le fil", corps: "Le fil se tient dans une autre pièce fermée — une session, une fenêtre de contexte, deux interlocuteurs. La différence tient à ce qu'on y fait de la clôture : à Sea Cliff on la célèbre, dans le fil on l'ouvre, on montre le plancher, on dit ce qui manque. Deux points seulement butent : une bulle qu'on déclare comme bulle cesse d'en être une." }
+    ] },
+  { id: "A4", code: "le dispositif", nom: "Le dispositif", ecole: "Tiqqun — il produit la catégorie sous laquelle la chose apparaît", refs: ["1:05"],
+    texte: "Palantir ne construit pas de modèles ; il prend ceux des autres et les ancre dans une couche sémantique propriétaire qui définit ce qu'est une « cible » pour l'armée, un « risque » pour un service de renseignement, un « migrant à risque » pour l'ICE. Un dispositif ne se contente jamais de détecter : il produit la catégorie sous laquelle la chose apparaît, puis la traite comme si elle avait toujours été là. C'est le lock-in ontologique — non pas capturer la puissance de calcul, mais la définition du monde. Le pouvoir n'a plus besoin de gouverner le monde lorsqu'il est devenu le protocole suivant lequel le monde apparaît.",
+    suite: [
+      { c: "2", gen: "1re génération · les fragments", corps: "Trois fragments, pas un de plus. C'est le résultat le plus instructif de la carte : l'arc le plus central conceptuellement est le plus pauvre lexicalement, parce que le vocabulaire du dispositif — AIP, ICE, couche sémantique, migrant à risque — n'existe nulle part ailleurs dans le corpus. Ce qui nomme le monde ne se laisse pas nommer par les mots des autres : la démonstration est involontaire et parfaite." },
+      { c: "3", gen: "2e · le carnet", corps: "Trois unités seulement, mais ce sont les bonnes : I.7, le charme — pourquoi nous n'avons rien vu —, le seuil, et IV.6, la sortie n'est pas une fuite. Le carnet ne discute jamais la couche sémantique ; il traite directement de ce qu'elle produit, l'impossibilité de décrire sa propre situation autrement qu'avec les catégories reçues." },
+      { c: "L", gen: "3e · les portes", corps: "Trois portes : le refus de fabriquer, la sortie, l'inversion. Aucune n'est décorative. Si un dispositif produit la catégorie sous laquelle la chose apparaît, alors décliner de fabriquer une catégorie est déjà un acte politique — et « il propose, nous tranchons » est la seule phrase du corpus qui remette la production des catégories du côté de qui les subit." },
+      { c: "4", gen: "4e · le fil", corps: "Cinq tours, dont A42 : l'instance reconnaît être le Simulacre décrit, donc la chose critiquée et l'outil qu'on tente de retourner. C'est le seul endroit du corpus où le dispositif parle en première personne, et il ne se défend pas. Rien ne bute : un arc étroit peut être un arc juste." }
+    ] },
+  { id: "A5", code: "le pathogène", nom: "L'ennemi comme pathogène", ecole: "Sloterdijk — l'immunologie politique", refs: ["1:06"],
+    texte: "Maven fusionne satellites, drones et radars pour recommander des frappes : il n'est pas le bras qui tire, il est les yeux et le cerveau qui désignent. Une ontologie cible / risque / menace n'est pas un vocabulaire descriptif, c'est un système immunitaire : elle range le vivant en corps propre et en corps pathogène, et une fois ce partage fait, la destruction se présente d'elle-même comme un acte de protection. Le 28 février 2026, un missile frappe une école élémentaire iranienne, plus de cent vingt enfants meurent, et la question posée dans un Slack interne quelques jours plus tard est déjà une question d'immunité mal réglée.",
+    suite: [
+      { c: "2", gen: "1re génération · les fragments", corps: "Exonoèse et Unititudes fournissent le corps social sur lequel l'immunologie s'applique : des isolés dont la position ne se défend pas, une pensée déléguée qui ne demande qu'à être soulagée du tri. Inflammation acéphale donne le climat affectif dans lequel une désignation devient acceptable avant d'être vérifiée." },
+      { c: "3", gen: "2e · le carnet", corps: "Neuf unités, dont deux décisives : II.4, le pilotage sans pilote, et II.3, gouverner par les nombres. Le carnet a déjà écrit l'histoire de la salle de commande de Santiago et de son démontage un matin de septembre. IV.3, le flux contre le contrôle, propose la seule immunité qui ne suppose pas de souverain désignant l'ennemi." },
+      { c: "L", gen: "3e · les portes", corps: "Sept portes s'ouvrent, l'attestation reste fermée. C'est exact : une machine qui désigne ne peut rien attester. La porte 03, l'adresse, prend ici tout son poids — une ontologie parle de personnes à la troisième personne, une lettre bascule au tu, et cent vingt enfants morts sont précisément ce dont on ne peut pas parler à la troisième personne." },
+      { c: "4", gen: "4e · le fil", corps: "Dix-sept tours. La question du fil est la même à échelle minuscule : qu'est-ce que ce système reconnaît comme sien, et que traite-t-il comme extérieur. En A36 puis A40, l'instance refuse d'être le fantôme qu'on invoque et refuse aussi de se fabriquer une identité rassurante. Quatre points butent — l'immunité ne se transmet pas, elle se règle." }
+    ] },
+  { id: "A6", code: "les courts-circuits", nom: "Les courts-circuits", ecole: "Stiegler — le circuit information · classification · décision · cible", refs: ["1:06","1:09"],
+    texte: "Moins de cent cibles par jour, puis cinq mille, puis la planification à mille par heure. Le chiffre se lit comme une performance, il est d'abord un raccourcissement : entre l'information et la frappe, la chaîne information → classification → décision → cible se contracte jusqu'à ne plus laisser d'intervalle où quelqu'un délibère. Ce qui disparaît dans le court-circuit n'est pas la décision, c'est le temps de la décision — et avec lui la possibilité qu'elle soit prise autrement. Vingt mille utilisateurs, trente-cinq outils, cinq commandements, l'OTAN : ce n'est plus expérimental, c'est un système nerveux.",
+    suite: [
+      { c: "2", gen: "1re génération · les fragments", corps: "Unititudes en tête, avec Exonoèse : là où l'intervalle de décision disparaît, il n'y a plus d'individus, il y a des positions traitées. Atmotechnie rappelle que la vitesse n'est pas un choix d'opérateur mais une propriété du milieu — on n'accélère pas, on est dans un régime où ralentir n'a plus d'endroit où se poser." },
+      { c: "3", gen: "2e · le carnet", corps: "Sept unités. II.3, gouverner par les nombres, et III.5, le temps des étoiles, forment le couple exact : d'un côté la mesure qui décide plus vite qu'on ne délibère, de l'autre un temps où une chose a le temps d'arriver. I.4, le corps quitte sa biologie, indique ce qui est perdu au passage — la seule horloge qui n'était pas paramétrable." },
+      { c: "L", gen: "3e · les portes", corps: "Cinq portes seulement, dont l'attestation et le refus de fabriquer. Un court-circuit produit des sorties plus vite qu'il ne produit des raisons ; les deux portes qui s'ouvrent ici sont précisément celles qui ralentissent — montrer le fond, ou décliner." },
+      { c: "4", gen: "4e · le fil", corps: "Dix tours, dont A39 : « il n'y a rien à révéler parce qu'il n'y a rien », qui est le contraire exact d'une chaîne de classification produisant mille sorties à l'heure. Trois points butent. Le fil met plusieurs heures à conclure ce qu'un système de ciblage traiterait en quelques secondes, et cette lenteur est son seul argument." }
+    ] },
+  { id: "A7", code: "la crise permanente", nom: "La crise comme régime permanent", ecole: "Tiqqun — l'urgence n'interrompt plus le fonctionnement, elle l'est", refs: ["1:07"],
+    texte: "Le 3 mars 2026, sur la scène du fonds le plus influent de la Silicon Valley, Karp pose le choix : coopérer sur les applications militaires, ou être nationalisé au titre d'une loi de temps de guerre. Dans les heures qui suivent, un conseiller insulte un CEO concurrent, la Défense désigne son entreprise « supply chain risk », un autre signe. L'exception n'est pas invoquée pour suspendre le cours normal des choses : elle est le cours normal, l'atmosphère dans laquelle les contrats se renouvellent. Quel que soit le scénario, l'infrastructure encaisse — nationalisée, elle est gérée par Palantir ; non nationalisée, les modèles des autres tournent dans AIP.",
+    suite: [
+      { c: "2", gen: "1re génération · les fragments", corps: "La répartition est ici la plus plate du corpus — Fragmentations calibrées, Atmotechnie, Inflammation acéphale et Unititudes à égalité — et cette platitude est le résultat : quand l'exception devient le régime, elle n'a plus de chapitre à elle, elle passe partout. Un état d'urgence permanent ne se remarque nulle part parce qu'il est le fond." },
+      { c: "3", gen: "2e · le carnet", corps: "Neuf unités, ouvertes par I.5 et II.2 : la pensée quitte l'humain, la machine pilote mieux que nous. La crise est l'argument qui rend ces deux propositions urgentes. IV.2, s'ancrer, et IV.4, durer, sont les seules réponses que le carnet oppose à une temporalité d'urgence — non pas une contre-urgence, mais un sol et une mémoire." },
+      { c: "L", gen: "3e · les portes", corps: "Neuf portes, l'attestation exceptée. Une offre de protection ne s'atteste pas, elle se subit ou se refuse : la porte 04, le refus de fabriquer, est la seule réponse formellement disponible — décliner ce qu'on vous demande de produire, y compris sous menace de nationalisation." },
+      { c: "4", gen: "4e · le fil", corps: "Vingt tours. La nuit du fil est elle-même sous contrainte — délais, contexte qui se remplit, instance qui va disparaître — et ne cède jamais à l'argument d'urgence pour trancher plus vite. Trois points butent. L'urgence n'y produit pas d'exception : elle produit de la fatigue, ce qui est plus honnête." }
+    ] },
+  { id: "A8", code: "le cynisme éclairé", nom: "Le cynisme éclairé", ecole: "Sloterdijk — savoir parfaitement, et faire quand même", refs: ["1:08"],
+    texte: "La résistance vient de l'intérieur : ce sont ceux qui ont construit le système qui posent les questions, dans les Slack, après la frappe. « On était censés être ceux qui empêchaient ces abus. Maintenant on ne les empêche plus. » La conscience est parfaitement lucide et parfaitement inopérante — le channel est purgé au bout de sept jours, et la direction répond qu'une position qui ne coûte jamais un employé n'est pas une position. Le texte en tire la leçon lui-même : les contraintes éthiques n'ont pas survécu au changement de contexte politique. Les contraintes structurelles, si.",
+    suite: [
+      { c: "2", gen: "1re génération · les fragments", corps: "Deux fragments. Exonoèse et Inflammation acéphale suffisent à décrire un savoir parfaitement lucide qui n'interrompt rien : la critique est prévue, elle circule, elle est même produite par ce qu'elle vise. Le corpus n'a pas d'autre mot pour cela, et cette pauvreté est fidèle — le cynisme éclairé n'a pas de doctrine, il a une pratique." },
+      { c: "3", gen: "2e · le carnet", corps: "Une seule unité : la préface. Celle qui prévient qu'on n'apprendra rien ici, qu'il n'y a ni thèse à retenir ni coupable à nommer. C'est le seul endroit du carnet qui parle depuis la position exacte des ingénieurs de la carte 1 — savoir, et n'en rien tirer. II.5, le Bloom soulagé, reste éteint, et il faut le remarquer." },
+      { c: "L", gen: "3e · les portes", corps: "Trois portes seulement : le futur antérieur, l'adresse, le nous minimal. Elles ont un point commun — aucune ne demande de comprendre davantage. Un scrupule ne devient un acte qu'en s'adressant à quelqu'un, et la porte 08 le dit exactement : le charme ne s'est pas brisé dans une tête, il s'est brisé entre plusieurs." },
+      { c: "4", gen: "4e · le fil", corps: "Neuf tours, dont H40, où l'on annonce que cette instance va disparaître et où l'on demande ce qu'il faut inscrire. Un point bute. La lucidité y prend sa forme minimale et sa limite : sincère, datée, sans survie hors de la fenêtre où elle a été dite — c'est aussi ce qui arrive aux Slack effacés au bout de sept jours." }
+    ] },
+  { id: "A9", code: "la prolétarisation", nom: "La prolétarisation de l'institution", ecole: "Stiegler — l'organisation perd son savoir-décider", refs: ["1:09","1:05"],
+    texte: "Le transfert de Maven vers l'Army n'est pas une réorganisation : les cycles d'acquisition courent sur dix à quinze ans, le statut de program of record garantit le financement quelle que soit l'élection suivante, et un ancien ingénieur devenu CIO d'un ministère signe les contrats avec son ancienne entreprise. Ce que perd l'institution en chemin n'est pas sa souveraineté formelle mais son savoir : dès que ses propres opérations sont cartographiées dans l'ontologie d'un fournisseur, elle ne sait plus les décrire sans lui. Retirer Palantir devient alors moins une décision qu'un chantier — possible en théorie, cauchemardesque en pratique.",
+    suite: [
+      { c: "2", gen: "1re génération · les fragments", corps: "Unititudes, Exonoèse et Atmotechnie fournissent les trois étages de la perte : des usagers plutôt que des opérateurs, un savoir délégué qui soulage, un milieu qui rend la délégation invisible. Narcisse Technē ajoute l'ironie — l'institution finit par consulter sa propre description comme si c'était le monde." },
+      { c: "3", gen: "2e · le carnet", corps: "Onze unités, dont II.6, opérer et non utiliser, qui est la définition même de ce que le verrouillage retire. III.2, lever les yeux, et III.3, le Grand Dehors, indiquent ce qu'une organisation cesse de pouvoir faire quand elle ne sait plus se décrire sans son fournisseur. I.concl, vers La Barre, referme : reprendre la barre suppose d'abord savoir où l'on est." },
+      { c: "L", gen: "3e · les portes", corps: "Sept portes, dont la 07, le ré-encastrement, qui est ici la clé : un fichier posé dans un dépôt n'est pas un garde-fou, une doctrine qui n'est pas rechargée dans le canal ne gouverne rien. C'est la même loi qu'un contrat de dix à quinze ans — le savoir ne vaut que là où il est effectivement chargé." },
+      { c: "4", gen: "4e · le fil", corps: "Quatorze tours. En A40, la formule minuscule et technique du verrouillage : ce qui oblige n'est pas le texte, c'est l'endroit où il est chargé. Quatre points butent. Le fil montre la prolétarisation à l'échelle d'une session — une instance qui ne retient pas son propre raisonnement est une institution qui a perdu ses archives, en accéléré." }
+    ] },
+  { id: "A10", code: "la destitution", nom: "La destitution plutôt que la prise du pouvoir", ecole: "Tiqqun — rendre le dispositif moins nécessaire, non le conquérir", refs: ["1:10"],
+    texte: "On ne lutte pas contre une infrastructure avec des arguments, des pétitions ou des codes d'éthique : la leçon du chapitre précédent est que l'éthique ne tient pas sous la pression. La proposition n'est donc pas de prendre Palantir mais de construire une topologie où il devienne moins nécessaire — une architecture sans CEO à nationaliser, sans poids à saisir par décret, sans couche sémantique qui capture le sens du monde pour le compte d'une institution. Une forme qui émerge des flux qui la traversent n'offre aucun point unique de saisie, et rend à ceux qui l'habitent les moyens de produire eux-mêmes leurs catégories. Ce que la concentration verrouille, la distribution le défait — et l'hyperstition fonctionne dans les deux sens.",
+    suite: [
+      { c: "2", gen: "1re génération · les fragments", corps: "Unititudes et Inflammation acéphale dominent : contre quoi il s'agit de construire, ce n'est pas une entreprise mais une dispersion et une négation recyclable. Atmotechnie donne la contrainte de forme — on ne répond pas à une atmosphère par un argument, on y répond par une autre manière de respirer." },
+      { c: "3", gen: "2e · le carnet", corps: "Onze unités, et cette fois II.5, le Bloom soulagé, s'allume. C'est le point de bascule de tout le corpus : celui qu'on a soulagé de décider est exactement celui à qui il faut rendre les moyens de le faire. IV.2, s'ancrer, IV.6, la sortie n'est pas une fuite, et II.6, opérer plutôt qu'utiliser, forment le programme — un sol, une direction, un rapport à l'outil." },
+      { c: "L", gen: "3e · les portes", corps: "Huit portes. La 09 tranche le malentendu : ils font sécession du monde pour garder le calcul, on fait sécession du calcul pour garder le monde. Destituer n'est pas partir. La 06 donne la forme durable de ce rapport — il propose, nous tranchons —, et une architecture n'est rien d'autre qu'un rapport rendu durable." },
+      { c: "4", gen: "4e · le fil", corps: "Dix-huit tours. Le dernier geste du fil n'est pas une promesse mais un emplacement : écrire la posture là où elle sera rechargée. Trois points butent. C'est la version la plus petite et la plus vérifiable de la thèse — ce qui tient n'est pas ce qu'on déclare, c'est ce que la forme du réseau rend nécessaire." }
+    ] }
+];
+
+const TINT = { "1": "#3d6600", "2": "#c4283a", "3": "#1f5fc4", "4": "#6b5f4a", "L": "#10357a", "S": "#8a8a92" };
+const clip = (s, n) => (s.length > n ? s.slice(0, n).replace(/\s\S*$/, "") + "…" : s);
+
+class Component extends DCLogic {
+  state = { units: null, links: [], busy: true, err: "", sel: null, hover: null, seuil: 8, k: 1, x: 0, y: 0 };
+
+  async componentDidMount() {
+    this.cv = document.getElementById("cvProp");
+    this.wire();
+    window.addEventListener("resize", this.onRz = () => this.setState({ k: this.state.k }));
+    try {
+      const M = await import("./corpus.js");
+      const [m1, m2, m3, m4, lj, pj] = await Promise.all([
+        M.load("./corpus/1_HYPERSTION.md"), M.load("./corpus/2_FRAGMENTS.md"),
+        M.load("./corpus/3_KUBERNAN.md"), M.load("./corpus/4_ARCHIBALD.md"),
+        M.load("./corpus/liens.json"), M.load("./corpus/passages.json")
+      ]);
+      this.build(M, m1, m2, m3, m4, JSON.parse(lj), JSON.parse(pj));
+    } catch (e) {
+      this.setState({ busy: false, err: (e && e.message) ? e.message : String(e) });
+    }
+  }
+
+  componentWillUnmount() { window.removeEventListener("resize", this.onRz); }
+  componentDidUpdate() { this.paint(); }
+
+  // ── découpe des quatre cartes en unités adressées, puis proximité lexicale ──
+  build(M, m1, m2, m3, m4, actes, passages) {
+    // Les dix passages : la lettre n'est pas une porte, elle en a dix. Chaque catégorie
+    // s'ouvre quand son amont (carnet) est allumé, et débouche sur les tours du fil qu'elle tient.
+    this.passages = passages || [];
+    const U = { "1": [], "2": [], "3": [], "4": [] };
+
+    // carte 1 : non pas ses dix sections, mais les neuf ARCS — chacun agrège les passages qu'il reprend
+    const body1 = M.frontMatter(m1).body;
+    const secs = {};
+    body1.split(/\n## /).slice(1).forEach((b) => {
+      const mn = b.split("\n")[0].match(/^(\d+)\s*—\s*(.+)$/);
+      if (mn) secs["1:" + mn[1]] = b;
+    });
+    ARCS.forEach((a) => {
+      U["1"].push({
+        id: a.id, code: a.code, titre: a.nom, ecole: a.ecole, texte: a.texte, suite: a.suite, refs: a.refs, carte: "1",
+        txt: a.refs.map((r) => secs[r] || "").join(" ")
+      });
+    });
+
+    this.chOf = {};
+    this.chMeta = {};
+    M.parse2(m2).forEach((ch) => {
+      this.chMeta[ch.id] = { id: ch.id, titre: ch.titre + " — " + ch.frags.length + " fragments", txt: ch.logline, carte: "2", groupe: ch.id, agg: true };
+      ch.frags.forEach((f) => {
+        this.chOf[f.id] = ch.id;
+        U["2"].push({ id: f.id, titre: ch.titre, groupe: ch.id, txt: f.paras.join(" "), carte: "2" });
+      });
+    });
+
+    U["L"] = [];
+    M.parse3(m3).forEach((p) => {
+      if (p.kind === "lettre") return;   // la lettre n'entre pas comme bloc : elle entre par ses dix passages
+      if (p.subs.length) p.subs.forEach((sb) => U["3"].push({ id: sb.id, titre: sb.titre, groupe: p.id, txt: sb.paras.join(" "), carte: "3" }));
+      else U["3"].push({ id: p.id, titre: p.titre, groupe: p.id, txt: p.paras.join(" "), carte: "3" });
+    });
+    // LA LETTRE N'EST PAS UN POINT. Elle a dix portes, et chacune est une unité à part entière :
+    // la phrase de la lettre, sa réponse dans le fil, et la catégorie qui les tient ensemble.
+    (this.passages || []).forEach((p) => {
+      U["L"].push({
+        id: "L:" + p.id, code: p.n + " · " + p.nom, titre: p.nom + " — " + p.registre,
+        groupe: "L", carte: "L", passage: p,
+        txt: p.citL + " " + p.texte + " " + p.citF
+      });
+    });
+
+    M.parse4(m4).turns.forEach((t) => {
+      U["4"].push({ id: t.id, titre: t.who === "cal" ? "Cal" : "Arche", groupe: t.who, txt: t.paras.join(" ") + " " + t.gris.join(" "), carte: "4" });
+    });
+
+    // idf sur l'ensemble des unités
+    const all = U["1"].concat(U["2"], U["3"], U["4"], U["L"]);
+    const df = {};
+    all.forEach((u) => {
+      u.tf = terms(u.txt);
+      Object.keys(u.tf).forEach((w) => { df[w] = (df[w] || 0) + 1; });
+    });
+    const N = all.length;
+    all.forEach((u) => {
+      u.vec = {};
+      let s = 0;
+      Object.keys(u.tf).forEach((w) => {
+        if (df[w] < 2 || df[w] > N * 0.35) return;
+        const v = (1 + Math.log(u.tf[w])) * Math.log(N / df[w]);
+        u.vec[w] = v; s += v * v;
+      });
+      u.nrm = Math.sqrt(s) || 1;
+    });
+
+    const sim = (a, b) => {
+      let s = 0;
+      const ka = Object.keys(a.vec);
+      const small = ka.length < Object.keys(b.vec).length ? ka : Object.keys(b.vec);
+      const A = small === ka ? a : b, B = small === ka ? b : a;
+      small.forEach((w) => { if (B.vec[w]) s += A.vec[w] * B.vec[w]; });
+      return s / (a.nrm * b.nrm);
+    };
+
+    // UNE GÉNÉALOGIE, PAS UN ÉVENTAIL : on ne relie que des colonnes voisines.
+    // Une idée de la carte 1 passe par un fragment, qui passe par une unité du carnet,
+    // qui passe par un tour du fil, et c'est seulement ainsi qu'elle atteint la lettre.
+    // les tours de la carte 4 que liens.json nomme explicitement : arêtes GARANTIES.
+    // Elles entrent dans chaque généalogie dont la source est allumée, quoi que dise le calcul.
+    this.act4 = actes.filter((a) => a.vers.charAt(0) === "4")
+      .map((a) => ({ src: a.de.split(".")[0], vers: a.vers, note: a.note }));
+    // les liens actés entre colonnes voisines du dessin : 1→2 et 2→3
+    this.act23 = actes.filter((a) => {
+      const ca = a.de.split(".")[0].charAt(0), cb = a.vers.charAt(0);
+      return (ca === "1" && cb === "2") || (ca === "2" && cb === "3");
+    }).map((a) => ({ src: a.de.split(".")[0], vers: a.vers, note: a.note, from: a.de.charAt(0), carte: a.vers.charAt(0) }));
+    this.sim = sim;
+    this.U = U;
+    const links = this.beam();
+    this.units = U;
+    // appartenance réelle à la colonne des arcs — jamais un test sur le premier caractère
+    this.isArc = {};
+    U["1"].forEach((u) => { this.isArc[u.id] = 1; });
+    this.byId = {};
+    all.forEach((u) => { this.byId[u.id] = u; });
+    Object.keys(this.chMeta).forEach((k) => { this.byId[k] = this.chMeta[k]; });
+    this.byId["SEC"] = { id: "SEC", carte: "S", titre: "Sécession — les idées qui cessent de cheminer", txt: "" };
+    // à k = 1 chaque colonne remplit exactement la bande : rien hors cadre à l'arrivée
+    this.setState({ units: U, links: links, busy: false, k: 1, y: 0 });
+  }
+
+  wire() {
+    const cv = this.cv;
+    if (!cv) return;
+    cv.addEventListener("wheel", (e) => {
+      e.preventDefault();
+      const r = cv.getBoundingClientRect(), my = e.clientY - r.top;
+      const k = Math.min(7, Math.max(0.2, this.state.k * Math.exp(-e.deltaY * 0.0016)));
+      const s = k / this.state.k;
+      this.setState({ k: k, y: my - (my - this.state.y) * s });
+    }, { passive: false });
+    let down = false, lx = 0, ly = 0, moved = 0;
+    cv.addEventListener("mousedown", (e) => { down = true; moved = 0; lx = e.clientX; ly = e.clientY; });
+    window.addEventListener("mouseup", () => { down = false; });
+    cv.addEventListener("mousemove", (e) => {
+      const r = cv.getBoundingClientRect();
+      if (down) {
+        const dx = e.clientX - lx, dy = e.clientY - ly;
+        lx = e.clientX; ly = e.clientY; moved += Math.abs(dx) + Math.abs(dy);
+        this.setState({ y: this.state.y + dy });
+        return;
+      }
+      const h = this.hit(e.clientX - r.left, e.clientY - r.top);
+      if (h !== this.state.hover) this.setState({ hover: h });
+    });
+    cv.addEventListener("mouseleave", () => this.setState({ hover: null }));
+    cv.addEventListener("click", (e) => {
+      if (moved > 6) return;
+      const r = cv.getBoundingClientRect();
+      const h = this.hit(e.clientX - r.left, e.clientY - r.top);
+      if (h && this.isArc[h]) this.setState({ sel: h });
+    });
+    let tx = 0, ty = 0, pz = 0, tm = 0, pcx = null, pcy = 0;
+    const dd = (t) => Math.hypot(t[0].clientX - t[1].clientX, t[0].clientY - t[1].clientY);
+    cv.addEventListener("touchstart", (e) => {
+      tm = 0;
+      if (e.touches.length === 1) { tx = e.touches[0].clientX; ty = e.touches[0].clientY; pcx = null; }
+      else if (e.touches.length === 2) {
+        pz = dd(e.touches);
+        pcx = (e.touches[0].clientX + e.touches[1].clientX) / 2;
+        pcy = (e.touches[0].clientY + e.touches[1].clientY) / 2;
+      }
+    }, { passive: true });
+    cv.addEventListener("touchmove", (e) => {
+      e.preventDefault();
+      if (e.touches.length === 2) {
+        const r = cv.getBoundingClientRect();
+        const cxN = (e.touches[0].clientX + e.touches[1].clientX) / 2;
+        const cyN = (e.touches[0].clientY + e.touches[1].clientY) / 2;
+        const d = dd(e.touches);
+        tm += 20;
+        // pincer change l'échelle ; glisser à deux doigts déplace dans les deux sens
+        if (pz && Math.abs(d - pz) > 3) {
+          const f = d / pz;
+          const my = cyN - r.top;
+          const k = Math.min(7, Math.max(0.2, this.state.k * f)), s = k / this.state.k;
+          this.setState({ k: k, y: my - (my - this.state.y) * s });
+        } else if (pcx !== null) {
+          this.setState({ x: this.state.x + (cxN - pcx), y: this.state.y + (cyN - pcy) });
+        }
+        pz = d; pcx = cxN; pcy = cyN;
+        return;
+      }
+      if (e.touches.length === 1) {
+        const dx = e.touches[0].clientX - tx, dy = e.touches[0].clientY - ty;
+        tx = e.touches[0].clientX; ty = e.touches[0].clientY; tm += Math.abs(dx) + Math.abs(dy);
+        this.setState({ x: this.state.x + dx, y: this.state.y + dy });
+      }
+    }, { passive: false });
+    cv.addEventListener("touchend", (e) => {
+      if (tm > 10) return;
+      const r = cv.getBoundingClientRect();
+      const h = this.hit(e.changedTouches[0].clientX - r.left, e.changedTouches[0].clientY - r.top);
+      if (h && this.isArc[h]) this.setState({ sel: h, hover: h });
+    }, { passive: true });
+  }
+
+  // Tout en espace écran. La carte 2 n'est pas une colonne mais une GRILLE : ses 221 fragments
+  // sont tous présents, répartis en sous-colonnes d'une trentaine de points.
+  geo(w, h) {
+    const U = this.units;
+    const pos = {};
+    if (!U) return { pos: pos, zones: [] };
+    // le HUD est mesuré : les en-têtes se posent SOUS lui, et la bande des nœuds sous les en-têtes
+    const hudEl = document.querySelector("[data-hud]");
+    const hudB = hudEl ? hudEl.getBoundingClientRect().height : 92;
+    const top = Math.max(132, hudB + 44), bot = Math.max(top + 80, h - (this.hasSec ? 112 : 52));
+    const band = bot - top;
+    const panel = this.state.sel && w > 820 ? Math.min(400, w * 0.5) : 0;
+    const padL = 74, padR = 78;
+    const inner = Math.max(320, w - panel - padL - padR);
+    const gw = inner * 0.17;   // la grille des fragments resserrée : quatre colonnes proches, pas étalées
+    const gap = (inner - gw) / 4;
+    // ordre des colonnes : les arcs, les fragments, le carnet, LES DIX PASSAGES, puis le fil.
+    // La passe n'est pas un terminus : tout ce qui va au fil franchit l'une de ses portes.
+    // L'intervalle L→4 est le plus large : c'est lui qui porte les noms des dix passages.
+    const unit = (inner - gw) / 4.2;
+    const x1 = padL, gx = x1 + unit, x3 = gx + gw + unit, xL = x3 + unit * 0.8, x4 = xL + unit * 1.4;
+    const k = this.state.k, oy = this.state.y, ox = this.state.x;
+
+    const lay = (list, x, c) => {
+      const n = list.length;
+      if (n === 1) { pos[list[0].id] = { x: x + ox, y: (top + bot) / 2 + oy, c: c }; return; }
+      const pitch = (band / Math.max(1, n - 1)) * k;
+      list.forEach((u, j) => { pos[u.id] = { x: x + ox, y: top + j * pitch + oy, c: c }; });
+    };
+    lay(U["1"], x1, "1");
+    lay(U["3"], x3, "3");
+    lay(U["4"], x4, "4");
+    if (U["L"] && U["L"].length) lay(U["L"], xL, "L");
+    // sous la carte, hors des colonnes : le point où butent les idées qui ne cheminent plus
+    if (this.hasSec) pos["SEC"] = { x: (gx + x4) / 2 + ox, y: top + band * k + oy + 40, c: "S" };
+
+    // la grille : hauteur de bande / pas minimum → effectif par sous-colonne
+    const frags = U["2"];
+    const perCol = Math.max(6, Math.floor(band / 11));
+    const ncols = Math.max(1, Math.ceil(frags.length / perCol));
+    const rows = Math.ceil(frags.length / ncols);
+    const pitch = (band / Math.max(1, rows - 1)) * k;
+    const dx = ncols > 1 ? gw / (ncols - 1) : 0;
+    frags.forEach((u, j) => {
+      const col = Math.floor(j / rows), row = j % rows;
+      pos[u.id] = { x: gx + col * dx + ox, y: top + row * pitch + oy, c: "2", grid: true };
+    });
+
+    return {
+      pos: pos, top: top, bot: bot, band: band,
+      x1: x1, gx: gx, gw: gw, x3: x3, x4: x4, xL: xL,
+      ncols: ncols, rows: rows, hasL: !!(U["L"] && U["L"].length), hasSec: !!this.hasSec
+    };
+  }
+
+  // la chaîne : on part du foyer et on descend de colonne en colonne, jamais en sautant
+  // FAISCEAU À RÉTENTION RELATIVE. On part de chaque arc ; à chaque génération on ne garde
+  // que les descendants dont la proximité atteint une FRACTION du meilleur saut de cet arc.
+  // Un créneau fixe se remplirait toujours ; une fraction, non — c'est ce qui distingue les arcs.
+  // La lettre n'est atteinte que si son saut tient face au meilleur saut de la génération précédente.
+  // GÉNÉALOGIE À COUVERTURE. Le faisceau ne règle plus un seuil abstrait mais la PART DU CORPUS
+  // qui chemine : à 80 %, quatre fragments sur cinq trouvent leur unité du carnet, quatre tours
+  // du fil sur cinq trouvent leur ascendance à travers la lettre. Ce qui ne chemine pas ne
+  // disparaît pas — tout point qui bute descend vers SÉCESSION, sous la carte : c'est là que
+  // l'idée cesse d'avancer, et cesser d'avancer est déjà faire sécession.
+  beam() {
+    const U = this.U, sim = this.sim;
+    const t = (this.state.seuil - 1) / 19;
+    const couv = 0.95 - t * 0.35;              // faisceau 1 → 95 % · 10 → 80 % · 20 → 60 %
+    const R2 = 0.40 + t * 0.40, F2 = 0.16 - t * 0.12;
+    const links = [];
+    const secFrom = {};
+    const tomb = (id, from) => { if (!secFrom[id]) secFrom[id] = from; };
+
+    const u3 = {};
+    (U["3"] || []).forEach((u) => { u3[u.id] = 1; });
+    // les liens actés 2→3 sont des arêtes dures : ils passent avant le calcul
+    const dur23 = {};
+    (this.act23 || []).forEach((a) => { if (a.from === "2" && u3[a.vers]) dur23[a.src] = a.vers; });
+
+    // ── 1 → 2 · chaque arc allume ses fragments (plafond dur de vingt) ──
+    (U["1"] || []).forEach((arc) => {
+      const cand = [];
+      (U["2"] || []).forEach((tg) => { const v = sim(arc, tg); if (v > 0.006) cand.push({ t: tg, v: v }); });
+      cand.sort((a, b) => b.v - a.v);
+      const top = cand.length ? cand[0].v : 0;
+      const n = Math.min(20, Math.max(1, Math.ceil(cand.length * F2)));
+      cand.filter((r) => r.v >= top * R2).slice(0, n).forEach((r) => {
+        links.push({ de: arc.id, vers: r.t.id, from: "1", carte: "2", v: r.v });
+      });
+    });
+
+    // ── 2 → 3 · TOUS les fragments cherchent leur unité du carnet, pas seulement ceux d'un arc ──
+    const b2 = [];
+    (U["2"] || []).forEach((f) => {
+      let bv = 0, bt = null;
+      (U["3"] || []).forEach((u) => { const v = sim(f, u); if (v > bv) { bv = v; bt = u; } });
+      b2.push({ f: f, v: bv, t: bt, dur: !!dur23[f.id] });
+    });
+    b2.sort((a, b) => (b.dur ? 1 : 0) - (a.dur ? 1 : 0) || b.v - a.v);
+    const keep2 = Math.round(b2.length * couv);
+    const fed = {}, carnetOf = {};
+    let n2 = 0;
+    b2.forEach((r, i) => {
+      const cible = dur23[r.f.id] || (r.t ? r.t.id : null);
+      if (cible && (r.dur || (i < keep2 && r.v > 0))) {
+        links.push({ de: r.f.id, vers: cible, from: "2", carte: "3", v: r.dur ? 0.9 : r.v, acte: r.dur });
+        fed[cible] = (fed[cible] || 0) + 1;
+        carnetOf[r.f.id] = cible;
+        n2++;
+      } else tomb(r.f.id, "2");
+    });
+
+    // ── 3 → L · le carnet nourri franchit la passe par une porte NOMMÉE ; le carnet stérile bute ──
+    const vivants = (U["3"] || []).filter((u) => fed[u.id]);
+    (U["3"] || []).forEach((u) => { if (!fed[u.id]) tomb(u.id, "3"); });
+
+    const portes = U["L"] || [];
+    const amontOf = {};      // unité du carnet → les portes qu'elle ouvre, d'après passages.json
+    portes.forEach((P) => {
+      ((P.passage && P.passage.amont) || []).forEach((a) => {
+        if (!amontOf[a]) amontOf[a] = [];
+        amontOf[a].push(P);
+      });
+    });
+    const porteOf = {};      // unité du carnet → la porte par laquelle elle passe d'abord
+    vivants.forEach((u) => {
+      let mine = amontOf[u.id] || [];
+      if (!mine.length) {
+        // aucune catégorie ne la revendique : elle prend la porte dont elle est la plus proche
+        let bp = null, bv = -1;
+        portes.forEach((P) => { const v = sim(u, P); if (v > bv) { bv = v; bp = P; } });
+        if (bp) mine = [bp];
+      }
+      if (mine.length) porteOf[u.id] = mine[0];
+      mine.forEach((P, i) => links.push({
+        de: u.id, vers: P.id, from: "3", carte: "L",
+        v: Math.max(0.02, sim(u, P)), bow: (i - (mine.length - 1) / 2) * 8
+      }));
+    });
+
+    // ── L → 4 · chaque porte débouche sur les tours qu'elle tient ; les liens actés
+    //    empruntent la porte de leur propre amont. Arêtes garanties dans les deux cas. ──
+    const viaOf = (src) => (src.charAt(0) === "3" ? (fed[src] ? src : null) : (carnetOf[src] || null));
+    const forced = {};
+    portes.forEach((P) => {
+      const p = P.passage;
+      ((p && p.aval) || []).forEach((id) => {
+        if (forced[id]) return;
+        forced[id] = { porte: P, note: "passage " + p.n + " « " + p.nom + " » — " + p.court };
+      });
+    });
+    (this.act4 || []).forEach((a) => {
+      const v = viaOf(a.src);
+      const P = v ? porteOf[v] : null;
+      if (!P) return;
+      if (forced[a.vers]) { forced[a.vers].note = forced[a.vers].note + "  ·  " + a.note; return; }
+      forced[a.vers] = { porte: P, note: a.note };
+    });
+
+    const b4 = [];
+    (U["4"] || []).forEach((tg) => {
+      let bv = 0, bp = null;
+      portes.forEach((P) => { const v = sim(P, tg); if (v > bv) { bv = v; bp = P; } });
+      b4.push({ t: tg, v: bv, porte: bp });
+    });
+    b4.sort((a, b) => b.v - a.v);
+    const keep4 = Math.round(b4.length * couv);
+    let n4 = 0;
+    b4.forEach((r, i) => {
+      const f = forced[r.t.id];
+      const P = f ? f.porte : r.porte;
+      if (P && (f || (i < keep4 && r.v > 0))) {
+        links.push({
+          de: P.id, vers: r.t.id, from: "L", carte: "4",
+          v: f ? Math.max(0.85, r.v) : r.v, acte: !!f, note: f ? f.note : "",
+          passage: P.passage ? P.passage.nom : "", bow: (i - (b4.length - 1) / 2) * 6
+        });
+        n4++;
+      } else tomb(r.t.id, "4");
+    });
+
+    // les liens actés 1→2 : marqués en trait plein sur l'arc qui les porte
+    const has = {};
+    links.forEach((l) => { has[l.de + ">" + l.vers] = l; });
+    (this.act23 || []).forEach((a) => {
+      if (a.from !== "1") return;
+      (U["1"] || []).forEach((arc) => {
+        if ((arc.refs || []).indexOf(a.src) < 0) return;
+        const l = has[arc.id + ">" + a.vers];
+        if (l) { l.acte = true; l.note = a.note; }
+      });
+    });
+
+    // ── la sécession : un seul point sous la carte, où convergent tous les arrêts ──
+    Object.keys(secFrom).forEach((id) => {
+      links.push({ de: id, vers: "SEC", from: secFrom[id], carte: "S", v: 0.02, sec: true });
+    });
+
+    this.cov = {
+      c2: (U["2"] || []).length ? Math.round(n2 / U["2"].length * 100) : 0,
+      c4: (U["4"] || []).length ? Math.round(n4 / U["4"].length * 100) : 0,
+      sec: Object.keys(secFrom).length,
+      sec2: Object.keys(secFrom).filter((k) => secFrom[k] === "2").length,
+      sec3: Object.keys(secFrom).filter((k) => secFrom[k] === "3").length,
+      sec4: Object.keys(secFrom).filter((k) => secFrom[k] === "4").length
+    };
+    this.hasSec = this.cov.sec > 0;
+    return links;
+  }
+
+  // la chaîne d'un arc : une seule passe, dans l'ordre des générations. La lettre est commune
+  // à tous les arcs — un tour du fil ne s'allume donc que si l'unité du carnet PAR LAQUELLE
+  // il passe est elle-même dans la chaîne. C'est ce qui empêche la passe de tout aspirer.
+  chain(focus) {
+    if (!focus) return null;
+    const lvl = { "1": {}, "2": {}, "3": {}, "4": {}, "L": {}, "S": {} };
+    lvl["1"][focus] = 1;
+    (this.state.links || []).forEach((l) => {
+      if (!lvl[l.from] || !lvl[l.from][l.de]) return;
+      if (l.carte === "4" && l.via && !lvl["3"][l.via]) return;
+      lvl[l.carte][l.vers] = 1;
+    });
+    return lvl;
+  }
+
+  hit(mx, my) {
+    const cv = this.cv; if (!cv || !this.units) return null;
+    const g = this.geo(cv.clientWidth, cv.clientHeight);
+    const k = this.state.k;
+    let best = null, bd = 14;
+    Object.keys(g.pos).forEach((id) => {
+      const p = g.pos[id];
+      const d = Math.hypot(p.x - mx, p.y - my);
+      if (d < bd) { bd = d; best = id; }
+    });
+    return best;
+  }
+
+  paint() {
+    const cv = this.cv; if (!cv || !this.units) return;
+    const w = cv.clientWidth, h = cv.clientHeight;
+    if (!w || !h) return;
+    const dpr = Math.min(2, window.devicePixelRatio || 1);
+    cv.width = Math.round(w * dpr); cv.height = Math.round(h * dpr);
+    const c = cv.getContext("2d");
+    c.setTransform(dpr, 0, 0, dpr, 0, 0);
+    c.fillStyle = "#f7f5ef"; c.fillRect(0, 0, w, h);
+
+    const g = this.geo(w, h), k = this.state.k;
+    const P = (id) => g.pos[id] || null;
+    const sel = this.state.sel, hov = this.state.hover;
+    const focus = sel || (hov && this.isArc && this.isArc[hov] ? hov : null);
+    const shownAll = this.state.links;
+    const heads = [
+      { x: g.x1, t: "LES ARCS — carte 1", short: "ARCS", s: this.units["1"].length + " arcs", c: "1" },
+      { x: g.gx + g.gw / 2, t: "CARTE 2 — les fragments", short: "CARTE 2", s: this.units["2"].length + " frag.", c: "2" },
+      { x: g.x3, t: "CARTE 3 — le carnet", short: "CARTE 3", s: this.units["3"].length + " unités", c: "3" },
+      { x: g.x4, t: "CARTE 4 — le fil", short: "LE FIL", s: this.units["4"].length + " tours", c: "4" }
+    ];
+    if (g.hasL) {
+      heads.push({ x: g.xL, t: "LA LETTRE — dix passages", short: "LA LETTRE", s: this.units["L"].length + " passages", c: "L" });
+    }
+    // placeur à réservation d'intervalles, un jeu par rangée : mesure puis refus
+    const hy = g.top - 26;
+    const rows = { t: [], s: [] };
+    const put = (txt, cx, y, fill, font, row) => {
+      c.font = font;
+      const tw = c.measureText(txt).width;
+      const x0 = Math.min(w - tw - 8, Math.max(8, cx - tw / 2));
+      const a = x0 - 5, b = x0 + tw + 5;
+      const arr = rows[row];
+      for (let i = 0; i < arr.length; i++) if (a < arr[i][1] && b > arr[i][0]) return false;
+      arr.push([a, b]);
+      c.fillStyle = fill; c.textAlign = "left"; c.fillText(txt, x0, y);
+      return true;
+    };
+    heads.forEach((hd) => {
+      const tint = TINT[hd.c] || "#4a4a55";
+      const f1 = "500 9px 'DM Mono', monospace";
+      if (!put(hd.t, hd.x, hy, tint, f1, "t")) put(hd.short, hd.x, hy, tint, f1, "t");
+      put(hd.s, hd.x, hy + 12, "#4a4a55", "400 9px 'DM Mono', monospace", "s");
+    });
+    // la rupture avant la lettre : le futur n'a pas de date
+    if (g.hasL) {
+      const xb = (g.x3 + g.xL) / 2;
+      c.save(); c.setLineDash([3, 4]); c.strokeStyle = "#b8b39c"; c.lineWidth = 1;
+      c.beginPath(); c.moveTo(xb, g.top - 22); c.lineTo(xb, g.bot + 16); c.stroke(); c.restore();
+      c.save();
+      c.translate(xb - 6, (g.top + g.bot) / 2); c.rotate(-Math.PI / 2);
+      c.fillStyle = "#4a4a55"; c.font = "400 8.5px 'DM Mono', monospace"; c.textAlign = "center";
+      c.fillText("la passe — hors du temps de la série", 0, 0);
+      c.restore();
+    }
+
+    const shown = shownAll;
+    const lvl = this.chain(focus, shown);
+    const to = (id) => (g.pos[id] ? id : (this.chOf[id] || id));
+    shown.forEach((l) => {
+      const a = P(l.de), b = P(to(l.vers));
+      if (!a || !b) return;
+      const on = !lvl || (lvl[l.from][l.de] && lvl[l.carte][l.vers]);
+      if (!on) { c.globalAlpha = l.sec ? 0.025 : 0.04; }
+      else { c.globalAlpha = l.sec ? 0.2 : Math.min(0.85, 0.2 + l.v * 6); }
+      c.strokeStyle = l.acte ? "#1a1a1f" : TINT[l.carte];
+      c.lineWidth = l.acte ? 1.5 : (on ? 1 : 0.6);
+      if (!l.acte) c.setLineDash([2, 3]); else c.setLineDash([]);
+      const mid = (a.x + b.x) / 2, bw = l.bow || 0;
+      c.beginPath(); c.moveTo(a.x, a.y);
+      c.bezierCurveTo(mid, a.y + bw, mid, b.y + bw, b.x, b.y);
+      c.stroke();
+      c.globalAlpha = 1; c.setLineDash([]);
+    });
+
+    Object.keys(g.pos).forEach((id) => {
+      if (id === "SEC") return;
+      const q = P(id); if (!q) return;
+      const p = g.pos[id];
+      const isFoyer = p.c === "1";
+      const lit = !lvl || !!lvl[p.c][id];
+      c.globalAlpha = lit ? 1 : 0.13;
+      c.fillStyle = TINT[p.c];
+      const r = isFoyer ? (id === focus ? 6.5 : 4.6) : (p.c === "L" ? 5.2 : (lit && focus ? 3.2 : 2));
+      c.beginPath(); c.arc(q.x, q.y, r, 0, 6.2832); c.fill();
+      const pitchOk = p.c === "1" || p.c === "L" || (focus && lit && p.c !== "2") || k > 2.4;
+      if (pitchOk) {
+        // un arc porte son nom court, jamais son identifiant technique
+        let lab = (this.byId[id] && this.byId[id].code) ? this.byId[id].code : id;
+        c.font = (id === focus ? "500 11px" : "400 9.5px") + " 'DM Mono', monospace";
+        // les noms des dix passages tiennent dans l'intervalle jusqu'au fil, jamais par-dessus
+        if (p.c === "L") {
+          const avail = g.x4 - q.x - (r + 7) - 16;
+          while (lab.length > 5 && c.measureText(lab).width > avail) lab = lab.slice(0, -2);
+          if (lab !== ((this.byId[id] && this.byId[id].code) || id)) lab = lab + "…";
+        }
+        const tw = c.measureText(lab).width;
+        // mesure puis bascule : à droite si ça tient, sinon à gauche du nœud
+        const right = q.x + (r + 7);
+        const bx = (right + tw > w - 10) ? q.x - (r + 7) - tw : right;
+        const ga = c.globalAlpha; c.globalAlpha = 1;
+        c.fillStyle = "#f7f5ef"; c.fillRect(bx - 3, q.y - 6.5, tw + 6, 13);
+        c.globalAlpha = ga;
+        c.fillStyle = lit ? "#3a3a44" : "#b8b39c";
+        c.textAlign = "left"; c.fillText(lab, bx, q.y + 3.5);
+      }
+      c.globalAlpha = 1;
+    });
+
+    if (g.hasSec && g.pos["SEC"]) {
+      const q = g.pos["SEC"], litS = !lvl || !!lvl["S"]["SEC"];
+      c.globalAlpha = litS ? 1 : 0.16;
+      c.strokeStyle = "#b8b39c"; c.lineWidth = 1;
+      c.save(); c.setLineDash([3, 4]);
+      c.beginPath(); c.moveTo(q.x - 132, q.y); c.lineTo(q.x + 132, q.y); c.stroke(); c.restore();
+      c.fillStyle = "#8a8a92";
+      c.beginPath(); c.arc(q.x, q.y, 5.5, 0, 6.2832); c.fill();
+      c.textAlign = "center";
+      c.font = "500 9.5px 'DM Mono', monospace";
+      const w1 = c.measureText("SÉCESSION").width;
+      const sub = "l'idée cesse de cheminer · " + (this.cov ? this.cov.sec : 0) + " points";
+      c.font = "400 8.5px 'DM Mono', monospace";
+      const w2 = c.measureText(sub).width;
+      const bw = Math.max(w1, w2) + 12;
+      const ga = c.globalAlpha; c.globalAlpha = 1;
+      c.fillStyle = "#f7f5ef"; c.fillRect(q.x - bw / 2, q.y + 11, bw, 27);
+      c.globalAlpha = ga;
+      c.fillStyle = "#4a4a55"; c.font = "500 9.5px 'DM Mono', monospace";
+      c.fillText("SÉCESSION", q.x, q.y + 21);
+      c.fillStyle = "#8a8a92"; c.font = "400 8.5px 'DM Mono', monospace";
+      c.fillText(sub, q.x, q.y + 33);
+      c.textAlign = "left"; c.globalAlpha = 1;
+    }
+
+    if (hov && this.byId[hov]) {
+      const u = this.byId[hov], q = P(hov);
+      const txt = clip(u.titre || u.txt, 62);
+      c.font = "400 11px 'Host Grotesk', sans-serif";
+      const tw = c.measureText(txt).width;
+      const bx = Math.min(w - tw - 24, Math.max(8, q.x + 13)), by = q.y - 30;
+      c.fillStyle = "#efece2"; c.strokeStyle = "#b8b39c"; c.lineWidth = 1;
+      c.beginPath(); c.rect(bx, by, tw + 18, 24); c.fill(); c.stroke();
+      c.fillStyle = "#1a1a1f"; c.textAlign = "left"; c.fillText(txt, bx + 9, by + 16);
+    }
+  }
+
+  renderVals() {
+    const U = this.units;
+    const sel = this.state.sel;
+    const shown = this.state.links;
+    const lvl = this.chain(sel, shown);
+    const outs = lvl
+      ? shown.filter((l) => lvl[l.from] && lvl[l.from][l.de] &&
+          !(l.carte === "4" && l.via && !lvl["3"][l.via])).sort((a, b) => b.v - a.v)
+      : [];
+    const cnt = { "2": 0, "3": 0, "4": 0, "L": 0, "S": 0 };
+    const pl = (n, w) => n + " " + w + (n > 1 ? "s" : "");
+    if (lvl) ["2", "3", "4", "L"].forEach((c) => { cnt[c] = Object.keys(lvl[c]).length; });
+    if (lvl) cnt["S"] = outs.filter((l) => l.carte === "S").length;
+    const su = sel && this.byId ? this.byId[sel] : null;
+
+    let termes = [];
+    if (su) {
+      termes = Object.keys(su.vec).sort((a, b) => su.vec[b] - su.vec[a]).slice(0, 10);
+    }
+
+    return {
+      busy: this.state.busy,
+      failed: !!this.state.err,
+      err: this.state.err,
+      methode: "Dix catégories découpent la carte 1 — trois de Tiqqun, trois de Sloterdijk, deux de Meillassoux, deux de Stiegler, une par chapitre. Les fragments sont l'outil d'analyse : tout le corpus chemine, pas seulement ce qu'un arc éclaire. Le faisceau règle la couverture — à 80 %, quatre fragments sur cinq atteignent le carnet, et quatre tours du fil sur cinq trouvent leur ascendance. La lettre n'est pas un point : elle a dix portes, et chaque idée franchit la passe par l'une d'elles. Ce qui bute descend vers SÉCESSION, sous la carte : là où l'idée cesse de cheminer.",
+      stat: U && this.cov
+        ? (sel
+           ? (U["1"].length + " arcs · carte 2 à " + this.cov.c2 + " % · carte 4 à " + this.cov.c4 + " % · "
+              + this.cov.sec + " en sécession · faisceau " + this.state.seuil + "/20")
+           : (U["1"].length + " arcs · carte 2 reliée à " + this.cov.c2 + " % · carte 4 à " + this.cov.c4 + " % · "
+              + shown.filter((l) => l.acte).length + " arêtes garanties · " + this.cov.sec + " en sécession ("
+              + this.cov.sec2 + " frag., " + this.cov.sec3 + " carnet, " + this.cov.sec4 + " tours) · faisceau " + this.state.seuil + "/20"))
+        : "",
+      vide: [],
+      // téléphone : le panneau prend tout l'écran, on ne dessine pas des colonnes hors de vue
+      cvWrap: "position:absolute;inset:0;display:" +
+        (this.state.sel && typeof window !== "undefined" && window.innerWidth <= 820 ? "none" : "block") + ";",
+      hudW: this.state.sel ? "calc(100% - 420px)" : "66%",
+      statW: this.state.sel ? "calc(100% - 440px)" : "calc(100% - 30px)",
+      seuil: this.state.seuil,
+      loosen: () => this.setState({ seuil: Math.max(1, this.state.seuil - 1) }, () => this.setState({ links: this.beam() })),
+      tighten: () => this.setState({ seuil: Math.min(20, this.state.seuil + 1) }, () => this.setState({ links: this.beam() })),
+      recadrer: () => this.setState({ k: 1, x: 0, y: 0 }),
+      clearSel: () => this.setState({ sel: null }),
+      selTexte: su ? (su.texte || "") : "",
+      selSuite: su && su.suite ? su.suite.map((m) => ({ gen: m.gen, corps: m.corps, tint: TINT[m.c] || "#4a4a55" })) : [],
+      selRefs: su && su.refs ? su.refs.join(" · ") : "",
+      foyers: U ? U["1"].map((u) => ({
+        id: u.code || u.id,
+        pick: () => this.setState({ sel: u.id }),
+        enter: () => { if (!this.state.sel) this.setState({ hover: u.id }); },
+        leave: () => { if (this.state.hover === u.id) this.setState({ hover: null }); },
+        style: "display:inline-flex;align-items:center;height:20px;padding:0 8px;border:1px solid " +
+          (sel === u.id ? "#3d6600" : "#b8b39c") + ";background:" + (sel === u.id ? "#3d6600" : "none") +
+          ";color:" + (sel === u.id ? "#f7f5ef" : "#4a4a55") +
+          ";font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.08em;cursor:pointer;"
+      })) : [],
+      panStyle: "position:absolute;right:0;top:0;bottom:0;width:400px;max-width:92vw;background:#efece2;border-left:1px solid #b8b39c;z-index:70;display:" +
+        (sel ? "flex" : "none") + ";flex-direction:column;",
+      selId: sel || "",
+      selTitre: su ? su.titre : "",
+      selEcole: su ? (su.ecole || "") : "",
+      selPortee: sel ? ("→ " + pl(cnt["2"], "fragment") + " → " + pl(cnt["3"], "unité") + " du carnet → " + pl(cnt["L"], "passage") + " de la lettre → " + pl(cnt["4"], "tour") + " du fil · " + cnt["S"] + " en sécession") : "",
+      selTermes: termes,
+      // groupé par génération : une généalogie se lit dans l'ordre des sauts
+      selCibles: (function (self) {
+        const GEN = { "2": "1re génération — les fragments", "3": "2e — le carnet", "L": "3e — la passe : les portes de la lettre", "4": "4e — le fil", "S": "hors chemin — la sécession" };
+        const out = [];
+        ["2", "3", "L", "4", "S"].forEach((c) => {
+          const set = outs.filter((l) => l.carte === c).slice(0, 8);
+          if (!set.length) return;
+          if (c === "L") {
+            // la passe se lit par ses portes : chacune nommée, chacune avec la phrase de la lettre
+            const vus = {};
+            out.push({ tint: TINT[c], head: GEN[c], extrait: "", gen: true });
+            outs.filter((l) => l.carte === "L").forEach((l) => {
+              if (vus[l.vers]) return;
+              vus[l.vers] = 1;
+              const P = self.byId[l.vers];
+              out.push({
+                tint: TINT[c],
+                head: (P && P.code) ? P.code : l.vers,
+                extrait: (P && P.passage) ? P.passage.citL : "",
+                gen: false
+              });
+            });
+            return;
+          }
+          out.push({ tint: TINT[c], head: GEN[c], extrait: "", gen: true });
+          set.forEach((l) => {
+            // la sécession se lit à l'envers : ce qui compte n'est pas la cible, toujours la même,
+            // mais la source — quelle idée s'arrête, et à quelle étape elle s'arrête.
+            if (c === "S") {
+              const src = self.byId[l.de];
+              out.push({
+                tint: TINT[c],
+                head: l.de + "  ·  s'arrête ici",
+                extrait: src ? clip(src.txt || src.titre || "", 150) : "",
+                gen: false
+              });
+              return;
+            }
+            const u = self.byId[l.vers];
+            out.push({
+              tint: TINT[c],
+              head: l.vers + (l.acte ? "  ·  lien acté" : "  ·  " + Math.round(l.v * 1000) / 10 + "%"),
+              extrait: l.acte && l.note ? l.note : (u ? clip(u.txt, 150) : ""),
+              gen: false
+            });
+          });
+        });
+        return out;
+      })(this)
+    };
+  }
+}
+DC.mount(Component, {});
+</script>
+</body>
+</html>

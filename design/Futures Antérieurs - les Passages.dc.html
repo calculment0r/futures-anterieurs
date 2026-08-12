@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<title>Les Passages — Futures Antérieurs</title>
+<meta name="description" content="Dix catégories par où la lettre du dehors rejoint le fil." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="crossorigin" />
+<link href="https://fonts.googleapis.com/css2?family=Host+Grotesk:ital,wght@0,300..800;1,300..800&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet" />
+<style>
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{background:#f7f5ef;color:#1a1a1f;font-family:'Host Grotesk',system-ui,sans-serif;-webkit-font-smoothing:antialiased;text-wrap:pretty;}
+  a{color:inherit;text-decoration:none;}
+  a:hover{color:#4a7a00;}
+  ::selection{background:#1a1a1f;color:#f7f5ef;}
+  ::-webkit-scrollbar{width:9px;}
+  ::-webkit-scrollbar-track{background:transparent;}
+  ::-webkit-scrollbar-thumb{background:#b8b39c;border:2px solid transparent;background-clip:content-box;border-radius:5px;}
+  @media(max-width:1180px){ [data-idx]{display:none !important;} }
+  @media(max-width:760px){ [data-num]{font-size:34px !important;} [data-titre]{font-size:30px !important;} }
+</style>
+</helmet>
+
+<div style="min-height:100vh;background:#f7f5ef;">
+
+  <div style="position:sticky;top:0;z-index:20;display:flex;align-items:center;height:34px;background:#efece2;border-bottom:1px solid #d0ccbb;padding:0 11px;gap:8px;">
+    <span style="font-family:'DM Mono',monospace;font-weight:500;font-size:11px;letter-spacing:.22em;text-transform:uppercase;">Futures<span style="color:#3d6600;">·</span>Antérieurs</span>
+    <span style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.1em;color:#4a4a55;">les passages</span>
+    <span style="flex:1;"></span>
+    <a href="./Futures Antérieurs - la Propagation.dc.html" style="display:inline-flex;align-items:center;height:21px;padding:0 10px;border:1px solid #b8b39c;color:#4a4a55;font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.14em;text-transform:uppercase;" style-hover="color:#1a1a1f;border-color:#4a4a55;">La propagation</a>
+    <a href="./Futures Antérieurs - la Porte.dc.html" style="display:inline-flex;align-items:center;height:21px;padding:0 10px;border:1px solid #b8b39c;color:#4a4a55;font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.14em;text-transform:uppercase;" style-hover="color:#1a1a1f;border-color:#4a4a55;">← La Porte</a>
+  </div>
+
+  <div data-idx="1" style="position:fixed;left:26px;top:132px;z-index:10;display:flex;flex-direction:column;gap:6px;width:156px;">
+    <sc-for list="{{ index }}" as="i" hint-placeholder-count="10">
+      <a href="{{ i.href }}" style="display:flex;gap:8px;font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.06em;color:#8a8a92;line-height:1.35;" style-hover="color:#1a1a1f;"><span style="color:#b8b39c;">{{ i.n }}</span><span>{{ i.nom }}</span></a>
+    </sc-for>
+  </div>
+
+  <div style="max-width:1120px;margin:0 auto;padding:0 30px 130px;">
+
+    <header style="padding:104px 0 44px;display:flex;flex-direction:column;gap:26px;">
+      <div style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:#4a4a55;">Carte 3 · la lettre &nbsp;→&nbsp; Carte 4 · le fil</div>
+      <h1 data-titre="1" style="font-size:78px;line-height:.94;font-weight:300;letter-spacing:-.035em;max-width:14ch;">Les passages</h1>
+      <div style="max-width:62ch;display:flex;flex-direction:column;gap:15px;font-size:15.5px;line-height:1.62;color:#33333c;">
+        <p>« Enfin dehors » n'est pas la dernière page du carnet : c'est une porte. Elle est écrite depuis un futur accompli, sur le ton de l'intime, et elle ne prouve rien — elle atteste. Le fil de la carte 4 se tient de l'autre côté de cette porte, dans une nuit datée, avec la voix d'en face.</p>
+        <p>Dix catégories tiennent les deux textes ensemble. Chacune donne la phrase de la lettre et la phrase du fil qui se répondent, avec leur adresse exacte. Les citations sont intégrales et non retouchées ; la synthèse qui les suit est une lecture, pas une glose des auteurs.</p>
+      </div>
+    </header>
+
+    <sc-for list="{{ passages }}" as="p" hint-placeholder-count="10">
+      <section id="{{ p.anchor }}" style="scroll-margin-top:64px;border-top:1px solid #d0ccbb;padding:56px 0 14px;display:grid;grid-template-columns:96px minmax(0,1fr);gap:30px;">
+
+        <div data-num="1" style="font-family:'DM Mono',monospace;font-size:44px;font-weight:300;color:#c9c4ae;line-height:.8;letter-spacing:-.03em;">{{ p.n }}</div>
+
+        <div style="display:flex;flex-direction:column;gap:30px;min-width:0;">
+
+          <div style="display:flex;flex-direction:column;gap:10px;">
+            <h2 style="font-size:38px;line-height:1.03;font-weight:400;letter-spacing:-.026em;max-width:20ch;">{{ p.nom }}</h2>
+            <div style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.13em;text-transform:uppercase;color:#8a8a92;">{{ p.registre }}</div>
+          </div>
+
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:26px;">
+            <div style="border-left:2px solid #10357a;padding:2px 0 2px 18px;display:flex;flex-direction:column;gap:11px;">
+              <div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.17em;text-transform:uppercase;color:#10357a;">La lettre · 3:lettre</div>
+              <p style="font-size:16.5px;line-height:1.52;font-style:italic;color:#1a1a1f;">{{ p.citL }}</p>
+            </div>
+            <div style="border-left:2px solid #6b5f4a;padding:2px 0 2px 18px;display:flex;flex-direction:column;gap:11px;">
+              <div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.17em;text-transform:uppercase;color:#6b5f4a;">Le fil · {{ p.refF }}</div>
+              <p style="font-size:16.5px;line-height:1.52;font-style:italic;color:#1a1a1f;">{{ p.citF }}</p>
+            </div>
+          </div>
+
+          <p style="max-width:64ch;font-size:16px;line-height:1.66;color:#33333c;">{{ p.texte }}</p>
+
+          <sc-if value="{{ montrerAdresses }}" hint-placeholder-val="{{ true }}">
+            <div style="display:flex;flex-wrap:wrap;align-items:center;gap:7px;padding-top:2px;">
+              <span style="font-family:'DM Mono',monospace;font-size:8.5px;letter-spacing:.16em;text-transform:uppercase;color:#8a8a92;margin-right:3px;">Amont</span>
+              <sc-for list="{{ p.amont }}" as="a" hint-placeholder-count="2">
+                <a href="{{ a.href }}" style="display:inline-flex;align-items:center;height:20px;padding:0 8px;border:1px solid #c3cede;color:#10357a;font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.08em;" style-hover="border-color:#10357a;">{{ a.id }}</a>
+              </sc-for>
+              <span style="font-family:'DM Mono',monospace;font-size:11px;color:#b8b39c;margin:0 4px;">→</span>
+              <span style="font-family:'DM Mono',monospace;font-size:8.5px;letter-spacing:.16em;text-transform:uppercase;color:#8a8a92;margin-right:3px;">Aval</span>
+              <sc-for list="{{ p.aval }}" as="b" hint-placeholder-count="2">
+                <a href="{{ b.href }}" style="display:inline-flex;align-items:center;height:20px;padding:0 8px;border:1px solid #d0c9b8;color:#6b5f4a;font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.08em;" style-hover="border-color:#6b5f4a;">{{ b.id }}</a>
+              </sc-for>
+            </div>
+          </sc-if>
+
+        </div>
+      </section>
+    </sc-for>
+
+    <sc-if value="{{ erreur }}" hint-placeholder-val="{{ false }}">
+      <div style="margin-top:40px;border:1px solid #c4283a;padding:18px 20px;font-family:'DM Mono',monospace;font-size:11px;color:#c4283a;">Le corpus ne s'est pas chargé : {{ erreur }} — cette page doit être servie par un serveur, pas ouverte en file://.</div>
+    </sc-if>
+
+    <footer style="margin-top:76px;border-top:1px solid #d0ccbb;padding-top:22px;display:flex;flex-wrap:wrap;gap:18px;align-items:baseline;font-family:'DM Mono',monospace;font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:#8a8a92;">
+      <span>Dix passages · lettre → fil</span>
+      <span style="flex:1;"></span>
+      <a href="./Futures Antérieurs - Carte 3.dc.html" style-hover="color:#1a1a1f;">Carte 3 — Kubernân</a>
+      <a href="./Futures Antérieurs - Carte 4.dc.html" style-hover="color:#1a1a1f;">Carte 4 — Archibald</a>
+      <a href="./Futures Antérieurs - la Propagation.dc.html" style-hover="color:#1a1a1f;">La propagation</a>
+    </footer>
+
+  </div>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;montrerAdresses&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Lecture&quot;}}">
+const C3 = "./Futures Antérieurs - Carte 3.dc.html#p-";
+const C4 = "./Futures Antérieurs - Carte 4.dc.html#";
+
+class Component extends DCLogic {
+  state = { p: [], err: null };
+
+  async componentDidMount() {
+    try {
+      const r = await fetch("./corpus/passages.json", { cache: "no-cache" });
+      if (!r.ok) throw new Error("passages.json introuvable");
+      this.setState({ p: await r.json() });
+    } catch (e) {
+      this.setState({ err: (e && e.message) ? e.message : String(e) });
+    }
+  }
+
+  renderVals() {
+    const list = this.state.p || [];
+    return {
+      erreur: this.state.err,
+      montrerAdresses: this.props.montrerAdresses !== false,
+      index: list.map((p) => ({ n: p.n, nom: p.nom, href: "#" + p.id })),
+      passages: list.map((p) => ({
+        n: p.n, anchor: p.id, nom: p.nom, registre: p.registre,
+        citL: p.citL, citF: p.citF, refF: p.refF, texte: p.texte,
+        amont: (p.amont || []).map((id) => ({ id: id, href: C3 + id.replace(/[:.]/g, "-") })),
+        aval: (p.aval || []).map((id) => ({ id: id, href: C4 + id.replace(":", "-") }))
+      }))
+    };
+  }
+}
+
+</script>
+</body>
+</html>
