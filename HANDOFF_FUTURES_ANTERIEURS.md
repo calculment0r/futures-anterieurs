@@ -47,14 +47,48 @@ Une session a travaillé des heures **sur un résumé** du manuscrit en croyant 
 
 Trois copies du texte coexistent — **ne pas les confondre** :
 1. **`MANUSCRIT_V6/`** = **le canon** (5 mouvements, re-nommé, ~13k figés le 13 juil.). C'est là qu'on travaille le texte.
-2. **La page web canonique** (`site/` de CE repo → https://calculment0r.github.io/futures-anterieurs/) = **générée depuis le V6** (13 juil. 2026, PR #1) : prologue + 5 mouvements + coda + vue « Pour prolonger ». **Après toute retouche du V6** : `python3 outils/gen_futures_data.py`, commit/push `main` → redéploiement auto. Si une retouche passe par le god mode, la reporter dans le V6 — sinon les copies divergent. (L'ancienne page Nirvalab, elle aussi synchronisée V6 le 13 juil., reste en ligne en doublon — voir §5.)
+2. **Le lecteur du manuscrit** (`site/manuscrit/` de CE repo → https://calculment0r.github.io/futures-anterieurs/manuscrit/ ; la racine du site est désormais le portail des quatre cartes, cf. §5bis) = **générée depuis le V6** (13 juil. 2026, PR #1) : prologue + 5 mouvements + coda + vue « Pour prolonger ». **Après toute retouche du V6** : `python3 outils/gen_futures_data.py`, commit/push `main` → redéploiement auto. Si une retouche passe par le god mode, la reporter dans le V6 — sinon les copies divergent. (L'ancienne page Nirvalab, elle aussi synchronisée V6 le 13 juil., reste en ligne en doublon — voir §5.)
 3. `doc input/MANUSCRIT/` = le brouillon 4-mouvements du fil « page web » — **périmé**, gardé pour trace.
 
 ## 5. La page web (déployée)
 
-- **La page canonique vit DANS CE REPO : https://calculment0r.github.io/futures-anterieurs/** (depuis le 13 juil. 2026, PR #1). Dossier **`site/`** : lecteur `futures.js` + `index.html` + `assets/` (oblivion.css + kubernan.css, Instrument Serif, thème clair par défaut + bascule sombre, responsive) + données `futures.data.js` (+ vault `futures.data.original.js`). Le repo reste privé ; seule la page est publique.
-- **Cycle de mise à jour** : retoucher `MANUSCRIT_V6/` → `python3 outils/gen_futures_data.py` (régénère `site/futures.data.js` + vault) → commit/push sur `main` → le workflow `.github/workflows/pages.yml` redéploie (~1-2 min). Le god mode de la page commit sur `main` de ce repo (jeton fine-grained « Contents: write », clé localStorage `futures_anterieurs_gh_token` — distincte de celle de Nirvalab, même origine github.io) ; **toute édition god mode doit être reportée dans le V6**.
+- **Le lecteur du manuscrit vit DANS CE REPO : https://calculment0r.github.io/futures-anterieurs/manuscrit/** (depuis le 13 juil. 2026, PR #1 ; déplacé de `site/` vers `site/manuscrit/` en août 2026, quand la racine est devenue le portail des quatre cartes). Dossier **`site/manuscrit/`** : lecteur `futures.js` + `index.html` + `../assets/` (oblivion.css + kubernan.css, Instrument Serif, thème clair par défaut + bascule sombre, responsive) + données `futures.data.js` (+ vault `futures.data.original.js`). Le repo reste privé ; seule la page est publique.
+- **Cycle de mise à jour** : retoucher `MANUSCRIT_V6/` → `python3 outils/gen_futures_data.py` (régénère `site/manuscrit/futures.data.js` + vault) → commit/push sur `main` → le workflow `.github/workflows/pages.yml` redéploie (~1-2 min). Le god mode de la page commit sur `main` de ce repo (jeton fine-grained « Contents: write », clé localStorage `futures_anterieurs_gh_token` — distincte de celle de Nirvalab, même origine github.io) ; **toute édition god mode doit être reportée dans le V6**.
 - **L'ancienne page Nirvalab (https://calculment0r.github.io/Nirvalab/futures/) existe toujours**, resynchronisée sur le V6 le 13 juil. (PR Nirvalab #4) — c'est un doublon désormais. À retirer ou à laisser en miroir : décision de Cal. Si on la garde, la régénérer aussi (`gen_futures_data.py <SRC> <clone Nirvalab>/site/futures`) à chaque retouche, sinon elle divergera de nouveau.
+
+## 5bis. Le portail des quatre cartes (août 2026)
+
+La racine du site publié est maintenant le **portail** composé dans Claude Design
+(projet « Site portfolio articles Incredibles ») : la Porte, les quatre cartes,
+la propagation.
+
+- **Sources** : `design/*.dc.html` — les huit écrans exportés (cf. `design/README.md`).
+- **Génération** : `python3 outils/build_portail.py design --site site`.
+- **Runtime** : `site/assets/dc-lite.js` remplace le `support.js` de Claude Design,
+  qui exige React et parle à une fenêtre parente — un outil d'atelier, pas un
+  livrable. Même sémantique, gabarits inchangés.
+- **La coupe** : on ne publie que les quatre cartes et la propagation. « Les
+  passages », « les instruments » et la section « la grammaire d'adressage » de la
+  Porte sont retirés. Leurs prototypes restent dans `design/` — les remettre coûte
+  une ligne dans `GARDES`.
+- **Piège** : `site/corpus/passages.json` n'est PAS l'écran « les passages ». C'est
+  la colonne « la lettre » — ses dix portes — dont la propagation a besoin pour
+  calculer les généalogies. Il reste.
+- **Polices auto-hébergées** : `site/assets/fonts/` + `fonts.css` (Host Grotesk,
+  DM Mono, OFL 1.1). Aucun CDN tiers — le manifeste de la Porte les range parmi ce
+  qu'on ne fera pas.
+- **Deux corpus distincts** : `site/corpus/` (bundle Design, alimente le portail)
+  et `MANUSCRIT_V6/` (alimente le lecteur du manuscrit). Ils ne se régénèrent pas
+  l'un l'autre.
+
+| URL | Contenu |
+|---|---|
+| `/futures-anterieurs/` | la Porte — les quatre cartes |
+| `/futures-anterieurs/carte-1.html` … `carte-4.html` | les articles |
+| `/futures-anterieurs/propagation.html` | la propagation |
+| `/futures-anterieurs/manuscrit/` | le lecteur du V6 (inchangé) |
+
+---
 
 ## 6. Les dépôts GitHub
 

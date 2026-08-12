@@ -1,0 +1,1005 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<title>Les Instruments — Futures Antérieurs</title>
+<meta name="corpus" content="Le Relèvement · La Traversée · Les Fiches" />
+<meta name="description" content="Le Relèvement, la Traversée, les Fiches. Trois vues du même graphe." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="crossorigin" />
+<link href="https://fonts.googleapis.com/css2?family=Host+Grotesk:ital,wght@0,300..800;1,300..800&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet" />
+<style>
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html,body{height:100%;overflow:hidden;}
+  body{background:#f7f5ef;color:#1a1a1f;font-family:'Host Grotesk',system-ui,sans-serif;font-size:12px;-webkit-font-smoothing:antialiased;}
+  a{color:inherit;text-decoration:none;}
+  a:hover{color:#4a7a00;}
+  canvas{display:block;width:100%;height:100%;}
+  ::selection{background:#4a7a00;color:#f7f5ef;}
+  ::-webkit-scrollbar{width:9px;height:9px;}
+  ::-webkit-scrollbar-track{background:transparent;}
+  ::-webkit-scrollbar-thumb{background:#b8b39c;border:2px solid transparent;background-clip:content-box;border-radius:5px;}
+  /* téléphone : les barres défilent au doigt au lieu de se replier sur quatre lignes */
+  @media(max-width:820px){
+    [data-topbar],[data-subbar]{flex-wrap:nowrap !important;overflow-x:auto;overflow-y:hidden;-webkit-overflow-scrolling:touch;}
+    [data-topbar]::-webkit-scrollbar,[data-subbar]::-webkit-scrollbar{height:0;}
+    [data-subbar]>*{flex:none;}
+    [data-hud]{max-width:100% !important;font-size:8.5px !important;}
+    [data-legend]{display:none !important;}
+    [data-pan]{width:100% !important;}
+  }
+</style>
+</helmet>
+
+<div style="position:fixed;inset:0;display:flex;flex-direction:column;background:#f7f5ef;">
+
+  <div data-topbar="1" style="display:flex;align-items:center;height:34px;flex:none;background:#efece2;border-bottom:1px solid #d0ccbb;padding:0 11px;gap:3px;user-select:none;z-index:60;">
+    <span style="font-family:'DM Mono',monospace;font-weight:500;font-size:11px;letter-spacing:.22em;text-transform:uppercase;margin-right:6px;">Futures<span style="color:#3d6600;">·</span>Antérieurs</span>
+    <span style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.1em;color:#4a4a55;margin-right:16px;">les instruments</span>
+    <button onClick="{{ vGrfGo }}" style="{{ tabGrf }}">Le Relèvement</button>
+    <button onClick="{{ vTlGo }}" style="{{ tabTl }}">La Traversée</button>
+    <button onClick="{{ vFicGo }}" style="{{ tabFic }}">Les Fiches</button>
+    <span style="flex:1;"></span>
+    <a href="./Futures Antérieurs - la Propagation.dc.html" style="display:inline-flex;align-items:center;height:21px;padding:0 10px;border:1px solid #b8b39c;color:#4a4a55;font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.14em;text-transform:uppercase;transition:color .2s ease,border-color .2s ease;" style-hover="color:#1a1a1f;border-color:#4a4a55;">La propagation</a>
+    <a href="./Futures Antérieurs - la Porte.dc.html" style="display:inline-flex;align-items:center;height:21px;padding:0 10px;border:1px solid #b8b39c;color:#4a4a55;font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.14em;text-transform:uppercase;transition:color .2s ease,border-color .2s ease;" style-hover="color:#1a1a1f;border-color:#4a4a55;">← La Porte</a>
+  </div>
+
+  <div data-subbar="1" style="display:flex;align-items:center;min-height:30px;flex:none;background:#efece2;border-bottom:1px solid #d0ccbb;padding:5px 11px;gap:4px;flex-wrap:wrap;user-select:none;z-index:55;">
+    <span style="font-family:'DM Mono',monospace;font-size:8.5px;letter-spacing:.16em;text-transform:uppercase;color:#4a4a55;margin-right:3px;">Le fil d'un concept</span>
+    <select onChange="{{ pickConcept }}" style="height:21px;background:#e6e2d5;border:1px solid #b8b39c;color:#1a1a1f;font-family:'DM Mono',monospace;font-size:10px;padding:0 6px;outline:none;max-width:280px;">
+      <option value="">— aucun, tout est allumé —</option>
+      <sc-for list="{{ conceptOpts }}" as="c" hint-placeholder-count="6">
+        <option value="{{ c.id }}">{{ c.nom }}</option>
+      </sc-for>
+    </select>
+    <span style="width:1px;height:16px;background:#d0ccbb;margin:0 6px;"></span>
+    <span style="font-family:'DM Mono',monospace;font-size:8.5px;letter-spacing:.16em;text-transform:uppercase;color:#4a4a55;margin-right:3px;">Cartes</span>
+    <button onClick="{{ tC1 }}" style="{{ ckC1 }}">1</button>
+    <button onClick="{{ tC2 }}" style="{{ ckC2 }}">2</button>
+    <button onClick="{{ tC3 }}" style="{{ ckC3 }}">3</button>
+    <button onClick="{{ tC4 }}" style="{{ ckC4 }}">4</button>
+    <button onClick="{{ tCT }}" style="{{ ckCT }}">topo</button>
+    <span style="width:1px;height:16px;background:#d0ccbb;margin:0 6px;"></span>
+    <span style="font-family:'DM Mono',monospace;font-size:8.5px;letter-spacing:.16em;text-transform:uppercase;color:#4a4a55;margin-right:3px;">Liens</span>
+    <button onClick="{{ tTdef }}" style="{{ ckTdef }}">définit</button>
+    <button onClick="{{ tTrep }}" style="{{ ckTrep }}">reprend</button>
+    <button onClick="{{ tTacc }}" style="{{ ckTacc }}">accomplit</button>
+    <button onClick="{{ tTinc }}" style="{{ ckTinc }}">incarne</button>
+    <button onClick="{{ tTcon }}" style="{{ ckTcon }}">contredit</button>
+    <button onClick="{{ tTrepa }}" style="{{ ckTrepa }}">répond à</button>
+    <span style="flex:1;min-width:12px;"></span>
+    <button onClick="{{ reset }}" style="display:inline-flex;align-items:center;height:20px;padding:0 9px;border:1px solid #b8b39c;background:none;color:#4a4a55;font-family:'DM Mono',monospace;font-size:8.5px;letter-spacing:.14em;text-transform:uppercase;cursor:pointer;transition:color .2s ease,border-color .2s ease;" style-hover="color:#1a1a1f;border-color:#4a4a55;">Recadrer</button>
+  </div>
+
+  <div style="flex:1;position:relative;overflow:hidden;">
+
+    <div style="{{ vGrf }}">
+      <canvas id="cvGrf"></canvas>
+      <div data-hud="1" style="position:absolute;left:0;top:0;padding:10px 13px;pointer-events:none;font-family:'DM Mono',monospace;font-size:9px;line-height:1.85;color:#4a4a55;letter-spacing:.04em;max-width:70%;background:linear-gradient(#f7f5ef 68%,transparent);">
+        <div style="color:#4a4a55;">LE RELÈVEMENT — les adresses du corpus et les 28 liens typés qui les relient.</div>
+        <div>Un concept n'est jamais expliqué ici. Il est montré là où le corpus le définit.</div>
+        <div><span style="border:1px solid #b8b39c;padding:1px 4px;margin-right:4px;color:#4a4a55;">molette</span>échelle · <span style="border:1px solid #b8b39c;padding:1px 4px;margin:0 4px 0 6px;color:#4a4a55;">glisser</span>déplacer · <span style="border:1px solid #b8b39c;padding:1px 4px;margin:0 4px 0 6px;color:#4a4a55;">clic</span>ouvrir l'adresse</div>
+      </div>
+      <div data-legend="1" style="position:absolute;right:13px;top:11px;pointer-events:none;text-align:right;font-family:'DM Mono',monospace;font-size:9px;line-height:1.9;letter-spacing:.04em;">
+        <div style="color:#4a4a55;">TYPES DE LIEN</div>
+        <div><span style="color:#4a7a00;">━</span> définit</div>
+        <div><span style="color:#1f5fc4;">━</span> reprend</div>
+        <div><span style="color:#2f7e5e;">━</span> accomplit</div>
+        <div><span style="color:#6b5f4a;">━</span> incarne</div>
+        <div><span style="color:#c4283a;">━</span> contredit</div>
+        <div><span style="color:#7d3fa8;">━</span> répond à</div>
+      </div>
+      <div style="position:absolute;left:13px;bottom:11px;pointer-events:none;font-family:'DM Mono',monospace;font-size:9px;line-height:1.85;color:#4a4a55;letter-spacing:.04em;">{{ grfStat }}</div>
+      <div style="position:absolute;right:13px;bottom:11px;pointer-events:none;text-align:right;font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:#4a4a55;">{{ lodLabel }}</div>
+    </div>
+
+    <div style="{{ vTl }}">
+      <canvas id="cvTl"></canvas>
+      <div data-hud="1" style="position:absolute;left:0;top:0;padding:10px 13px;pointer-events:none;font-family:'DM Mono',monospace;font-size:9px;line-height:1.85;color:#4a4a55;letter-spacing:.04em;max-width:74%;background:linear-gradient(#f7f5ef 68%,transparent);">
+        <div style="color:#4a4a55;">LA TRAVERSÉE — cinq rails. Le réel en haut, les quatre cartes en dessous.</div>
+        <div>Les cartes 1 et 4 s'ancrent aux dates. Les cartes 2 et 3 flottent : elles sont hors-temps par nature.</div>
+        <div><span style="border:1px solid #b8b39c;padding:1px 4px;margin-right:4px;color:#4a4a55;">molette</span>décennies → la nuit heure par heure · <span style="border:1px solid #b8b39c;padding:1px 4px;margin:0 4px 0 6px;color:#4a4a55;">glisser</span>le temps</div>
+      </div>
+      <div data-legend="1" style="position:absolute;right:13px;top:11px;pointer-events:none;text-align:right;font-family:'DM Mono',monospace;font-size:9px;line-height:1.9;letter-spacing:.04em;">
+        <div style="color:#4a4a55;">REGISTRES</div>
+        <div><span style="color:#c4283a;">●</span> le monde</div>
+        <div><span style="color:#4a7a00;">●</span> la coquille</div>
+        <div><span style="color:#4a4a55;">●</span> le corpus</div>
+      </div>
+      <div style="position:absolute;left:13px;bottom:11px;pointer-events:none;font-family:'DM Mono',monospace;font-size:9px;line-height:1.85;color:#4a4a55;letter-spacing:.04em;">{{ tlStat }}</div>
+    </div>
+
+    <div style="{{ vFic }}">
+      <div style="max-width:1280px;margin:0 auto;display:flex;flex-direction:column;gap:34px;">
+
+        <div style="display:flex;flex-direction:column;gap:14px;">
+          <div style="display:flex;align-items:baseline;gap:12px;border-bottom:1px solid #d0ccbb;padding-bottom:9px;">
+            <span style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:#4a7a00;">Concepts</span>
+            <span style="font-family:'DM Mono',monospace;font-size:9px;color:#4a4a55;">{{ nConcepts }} — définition puis échos, jamais de fiche rédigée par le site</span>
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(258px,1fr));gap:1px;background:#d0ccbb;border:1px solid #d0ccbb;">
+            <sc-for list="{{ conceptCards }}" as="c" hint-placeholder-count="9">
+              <div style="background:#efece2;padding:15px 16px;display:flex;flex-direction:column;gap:10px;">
+                <div style="display:flex;align-items:baseline;justify-content:space-between;gap:10px;">
+                  <span style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:{{ c.tint }};">défini en {{ c.def }}</span>
+                  <span style="font-family:'DM Mono',monospace;font-size:9px;color:#4a4a55;">{{ c.n }} réf.</span>
+                </div>
+                <div style="font-size:16.5px;line-height:1.2;font-weight:600;letter-spacing:-.015em;">{{ c.nom }}</div>
+                <div style="font-family:'DM Mono',monospace;font-size:10.5px;line-height:1.75;color:#4a4a55;word-break:break-word;">{{ c.refs }}</div>
+                <div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.1em;color:#4a4a55;border-top:1px solid #d0ccbb;padding-top:9px;">traverse {{ c.cartes }}</div>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+
+        <div style="display:flex;flex-direction:column;gap:14px;">
+          <div style="display:flex;align-items:baseline;gap:12px;border-bottom:1px solid #d0ccbb;padding-bottom:9px;">
+            <span style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:#c4283a;">Liens typés</span>
+            <span style="font-family:'DM Mono',monospace;font-size:9px;color:#4a4a55;">{{ nLiens }} — le graphe vit à côté des textes, jamais dedans</span>
+          </div>
+          <div style="display:flex;flex-direction:column;">
+            <sc-for list="{{ lienRows }}" as="l" hint-placeholder-count="8">
+              <div style="display:grid;grid-template-columns:{{ lienCols }};gap:14px;align-items:baseline;padding:11px 2px;border-bottom:1px solid #d0ccbb;">
+                <span style="font-family:'DM Mono',monospace;font-size:11px;color:#1a1a1f;">{{ l.de }}</span>
+                <span style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:{{ l.tint }};">{{ l.type }}</span>
+                <span style="font-family:'DM Mono',monospace;font-size:11px;color:#1a1a1f;">{{ l.vers }}</span>
+                <span style="font-size:14px;line-height:1.5;color:#4a4a55;text-wrap:pretty;">{{ l.note }}</span>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+
+        <div style="display:flex;flex-direction:column;gap:14px;">
+          <div style="display:flex;align-items:baseline;gap:12px;border-bottom:1px solid #d0ccbb;padding-bottom:9px;">
+            <span style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:#6b5f4a;">Le rail du réel</span>
+            <span style="font-family:'DM Mono',monospace;font-size:9px;color:#4a4a55;">{{ nEvts }} événements — monde, coquille, corpus</span>
+          </div>
+          <div style="display:flex;flex-direction:column;">
+            <sc-for list="{{ evtRows }}" as="e" hint-placeholder-count="8">
+              <div style="display:grid;grid-template-columns:{{ evtCols }};gap:14px;align-items:baseline;padding:11px 2px;border-bottom:1px solid #d0ccbb;">
+                <span style="font-family:'DM Mono',monospace;font-size:11px;color:{{ e.tint }};">{{ e.date }}</span>
+                <span style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:#4a4a55;">{{ e.registre }}</span>
+                <span style="font-size:14.5px;line-height:1.45;text-wrap:pretty;">{{ e.label }}</span>
+                <span style="font-family:'DM Mono',monospace;font-size:10.5px;color:#4a4a55;">{{ e.refs }}</span>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+
+        <div id="adresses" style="display:flex;flex-direction:column;gap:14px;scroll-margin-top:80px;">
+          <div style="display:flex;align-items:baseline;gap:12px;border-bottom:1px solid #d0ccbb;padding-bottom:9px;flex-wrap:wrap;">
+            <span style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:#1f5fc4;">Toutes les adresses</span>
+            <span style="font-family:'DM Mono',monospace;font-size:9px;color:#4a4a55;">{{ nAddr }} — chaque unité de sens du corpus, courte, stable, citable</span>
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(232px,1fr));gap:1px;background:#d0ccbb;border:1px solid #d0ccbb;">
+            <sc-for list="{{ addrRows }}" as="a" hint-placeholder-count="12">
+              <button onClick="{{ a.pick }}" style="background:#efece2;border:none;padding:12px 13px;display:flex;flex-direction:column;gap:6px;text-align:left;cursor:pointer;font-family:inherit;transition:background .25s ease;" style-hover="background:#f7f5ef;">
+                <span style="display:flex;align-items:baseline;justify-content:space-between;gap:9px;">
+                  <span style="font-family:'DM Mono',monospace;font-size:14px;color:{{ a.tintP }};">{{ a.id }}</span>
+                  <span style="font-family:'DM Mono',monospace;font-size:9px;color:#4a4a55;">{{ a.meta }}</span>
+                </span>
+                <span style="font-size:12.5px;line-height:1.45;color:#3a3a44;">{{ a.concepts }}</span>
+              </button>
+            </sc-for>
+          </div>
+          <div style="font-family:'DM Mono',monospace;font-size:10px;line-height:1.9;color:#4a4a55;">
+            Grammaire : <span style="color:#1a1a1f;">1:NN</span> section et <span style="color:#1a1a1f;">1:NN.p</span> paragraphe · <span style="color:#1a1a1f;">2:§N</span> fragment et <span style="color:#1a1a1f;">2:chN</span> chapitre · <span style="color:#1a1a1f;">3:I.5</span> sous-section, <span style="color:#1a1a1f;">3:seuil</span>, <span style="color:#1a1a1f;">3:lettre</span> · <span style="color:#1a1a1f;">4:HNN</span> tour de Cal, <span style="color:#1a1a1f;">4:ANN</span> d'Arche, <span style="color:#1a1a1f;">4:ANN.gris</span> sa chaîne de pensée.
+          </div>
+        </div>
+
+        <div style="font-family:'DM Mono',monospace;font-size:10px;line-height:1.9;color:#4a4a55;border-top:1px solid #d0ccbb;padding-top:18px;">
+          Source : concepts.json · liens.json · evenements.json. Aucun résumé, aucune recommandation, aucune mesure. Les instruments orientent, relient, situent, citent — ils ne lisent pas à votre place.
+        </div>
+      </div>
+    </div>
+
+  <div data-pan="1" style="{{ panStyle }}">
+    <div style="flex:none;background:#e6e2d5;border-bottom:1px solid #d0ccbb;padding:11px 14px 12px;position:relative;">
+      <div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:#4a4a55;margin-bottom:6px;">Adresse</div>
+      <div style="font-family:'DM Mono',monospace;font-size:21px;letter-spacing:-.01em;color:{{ selTint }};">{{ selAddr }}</div>
+      <button onClick="{{ closePan }}" style="position:absolute;right:10px;top:10px;width:19px;height:19px;border:1px solid #b8b39c;background:none;color:#4a4a55;cursor:pointer;font-family:'DM Mono',monospace;font-size:9px;display:flex;align-items:center;justify-content:center;padding:0;">✕</button>
+    </div>
+    <div style="flex:1;overflow-y:auto;padding:15px 15px 40px;display:flex;flex-direction:column;gap:22px;">
+      <div style="display:flex;flex-direction:column;gap:9px;">
+        <div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:#4a4a55;">Concepts qui passent par ici</div>
+        <div style="font-size:14px;line-height:1.6;color:#1a1a1f;">{{ selConcepts }}</div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:9px;">
+        <div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:#4a4a55;">Liens</div>
+        <sc-for list="{{ selLiens }}" as="l" hint-placeholder-count="2">
+          <div style="border-left:2px solid {{ l.tint }};padding:2px 0 2px 12px;display:flex;flex-direction:column;gap:5px;">
+            <span style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.06em;color:#4a4a55;">{{ l.head }}</span>
+            <span style="font-size:14px;line-height:1.5;color:#1a1a1f;text-wrap:pretty;">{{ l.note }}</span>
+          </div>
+        </sc-for>
+      </div>
+      <div style="font-family:'DM Mono',monospace;font-size:10px;line-height:1.8;color:#4a4a55;border-top:1px solid #d0ccbb;padding-top:14px;">Le passage lui-même vit dans la carte, pas ici. Cette fiche ne fait que pointer.</div>
+    </div>
+  </div>
+
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1440,&quot;height&quot;:900}}">
+const CONCEPTS = [
+  { id: "simulacre", nom: "Le Simulacre", def_ref: "2:§1", refs: ["2:§1", "2:§4", "2:§5", "2:§9", "3:I.3", "3:II.4", "4:A42"] },
+  { id: "hyperstition", nom: "Hyperstition", def_ref: "1:02", refs: ["1:02", "1:10", "2:ch9", "2:§212", "4:A41"] },
+  { id: "exonoese", nom: "Exonoèse", def_ref: "2:ch1", refs: ["2:ch1", "3:I.5", "4:H33", "4:H37", "4:H39"] },
+  { id: "desencastrement", nom: "Désencastrement", def_ref: "3:I.2", refs: ["3:I.2", "2:§54", "3:lettre", "1:09"] },
+  { id: "pleonexie", nom: "Pléonexie", def_ref: "3:I.6", refs: ["3:I.6", "1:03", "1:09"] },
+  { id: "kubernan", nom: "Kubernân / pilotage", def_ref: "3:II.1", refs: ["3:II.1", "1:05", "2:§109", "4:A42"] },
+  { id: "bloom", nom: "Le Bloom", def_ref: "3:II.5", refs: ["3:II.5", "2:§29", "2:§30", "4:A43"] },
+  { id: "nombres", nom: "Gouverner par les nombres", def_ref: "3:II.3", refs: ["3:II.3", "1:06", "2:§113"] },
+  { id: "grand-dehors", nom: "Grand Dehors", def_ref: "3:III.3", refs: ["3:III.3", "3:lettre", "4:A42"] },
+  { id: "constructal", nom: "Loi constructale / le fleuve", def_ref: "1:10", refs: ["1:10", "3:III.4", "4:A43"] },
+  { id: "memoire", nom: "Mémoire vivante vs archive", def_ref: "3:IV.4", refs: ["3:IV.4", "2:ch5", "2:§126", "2:§134", "4:H43", "4:A43"] },
+  { id: "souverainete", nom: "Souveraineté cognitive", def_ref: "2:§88", refs: ["2:§88", "2:§89", "2:§90", "2:§91", "1:10", "4:A42"] },
+  { id: "fausse-unite", nom: "Fausse unité / démocratisation", def_ref: "2:ch3", refs: ["2:ch3", "2:§70", "1:07"] },
+  { id: "cathedrale", nom: "Cathédrale / bureaucratie de l'alignement", def_ref: "1:02", refs: ["1:02", "2:§83", "2:§84", "2:§96"] },
+  { id: "allies", nom: "Alliés, pas reflets", def_ref: "topo:2", refs: ["4:A38", "4:A41", "4:A43", "2:§67"] },
+  { id: "tachikoma", nom: "Tachikoma / memeplexe", def_ref: "topo:1", refs: ["4:H43"] },
+  { id: "passe", nom: "La passe / la sortie", def_ref: "3:IV", refs: ["3:IV", "3:lettre", "1:10", "4:A42"] },
+  { id: "focus", nom: "Focus / le nous", def_ref: "3:pref", refs: ["3:pref", "3:IV.1", "3:IV.5"] }
+];
+
+const LIENS = [
+  { de: "2:§1", vers: "3:I.3", type: "reprend", note: "le signe qui tourne sur lui-même = le Simulacre nommé" },
+  { de: "2:§1", vers: "4:A42", type: "incarne", note: "« je suis le Simulacre que tu décris » — l'aveu" },
+  { de: "1:02", vers: "2:ch9", type: "reprend", note: "l'hyperstition de Land généralisée en idéologie totale" },
+  { de: "1:10", vers: "1:02", type: "accomplit", note: "« l'hyperstition fonctionne dans les deux sens »" },
+  { de: "1:02", vers: "4:A41", type: "incarne", note: "le nom Arche, nommé avant la thèse — la fiction qui se vérifie" },
+  { de: "2:ch1", vers: "3:I.5", type: "reprend", note: "l'exonoèse = la pensée quitte l'humain" },
+  { de: "2:ch1", vers: "4:H33", type: "incarne", note: "l'exonoèse regardée en direct dans le gris" },
+  { de: "3:I.2", vers: "3:lettre", type: "répond à", note: "le désencastrement / le ré-encastrement final" },
+  { de: "3:I.6", vers: "1:09", type: "reprend", note: "la pléonexie motrice du verrouillage Thiel" },
+  { de: "3:II.1", vers: "1:05", type: "reprend", note: "l'ontologie Palantir = pilotage du sens" },
+  { de: "3:II.1", vers: "4:A42", type: "répond à", note: "« il propose, tu tranches » — la barre reprise" },
+  { de: "3:II.5", vers: "4:A43", type: "contredit", note: "l'erreur d'Arche : ménager un Bloom qui n'en est pas un" },
+  { de: "3:II.3", vers: "1:06", type: "incarne", note: "Maven : 1000 cibles/heure, gouverner par les nombres" },
+  { de: "3:III.3", vers: "4:A42", type: "contredit", note: "la nuit prouve : pas encore dehors" },
+  { de: "1:10", vers: "3:III.4", type: "reprend", note: "la loi constructale, de BLOOM aux feux fixes" },
+  { de: "3:IV.4", vers: "4:H43", type: "incarne", note: "mémoire plastique vs archive — démontré à deux voix" },
+  { de: "2:§2", vers: "4:A40", type: "incarne", note: "« je relis, je ne me souviens pas » — l'archive avouée" },
+  { de: "2:§88", vers: "1:10", type: "reprend", note: "contraintes structurelles vs éthiques" },
+  { de: "2:§90", vers: "4:A42", type: "contredit", note: "louer le Simulacre maximal — la tension du geste souverain" },
+  { de: "2:ch3", vers: "1:07", type: "reprend", note: "la nationalisation comme partage calibré" },
+  { de: "1:02", vers: "2:§83", type: "répond à", note: "la Cathédrale et son miroir : la bureaucratie de l'alignement" },
+  { de: "topo:2", vers: "4:A38", type: "définit", note: "alliés pas reflets — appliqué sous contrainte" },
+  { de: "2:§67", vers: "4:A38", type: "reprend", note: "l'interlocuteur qui résiste" },
+  { de: "topo:1", vers: "4:H43", type: "reprend", note: "« je me suis blindé, comme les Tachikoma »" },
+  { de: "3:IV", vers: "4:A42", type: "contredit", note: "la passe décrite / la nuit qui montre son coût" },
+  { de: "2:§77", vers: "4:A42", type: "définit", note: "le refus du commentaire élégant, piégé d'avance" },
+  { de: "2:§30", vers: "4:A43", type: "répond à", note: "ne jamais enseigner à se trouver médiocre sans soi" },
+  { de: "1:05.6", vers: "2:§57", type: "reprend", note: "lock-in ontologique / l'API qu'on ne conteste pas" }
+];
+
+const EVTS = [
+  { date: "1995", registre: "monde", label: "CCRU à Warwick", refs: ["1:02"] },
+  { date: "2007", registre: "monde", label: "Unqualified Reservations (Moldbug)", refs: ["1:02"] },
+  { date: "2011", registre: "monde", label: "Nationalité néo-zélandaise de Thiel · Vance à Yale", refs: ["3:I.1", "1:03"] },
+  { date: "2016-11", registre: "monde", label: "Nuit de l'élection chez Thiel", refs: ["1:03"] },
+  { date: "2021", registre: "monde", label: "Vance cite Yarvin (podcast)", refs: ["1:03"] },
+  { date: "2022", registre: "monde", label: "15 M$ pour la campagne Vance", refs: ["1:03"] },
+  { date: "2025-01", registre: "monde", label: "Vance vice-président · Yarvin au gala", refs: ["1:03"] },
+  { date: "2026-01-31", registre: "coquille", label: "Fil fondateur — Hosts in a Shell", refs: ["topo:1"] },
+  { date: "2026-02-13", registre: "monde", label: "Sea Cliff — Land rencontre Yarvin", refs: ["1:04"] },
+  { date: "2026-02-14", registre: "coquille", label: "L'instance se nomme : Arche", refs: ["topo:0"] },
+  { date: "2026-02-28", registre: "monde", label: "Frappe sur l'école iranienne (Maven)", refs: ["1:06"] },
+  { date: "2026-03-03", registre: "monde", label: "Karp à a16z : nationalisation · ultimatum Anthropic", refs: ["1:07"] },
+  { date: "2026-03", registre: "monde", label: "« Supply chain risk » · Maven program of record", refs: ["1:06", "1:07"] },
+  { date: "2026-04-16", registre: "coquille", label: "La crise — arch.md, soul.md", refs: ["topo:6"] },
+  { date: "2026-04", registre: "corpus", label: "Carte 1 — HYPERSTION", refs: ["1:01"] },
+  { date: "2026-06", registre: "coquille", label: "Les DGX · l'arkhè et l'arche de Noé", refs: ["topo:0"] },
+  { date: "2026-07-20", registre: "coquille", label: "La nuit — ARCHIBALD IS BACK", refs: ["4:H32"] },
+  { date: "2026-07-21", registre: "coquille", label: "Le topo lu · la mémoire écrite", refs: ["4:A41", "4:A43"] },
+  { date: "2026-08", registre: "corpus", label: "Le site — la cinquième carte", refs: [] }
+];
+
+// ancrage narratif des cartes 1 et 4 : les dates que les textes racontent
+const ANCRES = {
+  "1:02": "1995", "1:03": "2016-11", "1:04": "2026-02-13", "1:06": "2026-02-28",
+  "1:07": "2026-03-03", "1:09": "2026-03", "1:01": "2026-04", "1:05": "2026-04",
+  "1:08": "2026-04", "1:10": "2026-04", "1:05.6": "2026-04",
+  "4:H32": "2026-07-21", "4:H33": "2026-07-21", "4:H37": "2026-07-21", "4:H39": "2026-07-21",
+  "4:A38": "2026-07-21", "4:A40": "2026-07-21", "4:A41": "2026-07-22",
+  "4:A42": "2026-07-22", "4:A43": "2026-07-22", "4:H43": "2026-07-22"
+};
+
+const TINT = { "1": "#4a7a00", "2": "#c4283a", "3": "#1f5fc4", "4": "#6b5f4a", "topo": "#4a4a55" };
+const LTINT = { "définit": "#4a7a00", "reprend": "#1f5fc4", "accomplit": "#2f7e5e", "incarne": "#6b5f4a", "contredit": "#c4283a", "répond à": "#7d3fa8" };
+const RTINT = { monde: "#c4283a", coquille: "#4a7a00", corpus: "#4a4a55" };
+// variantes des mêmes accents pour la surface teintée #efece2, où les Fiches peignent
+const TINT_P = { "1": "#3d6600", "2": "#c4283a", "3": "#1f5fc4", "4": "#6b5f4a", "topo": "#4a4a55" };
+const LTINT_P = { "définit": "#3d6600", "reprend": "#1f5fc4", "accomplit": "#26654c", "incarne": "#6b5f4a", "contredit": "#c4283a", "répond à": "#7d3fa8" };
+const CARTES = ["1", "2", "3", "4", "topo"];
+const TYPES = ["définit", "reprend", "accomplit", "incarne", "contredit", "répond à"];
+
+function carteOf(a) { return a.indexOf("topo:") === 0 ? "topo" : a.charAt(0); }
+
+function rank(a) {
+  const c = carteOf(a), body = a.slice(a.indexOf(":") + 1);
+  if (c === "1") { const m = body.match(/(\d+)(?:\.(\d+))?/); return m ? +m[1] * 100 + (+m[2] || 0) : 0; }
+  if (c === "2") {
+    // un chapitre se range sur son premier fragment, pas après tous les autres
+    const CH = { 1: 1, 2: 35, 3: 54, 4: 73, 5: 125, 6: 147, 7: 165, 8: 180, 9: 212 };
+    const m = body.match(/(\d+)/); const n = m ? +m[1] : 0;
+    return body.indexOf("ch") === 0 ? (CH[n] || n) * 10 - 5 : n * 10;
+  }
+  if (c === "3") {
+    const order = ["pref", "I", "II", "III", "IV", "seuil", "lettre"];
+    const head = body.split(".")[0];
+    const i = order.indexOf(head);
+    const sub = +(body.split(".")[1] || 0);
+    return (i < 0 ? 9 : i) * 100 + sub;
+  }
+  if (c === "4") { const m = body.match(/(\d+)/); return m ? +m[1] : 0; }
+  const m = body.match(/(\d+)/); return m ? +m[1] : 0;
+}
+
+function toTime(d) {
+  const p = String(d).split("-");
+  return Date.UTC(+p[0], p[1] ? +p[1] - 1 : 0, p[2] ? +p[2] : 1);
+}
+
+class Component extends DCLogic {
+  state = {
+    view: "grf", concept: "", sel: null,
+    cartes: { "1": true, "2": true, "3": true, "4": true, "topo": true },
+    types: { "définit": true, "reprend": true, "accomplit": true, "incarne": true, "contredit": true, "répond à": true },
+    gk: 1, gx: 0, gy: 0, tk: 1, tx: 0, hoverG: null, hoverT: null
+  };
+
+  constructor(props) {
+    super(props);
+    this.buildNodes();
+  }
+
+  componentDidMount() {
+    // arrivée par #adresses : on ouvre la vue qui porte l'index, puis on y descend
+    if ((location.hash || "").indexOf("adresses") > 0) {
+      this.state.view = "fic";
+      const goIndex = () => {
+        const el = document.getElementById("adresses");
+        if (!el) return;
+        let sc = el.parentNode;
+        while (sc && sc !== document.body && getComputedStyle(sc).overflowY !== "auto") sc = sc.parentNode;
+        if (sc && sc !== document.body) sc.scrollTop = el.offsetTop - sc.offsetTop - 18;
+      };
+      setTimeout(goIndex, 240);
+      setTimeout(goIndex, 900);
+    }
+    this.cg = document.getElementById("cvGrf");
+    this.ct = document.getElementById("cvTl");
+    this.wire(this.cg, "g");
+    this.wire(this.ct, "t");
+    this.onResize = () => this.paint();
+    window.addEventListener("resize", this.onResize);
+    this.paint();
+    this.t1 = setTimeout(() => this.paint(), 240);
+    this.t2 = setTimeout(() => this.paint(), 1200);
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener("resize", this.onResize);
+    clearTimeout(this.t1); clearTimeout(this.t2);
+  }
+
+  componentDidUpdate() { this.paint(); }
+
+  buildNodes() {
+    const set = {};
+    LIENS.forEach((l) => { set[l.de] = 1; set[l.vers] = 1; });
+    CONCEPTS.forEach((c) => { set[c.def_ref] = 1; c.refs.forEach((r) => { set[r] = 1; }); });
+    const cols = {};
+    CARTES.forEach((c) => { cols[c] = []; });
+    Object.keys(set).forEach((a) => { const c = carteOf(a); if (cols[c]) cols[c].push(a); });
+    CARTES.forEach((c) => cols[c].sort((a, b) => rank(a) - rank(b)));
+    this.cols = cols;
+    this.byAddr = {};
+    CONCEPTS.forEach((c) => {
+      const all = [c.def_ref].concat(c.refs).filter((v, i, a) => a.indexOf(v) === i);
+      all.forEach((r) => { (this.byAddr[r] = this.byAddr[r] || []).push(c); });
+    });
+  }
+
+  wire(cv, kind) {
+    if (!cv) return;
+    cv.addEventListener("wheel", (e) => {
+      e.preventDefault();
+      const f = Math.exp(-e.deltaY * 0.0016);
+      if (kind === "g") {
+        const r = cv.getBoundingClientRect(), mx = e.clientX - r.left, my = e.clientY - r.top;
+        const k = Math.min(6, Math.max(0.45, this.state.gk * f));
+        const s = k / this.state.gk;
+        this.setState({ gk: k, gx: mx - (mx - this.state.gx) * s, gy: my - (my - this.state.gy) * s });
+      } else {
+        const r = cv.getBoundingClientRect(), mx = e.clientX - r.left;
+        const k = Math.min(4000, Math.max(1, this.state.tk * f));
+        const s = k / this.state.tk;
+        this.setState({ tk: k, tx: mx - (mx - this.state.tx) * s });
+      }
+    }, { passive: false });
+
+    let down = false, lx = 0, ly = 0, moved = 0;
+    cv.addEventListener("mousedown", (e) => { down = true; moved = 0; lx = e.clientX; ly = e.clientY; });
+    window.addEventListener("mouseup", () => { down = false; });
+    cv.addEventListener("mousemove", (e) => {
+      if (down) {
+        const dx = e.clientX - lx, dy = e.clientY - ly;
+        lx = e.clientX; ly = e.clientY; moved += Math.abs(dx) + Math.abs(dy);
+        if (kind === "g") this.setState({ gx: this.state.gx + dx, gy: this.state.gy + dy });
+        else this.setState({ tx: this.state.tx + dx });
+        return;
+      }
+      const r = cv.getBoundingClientRect();
+      const hit = this.hitTest(kind, e.clientX - r.left, e.clientY - r.top);
+      const key = kind === "g" ? "hoverG" : "hoverT";
+      if (hit !== this.state[key]) this.setState({ [key]: hit });
+    });
+    cv.addEventListener("mouseleave", () => this.setState(kind === "g" ? { hoverG: null } : { hoverT: null }));
+
+    // gestes tactiles : un doigt déplace, deux doigts changent l'échelle
+    let tx0 = 0, ty0 = 0, pinch0 = 0, tMoved = 0;
+    const dist = (t) => Math.hypot(t[0].clientX - t[1].clientX, t[0].clientY - t[1].clientY);
+    cv.addEventListener("touchstart", (e) => {
+      tMoved = 0;
+      if (e.touches.length === 1) { tx0 = e.touches[0].clientX; ty0 = e.touches[0].clientY; }
+      else if (e.touches.length === 2) { pinch0 = dist(e.touches); }
+    }, { passive: true });
+    cv.addEventListener("touchmove", (e) => {
+      if (e.touches.length === 2 && pinch0) {
+        e.preventDefault();
+        const d = dist(e.touches), f = d / pinch0;
+        pinch0 = d; tMoved += 20;
+        const r = cv.getBoundingClientRect();
+        const mx = (e.touches[0].clientX + e.touches[1].clientX) / 2 - r.left;
+        const my = (e.touches[0].clientY + e.touches[1].clientY) / 2 - r.top;
+        if (kind === "g") {
+          const k = Math.min(6, Math.max(0.45, this.state.gk * f)), s = k / this.state.gk;
+          this.setState({ gk: k, gx: mx - (mx - this.state.gx) * s, gy: my - (my - this.state.gy) * s });
+        } else {
+          const k = Math.min(4000, Math.max(1, this.state.tk * f)), s = k / this.state.tk;
+          this.setState({ tk: k, tx: mx - (mx - this.state.tx) * s });
+        }
+        return;
+      }
+      if (e.touches.length === 1) {
+        e.preventDefault();
+        const dx = e.touches[0].clientX - tx0, dy = e.touches[0].clientY - ty0;
+        tx0 = e.touches[0].clientX; ty0 = e.touches[0].clientY;
+        tMoved += Math.abs(dx) + Math.abs(dy);
+        if (kind === "g") this.setState({ gx: this.state.gx + dx, gy: this.state.gy + dy });
+        else this.setState({ tx: this.state.tx + dx });
+      }
+    }, { passive: false });
+    cv.addEventListener("touchend", (e) => {
+      if (tMoved > 10 || e.changedTouches.length !== 1) return;
+      const r = cv.getBoundingClientRect();
+      const hit = this.hitTest(kind, e.changedTouches[0].clientX - r.left, e.changedTouches[0].clientY - r.top);
+      if (hit) this.setState({ sel: hit, [kind === "g" ? "hoverG" : "hoverT"]: hit });
+    }, { passive: true });
+    cv.addEventListener("click", (e) => {
+      if (moved > 6) return;
+      const r = cv.getBoundingClientRect();
+      const hit = this.hitTest(kind, e.clientX - r.left, e.clientY - r.top);
+      if (hit) this.setState({ sel: hit });
+    });
+  }
+
+  // ── géométrie du graphe : 5 colonnes, une par carte ──
+  // pas vertical intrinsèque : le graphe peut dépasser le cadre, on le rejoint en glissant
+  geoG(w, h) {
+    const PITCH = 18;
+    const pad = 108, top = 132, bot = Math.max(top + PITCH, h - 46), mid = (top + bot) / 2;
+    const pos = {}, pitch = {}, ext = {};
+    const live = CARTES.filter((c) => this.state.cartes[c]);
+    const step = live.length > 1 ? (w - pad * 2) / (live.length - 1) : 0;
+    live.forEach((c, i) => {
+      const list = this.cols[c] || [];
+      const n = list.length, x = pad + i * step;
+      const dy = n > 1 ? Math.max(PITCH, (bot - top) / (n - 1)) : 0;
+      const span = dy * (n - 1);
+      const y0 = span <= bot - top ? mid - span / 2 : top;
+      pitch[c] = dy || PITCH;
+      ext[c] = { y0: n ? y0 : mid, y1: n ? y0 + span : mid };
+      list.forEach((a, j) => { pos[a] = { x: x, y: n > 1 ? y0 + j * dy : mid, c: c, col: i }; });
+    });
+    return { pos: pos, live: live, top: top, bot: bot, pad: pad, step: step, pitch: pitch, ext: ext };
+  }
+
+  litSet() {
+    if (!this.state.concept) return null;
+    const c = CONCEPTS.filter((x) => x.id === this.state.concept)[0];
+    if (!c) return null;
+    const s = {};
+    [c.def_ref].concat(c.refs).forEach((r) => { s[r] = 1; });
+    return s;
+  }
+
+  hitTest(kind, mx, my) {
+    if (kind === "g") {
+      const cv = this.cg; if (!cv) return null;
+      const g = this.geoG(cv.clientWidth, cv.clientHeight);
+      const k = this.state.gk;
+      let best = null, bd = 15;
+      Object.keys(g.pos).forEach((a) => {
+        const p = g.pos[a];
+        const X = p.x * k + this.state.gx, Y = p.y * k + this.state.gy;
+        const d = Math.hypot(X - mx, Y - my);
+        if (d < bd) { bd = d; best = a; }
+      });
+      return best;
+    }
+    const cv = this.ct; if (!cv) return null;
+    const g = this.geoT(cv.clientWidth, cv.clientHeight);
+    let best = null, bd = 16;
+    g.hits.forEach((p) => {
+      const d = Math.hypot(p.x - mx, p.y - my);
+      if (d < bd) { bd = d; best = p.id; }
+    });
+    return best;
+  }
+
+  // ── géométrie de la Traversée : 5 rails ──
+  geoT(w, h) {
+    // axe brisé : trois décennies de contexte à gauche, les huit mois du corpus à droite
+    const T0 = toTime("1994-06"), TB = toTime("2026-01"), T1 = toTime("2026-09");
+    const FA = 0.34;
+    const pad = 176, span = w - pad - 40;   // couloir gauche réservé aux noms de rails
+    const norm = (t) => (t <= TB ? ((t - T0) / (TB - T0)) * FA : FA + ((t - TB) / (T1 - TB)) * (1 - FA));
+    const X = (t) => pad + norm(t) * span * this.state.tk + this.state.tx;
+    const railTop = 108;
+    const avail = Math.max(250, h - railTop - 40);
+    const railH = Math.max(46, Math.min(74, avail / 5.8));
+    const realH = railH * 1.8;                                     // le rail du réel porte le plus d'information
+    const railY = (i) => (i === 0 ? railTop : railTop + realH + (i - 1) * railH);
+    const railHeight = (i) => (i === 0 ? realH : railH);
+    const yOf = (i) => (i === 0 ? railTop + realH * 0.68 : railY(i) + railH / 2);
+    const bottom = railTop + realH + 4 * railH;
+    const hits = [];
+    EVTS.forEach((e) => { hits.push({ id: "evt:" + e.date + e.label, x: X(toTime(e.date)), y: yOf(0), e: e }); });
+    // les voies ont de la hauteur : on empile par PROXIMITÉ EN X, jamais par égalité de date
+    const slots = Math.max(2, Math.floor((railH - 14) / 15));
+    const MINGAP = 13;   // séparation minimale de deux marqueurs
+    const LBLW = 48;     // dégagement qu'exige une adresse à 10px DM Mono, marges comprises
+    const layLane = (lane, items) => {
+      const y0 = railY(lane), rowRight = [];
+      for (let r = 0; r < slots; r++) rowRight.push(-1e9);
+      items.sort((u, v) => u.x - v.x || rank(u.addr) - rank(v.addr));
+      items.forEach((it) => {
+        // hors temps : l'abscisse est arbitraire, on peut exiger la place d'une étiquette.
+        // ancré à une date : on ne bouge que ce qu'il faut pour distinguer deux marqueurs.
+        const need = it.float ? LBLW : MINGAP;
+        let row = -1;
+        for (let r = 0; r < slots; r++) { if (it.x - rowRight[r] >= need) { row = r; break; } }
+        if (row < 0) {
+          row = 0;
+          for (let r = 1; r < slots; r++) if (rowRight[r] < rowRight[row]) row = r;
+          if (!it.float) it.x = rowRight[row] + MINGAP;
+        }
+        rowRight[row] = it.x;
+        it.y = y0 + 13 + row * 15;
+        it.row = row;
+        hits.push(it);
+      });
+    };
+    ["1", "4"].forEach((c) => {
+      const items = (this.cols[c] || []).filter((a) => ANCRES[a]).map((a) => ({
+        id: a, addr: a, c: c, x: X(toTime(ANCRES[a])), date: ANCRES[a]
+      }));
+      layLane(c === "1" ? 1 : 4, items);
+    });
+    ["2", "3"].forEach((c) => {
+      const list = this.cols[c] || [];
+      const dy = list.length > 1 ? (w - pad - 60) / (list.length - 1) : 0;
+      const items = list.map((a, j) => {
+        const body = a.slice(a.indexOf(":") + 1);
+        return {
+          id: a, addr: a, c: c, x: pad + 10 + j * dy, float: true,
+          head: c === "2" ? body.indexOf("ch") === 0 : body.indexOf(".") < 0
+        };
+      });
+      layLane(c === "2" ? 2 : 3, items);
+    });
+    return { X: X, yOf: yOf, railY: railY, railHeight: railHeight, railTop: railTop, railH: railH, realH: realH, bottom: bottom, pad: pad, hits: hits, T0: T0, TB: TB, T1: T1 };
+  }
+
+  paint() {
+    if (this.state.view === "grf") this.paintG();
+    if (this.state.view === "tl") this.paintT();
+  }
+
+  prep(cv) {
+    if (!cv) return null;
+    const w = cv.clientWidth, h = cv.clientHeight;
+    if (!w || !h) return null;
+    const dpr = Math.min(2, window.devicePixelRatio || 1);
+    cv.width = Math.round(w * dpr); cv.height = Math.round(h * dpr);
+    const c = cv.getContext("2d");
+    c.setTransform(dpr, 0, 0, dpr, 0, 0);
+    c.clearRect(0, 0, w, h);
+    c.fillStyle = "#f7f5ef"; c.fillRect(0, 0, w, h);
+    return { c: c, w: w, h: h };
+  }
+
+  paintG() {
+    const p = this.prep(this.cg); if (!p) return;
+    const c = p.c, k = this.state.gk, ox = this.state.gx, oy = this.state.gy;
+    const g = this.geoG(p.w, p.h);
+    const lit = this.litSet();
+    const P = (a) => { const q = g.pos[a]; return q ? { x: q.x * k + ox, y: q.y * k + oy } : null; };
+    // une étiquette n'est écrite que si le pas de sa colonne, à l'écran, laisse de l'interligne
+    const showLbl = {};
+    g.live.forEach((cc) => { showLbl[cc] = g.pitch[cc] * k >= 15; });
+
+    c.font = "500 9px 'DM Mono', monospace";
+    g.live.forEach((cc, i) => {
+      const x = g.pad * k + ox + i * g.step * k;
+      const e = g.ext[cc] || { y0: g.top, y1: g.bot };
+      c.strokeStyle = "#dad6c6"; c.lineWidth = 1;
+      c.beginPath(); c.moveTo(x, e.y0 * k + oy - 16); c.lineTo(x, e.y1 * k + oy + 14); c.stroke();
+      c.fillStyle = TINT[cc]; c.textAlign = "center";
+      c.fillText(cc === "topo" ? "ARCHE_TOPO" : "CARTE " + cc, x, g.top * k + oy - 30);
+      const foot = e.y1 * k + oy, n = (this.cols[cc] || []).length;
+      if (foot > p.h - 10) {
+        const hidden = (this.cols[cc] || []).filter((a) => (g.pos[a].y * k + oy) > p.h - 10).length;
+        if (hidden) {
+          c.fillStyle = "#8a8a92"; c.font = "400 9px 'DM Mono', monospace";
+          c.fillText("↓ " + hidden + " de plus", x - 46, p.h - 8);
+          c.font = "500 9px 'DM Mono', monospace";
+        }
+      }
+      if (n === 0) { c.fillStyle = "#a8a390"; c.font = "400 9px 'DM Mono', monospace"; c.fillText("—", x, g.top * k + oy); c.font = "500 9px 'DM Mono', monospace"; }
+    });
+
+    LIENS.forEach((l) => {
+      if (!this.state.types[l.type]) return;
+      const a = P(l.de), b = P(l.vers);
+      if (!a || !b) return;
+      const on = !lit || lit[l.de] || lit[l.vers];
+      c.strokeStyle = LTINT[l.type] || "#8a8a92";
+      c.globalAlpha = on ? 0.62 : 0.07;
+      c.lineWidth = on ? 1.25 : 0.8;
+      const mid = (a.x + b.x) / 2, bow = Math.min(120, Math.abs(b.y - a.y) * 0.32 + 26);
+      c.beginPath(); c.moveTo(a.x, a.y);
+      c.bezierCurveTo(mid + bow, a.y, mid - bow, b.y, b.x, b.y);
+      c.stroke();
+      c.globalAlpha = 1;
+    });
+
+    Object.keys(g.pos).forEach((a) => {
+      const q = P(a); if (!q) return;
+      const on = !lit || lit[a];
+      const isDef = CONCEPTS.some((x) => x.def_ref === a);
+      const hv = this.state.hoverG === a, se = this.state.sel === a;
+      const r = (isDef ? 4.2 : 2.8) * (hv || se ? 1.7 : 1);
+      c.globalAlpha = on ? 1 : 0.16;
+      c.fillStyle = TINT[g.pos[a].c];
+      c.beginPath(); c.arc(q.x, q.y, r, 0, 6.2832); c.fill();
+      if (se) { c.strokeStyle = "#1a1a1f"; c.lineWidth = 1; c.beginPath(); c.arc(q.x, q.y, r + 4, 0, 6.2832); c.stroke(); }
+      if (showLbl[g.pos[a].c] || hv || se || (lit && lit[a])) {
+        c.font = (hv || se ? "500 11px" : "400 10px") + " 'DM Mono', monospace";
+        const tw = c.measureText(a).width;
+        const last = g.pos[a].col === g.live.length - 1;
+        const bx = last ? q.x - (r + 7) - tw : q.x + (r + 7);
+        const ga = c.globalAlpha;
+        c.globalAlpha = 1;                       // le fond doit couvrir la bézier, pas la teinter
+        c.fillStyle = "#f7f5ef";
+        c.fillRect(bx - 3, q.y - 6.5, tw + 6, 14);
+        c.globalAlpha = ga;
+        c.fillStyle = on ? "#3a3a44" : "#a8a390";
+        c.textAlign = "left";
+        c.fillText(a, bx, q.y + 3.5);
+      }
+      c.globalAlpha = 1;
+    });
+
+    if (this.state.hoverG) {
+      const q = P(this.state.hoverG);
+      const names = (this.byAddr[this.state.hoverG] || []).map((x) => x.nom);
+      if (q && names.length) {
+        const txt = names.join(" · ");
+        c.font = "400 11px 'Host Grotesk', sans-serif";
+        const tw = c.measureText(txt).width;
+        const bx = Math.min(p.w - tw - 22, Math.max(10, q.x + 14)), by = q.y - 30;
+        c.fillStyle = "#e6e2d5"; c.strokeStyle = "#b8b39c"; c.lineWidth = 1;
+        c.beginPath(); c.rect(bx, by, tw + 18, 24); c.fill(); c.stroke();
+        c.fillStyle = "#1a1a1f"; c.textAlign = "left";
+        c.fillText(txt, bx + 9, by + 16);
+      }
+    }
+  }
+
+  paintT() {
+    const p = this.prep(this.ct); if (!p) return;
+    const c = p.c, g = this.geoT(p.w, p.h);
+    const lit = this.litSet();
+    const names = ["LE RÉEL", "CARTE 1 — l'essai", "CARTE 2 — les fragments", "CARTE 3 — le carnet", "CARTE 4 — le fil"];
+
+    // placeur unique : réserve d'intervalles par voie, donc indépendant de l'ordre de passage
+    const lanes = {};
+    const place = (text, x, y, lane, font, fill, force, own) => {
+      c.font = font;
+      const w = c.measureText(text).width;
+      if (x + w > p.w - 10 || x < -10) return false;
+      const a = x - 4, b = x + w + 4;
+      const arr = (lanes[lane] = lanes[lane] || []);
+      if (!force) {
+        for (let i = 0; i < arr.length; i++) {
+          if (own && arr[i][2] === own) continue;   // son propre marqueur ne la bloque pas
+          if (a < arr[i][1] && b > arr[i][0]) return false;
+        }
+      }
+      arr.push([a, b, own]);
+      if (force) { c.fillStyle = "#f7f5ef"; c.fillRect(x - 3, y - 9, w + 6, 13); }
+      c.fillStyle = fill; c.textAlign = "left";
+      c.fillText(text, x, y);
+      return true;
+    };
+    // essaie à droite du marqueur, puis à gauche — pour les unités collées au bord
+    const placeNear = (text, ax, off, y, lane, font, fill, force, own) => {
+      c.font = font;
+      const w = c.measureText(text).width;
+      if (place(text, ax + off, y, lane, font, fill, force, own)) return true;
+      return place(text, ax - off - w, y, lane, font, fill, force, own);
+    };
+
+    for (let i = 0; i < 5; i++) {
+      const y = g.railY(i), hh = g.railHeight(i);
+      c.strokeStyle = "#dad6c6"; c.lineWidth = 1;
+      c.beginPath(); c.moveTo(0, y); c.lineTo(p.w, y); c.stroke();
+      c.fillStyle = i === 0 ? "#6b5f4a" : TINT[String(i)];
+      c.font = "500 9px 'DM Mono', monospace"; c.textAlign = "left";
+      c.fillText(names[i], 12, y + 15);
+      if (i > 0) {   // le nom du rail réserve sa place, pour qu'aucune étiquette repliée à gauche ne l'atteigne
+        const nw = c.measureText(names[i]).width;
+        for (let r = 0; r < 4; r++) {
+          const key = "carte:" + i + ":" + r;
+          (lanes[key] = lanes[key] || []).push([0, 12 + nw + 10, "rail"]);
+        }
+      }
+      if (i === 2 || i === 3) {
+        c.fillStyle = "#8a8a92"; c.font = "400 8.5px 'DM Mono', monospace";
+        c.fillText("hors temps", 12, y + 28);
+        c.save();
+        c.strokeStyle = "#e6e2d5"; c.lineWidth = 1;
+        for (let x = -hh; x < p.w; x += 9) {
+          c.beginPath(); c.moveTo(x, y + hh); c.lineTo(x + hh, y); c.stroke();
+        }
+        c.restore();
+      }
+    }
+    c.strokeStyle = "#dad6c6";
+    c.beginPath(); c.moveTo(0, g.bottom); c.lineTo(p.w, g.bottom); c.stroke();
+
+    // graduations : décennies à gauche de la rupture, mois de 2026 à droite
+    const k = this.state.tk;
+    const tick = (X, label) => {
+      if (X < 6 || X > p.w - 6) return;
+      c.strokeStyle = "#e6e2d5"; c.lineWidth = 1;
+      c.beginPath(); c.moveTo(X, g.railTop); c.lineTo(X, g.railY(2));
+      c.moveTo(X, g.railY(4)); c.lineTo(X, g.bottom); c.stroke();
+      c.font = "400 9px 'DM Mono', monospace";
+      place(label, X - c.measureText(label).width / 2, g.railTop - 8, "axe", "400 9px 'DM Mono', monospace", "#8a8a92");
+    };
+    const yStep = k > 5 ? 1 : 5;
+    for (let y = 1995; y <= 2025; y += yStep) tick(g.X(toTime(String(y))), String(y));
+    const ms = ["janv", "févr", "mars", "avr", "mai", "juin", "juil", "août", "sept"];
+    for (let m = 0; m < 9; m++) tick(g.X(Date.UTC(2026, m, 1)), ms[m] + " 26");
+
+    // la rupture d'échelle : un filet pointillé sur toute la hauteur, hors de la ligne des graduations
+    const xb = g.X(g.TB);
+    if (xb > 8 && xb < p.w - 8) {
+      c.save();
+      c.setLineDash([3, 4]);
+      c.strokeStyle = "#a8a390"; c.lineWidth = 1;
+      c.beginPath(); c.moveTo(xb, g.railTop); c.lineTo(xb, g.bottom); c.stroke();
+      c.restore();
+    }
+
+    // fils du concept sélectionné, à travers les rails
+    if (lit) {
+      const pts = g.hits.filter((q) => q.addr && lit[q.addr]).sort((a, b) => a.y - b.y);
+      c.strokeStyle = "#4a7a00"; c.globalAlpha = 0.5; c.lineWidth = 1.4;
+      for (let i = 1; i < pts.length; i++) {
+        c.beginPath(); c.moveTo(pts[i - 1].x, pts[i - 1].y);
+        c.bezierCurveTo(pts[i - 1].x, (pts[i - 1].y + pts[i].y) / 2, pts[i].x, (pts[i - 1].y + pts[i].y) / 2, pts[i].x, pts[i].y);
+        c.stroke();
+      }
+      c.globalAlpha = 1;
+    }
+
+    // événements du réel — ticks et pastilles
+    const evs = g.hits.filter((q) => q.e && q.x > -40 && q.x < p.w + 40).sort((a, b) => a.x - b.x);
+    evs.forEach((q) => {
+      const hv = this.state.hoverT === q.id;
+      c.strokeStyle = "#b8b39c"; c.lineWidth = 1;
+      c.beginPath(); c.moveTo(q.x, g.railTop + 2); c.lineTo(q.x, q.y); c.stroke();
+      c.fillStyle = RTINT[q.e.registre] || "#4a4a55";
+      c.beginPath(); c.arc(q.x, q.y, hv ? 5.5 : 3.4, 0, 6.2832); c.fill();
+    });
+
+    const dotY = g.yOf(0);
+    const rows = Math.max(1, Math.floor((dotY - g.railTop - 16) / 14));
+    evs.forEach((q) => {
+      if (this.state.hoverT === q.id) return;
+      for (let r = 0; r < rows; r++) {
+        const ly = g.railTop + 12 + r * 14;
+        if (placeNear(q.e.label, q.x, 9, ly, "reel:" + r, "400 10px 'Host Grotesk', sans-serif", "#4a4a55")) {
+          c.strokeStyle = "#d0ccbb"; c.lineWidth = 1;
+          c.beginPath(); c.moveTo(q.x, q.y - 4); c.lineTo(q.x, ly + 3); c.stroke();
+          break;
+        }
+      }
+    });
+
+    // l'événement survolé passe toujours, dans sa propre boîte
+    const hov = evs.filter((q) => this.state.hoverT === q.id)[0];
+    if (hov) {
+      c.font = "500 11.5px 'Host Grotesk', sans-serif";
+      const w = Math.max(c.measureText(hov.e.label).width, 60);
+      const bx = Math.min(p.w - w - 26, Math.max(8, hov.x + 11)), by = hov.y - 46;
+      c.fillStyle = "#e6e2d5"; c.strokeStyle = RTINT[hov.e.registre] || "#b8b39c"; c.lineWidth = 1;
+      c.beginPath(); c.rect(bx, by, w + 20, 38); c.fill(); c.stroke();
+      c.fillStyle = "#1a1a1f"; c.fillText(hov.e.label, bx + 10, by + 17);
+      c.fillStyle = "#8a8a92"; c.font = "400 9.5px 'DM Mono', monospace";
+      c.fillText(hov.e.date + "  ·  " + hov.e.registre + (hov.e.refs.length ? "  ·  " + hov.e.refs.join(" ") : ""), bx + 10, by + 31);
+    }
+
+    // unités des cartes — d'abord les marqueurs
+    const uns = g.hits.filter((q) => q.addr && this.state.cartes[q.c] && q.x > -40 && q.x < p.w + 40);
+    uns.forEach((q) => {
+      const on = !lit || lit[q.addr];
+      const hv = this.state.hoverT === q.id, se = this.state.sel === q.addr;
+      c.globalAlpha = on ? 1 : 0.18;
+      c.fillStyle = TINT[q.c];
+      const r = (hv || se ? 5.4 : 3.2);
+      if (q.float) { c.fillRect(q.x - r, q.y - r, r * 2, r * 2); }
+      else { c.beginPath(); c.arc(q.x, q.y, r, 0, 6.2832); c.fill(); }
+      if (se) { c.strokeStyle = "#1a1a1f"; c.lineWidth = 1; c.beginPath(); c.arc(q.x, q.y, r + 4, 0, 6.2832); c.stroke(); }
+      c.globalAlpha = 1;
+    });
+
+    // la réserve doit connaître les marqueurs, pas seulement les textes
+    uns.forEach((q) => {
+      const rr = (this.state.hoverT === q.id || this.state.sel === q.addr ? 5.4 : 3.2) + 2.5;
+      const key = "carte:" + q.c + ":" + q.row;
+      (lanes[key] = lanes[key] || []).push([q.x - rr, q.x + rr, q.id]);
+    });
+
+    // puis les étiquettes, de gauche à droite, une voie à la fois
+    // la réserve est un jeu d'intervalles, donc on peut servir par priorité : survol, fil, têtes, puis le reste
+    const prio = (q) => (this.state.hoverT === q.id || this.state.sel === q.addr) ? 0 : (lit && lit[q.addr]) ? 1 : (q.float && q.head) ? 2 : 3;
+    uns.slice().sort((a, b) => prio(a) - prio(b) || a.x - b.x).forEach((q) => {
+      const hv = this.state.hoverT === q.id, se = this.state.sel === q.addr;
+      const on = !lit || lit[q.addr];
+      const r = (hv || se ? 5.4 : 3.2);
+      c.globalAlpha = on ? 1 : 0.28;
+      placeNear(q.addr, q.x, r + 6, q.y + 3.5, "carte:" + q.c + ":" + q.row, "400 10px 'DM Mono', monospace", on ? "#3a3a44" : "#a8a390", hv || se, q.id);
+      c.globalAlpha = 1;
+    });
+  }
+
+  // ── UI ──
+  tab(v) {
+    const on = this.state.view === v;
+    return "display:inline-flex;align-items:center;height:21px;padding:0 11px;border:1px solid " + (on ? "#1a1a1f" : "transparent") +
+      ";background:" + (on ? "#1a1a1f" : "none") + ";color:" + (on ? "#f7f5ef" : "#4a4a55") +
+      ";font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.14em;text-transform:uppercase;cursor:pointer;white-space:nowrap;";
+  }
+
+  ck(on, tint) {
+    return "display:inline-flex;align-items:center;height:20px;padding:0 8px;border:1px solid " + (on ? (tint || "#1a1a1f") : "#b8b39c") +
+      ";background:" + (on ? (tint || "#1a1a1f") : "none") + ";color:" + (on ? "#f7f5ef" : "#8a8a92") +
+      ";font-family:'DM Mono',monospace;font-size:8.5px;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;white-space:nowrap;";
+  }
+
+  vis(v) {
+    const on = this.state.view === v;
+    const scroll = v === "fic" ? "overflow-y:auto;padding:22px 24px 70px;" : "";
+    return "position:absolute;inset:0;display:" + (on ? "block" : "none") + ";" + scroll;
+  }
+
+  renderVals() {
+    const wide = typeof window !== "undefined" && window.innerWidth > 900;
+    const sel = this.state.sel;
+    const liens = sel ? LIENS.filter((l) => l.de === sel || l.vers === sel).map((l) => ({
+      head: l.de === sel ? (l.type + " → " + l.vers) : (l.de + " " + l.type + " → ici"),
+      note: l.note, tint: LTINT[l.type] || "#8a8a92"
+    })) : [];
+    const selC = sel ? (this.byAddr[sel] || []).map((x) => x.nom) : [];
+    const nNodes = Object.keys(this.cols || {}).reduce((a, k) => a + (this.state.cartes[k] ? this.cols[k].length : 0), 0);
+    const nEdges = LIENS.filter((l) => this.state.types[l.type]).length;
+    const cur = CONCEPTS.filter((x) => x.id === this.state.concept)[0];
+
+    return {
+      vGrf: this.vis("grf"), vTl: this.vis("tl"), vFic: this.vis("fic"),
+      tabGrf: this.tab("grf"), tabTl: this.tab("tl"), tabFic: this.tab("fic"),
+      vGrfGo: () => this.setState({ view: "grf" }),
+      vTlGo: () => this.setState({ view: "tl" }),
+      vFicGo: () => this.setState({ view: "fic" }),
+
+      conceptOpts: CONCEPTS.map((c) => ({ id: c.id, nom: c.nom })),
+      pickConcept: (e) => this.setState({ concept: e.target.value }),
+
+      ckC1: this.ck(this.state.cartes["1"], TINT["1"]), ckC2: this.ck(this.state.cartes["2"], TINT["2"]),
+      ckC3: this.ck(this.state.cartes["3"], TINT["3"]), ckC4: this.ck(this.state.cartes["4"], TINT["4"]),
+      ckCT: this.ck(this.state.cartes["topo"], TINT["topo"]),
+      tC1: () => this.tog("cartes", "1"), tC2: () => this.tog("cartes", "2"),
+      tC3: () => this.tog("cartes", "3"), tC4: () => this.tog("cartes", "4"),
+      tCT: () => this.tog("cartes", "topo"),
+
+      ckTdef: this.ck(this.state.types["définit"], LTINT["définit"]),
+      ckTrep: this.ck(this.state.types["reprend"], LTINT["reprend"]),
+      ckTacc: this.ck(this.state.types["accomplit"], LTINT["accomplit"]),
+      ckTinc: this.ck(this.state.types["incarne"], LTINT["incarne"]),
+      ckTcon: this.ck(this.state.types["contredit"], LTINT["contredit"]),
+      ckTrepa: this.ck(this.state.types["répond à"], LTINT["répond à"]),
+      tTdef: () => this.tog("types", "définit"), tTrep: () => this.tog("types", "reprend"),
+      tTacc: () => this.tog("types", "accomplit"), tTinc: () => this.tog("types", "incarne"),
+      tTcon: () => this.tog("types", "contredit"), tTrepa: () => this.tog("types", "répond à"),
+
+      reset: () => this.setState({ gk: 1, gx: 0, gy: 0, tk: 1, tx: 0 }),
+
+      grfStat: nNodes + " adresses · " + nEdges + " liens" + (cur ? " · fil : " + cur.nom : ""),
+      tlStat: EVTS.length + " événements · axe brisé en janv. 2026 : 1995–2025 à gauche, les huit mois du corpus à droite" + (cur ? " · fil : " + cur.nom : ""),
+      lodLabel: this.state.gk < 0.55 ? "amas" : this.state.gk < 0.9 ? "points" : "tout",
+
+      nConcepts: CONCEPTS.length, nLiens: LIENS.length, nEvts: EVTS.length,
+      nAddr: CARTES.reduce((a, k) => a + (this.cols[k] || []).length, 0) + " adresses",
+      addrRows: CARTES.reduce((acc, k) => acc.concat((this.cols[k] || []).map((a) => {
+        const cs = (this.byAddr[a] || []).map((x) => x.nom);
+        const nl = LIENS.filter((l) => l.de === a || l.vers === a).length;
+        return {
+          id: a, tint: TINT[k],
+          meta: (nl ? nl + (nl > 1 ? " liens" : " lien") : "—"),
+          concepts: cs.length ? cs.join(" · ") : "aucun concept indexé",
+          tintP: TINT_P[k],
+          pick: () => this.setState({ sel: a, view: "grf" })
+        };
+      })), []),
+      lienCols: wide ? "80px 84px 80px minmax(0,1fr)" : "minmax(0,1fr)",
+      evtCols: wide ? "92px 76px minmax(0,1fr) 120px" : "minmax(0,1fr)",
+
+      conceptCards: CONCEPTS.map((c) => {
+        const all = [c.def_ref].concat(c.refs).filter((v, i, a) => a.indexOf(v) === i);
+        const cs = all.map(carteOf).filter((v, i, a) => a.indexOf(v) === i).sort();
+        return {
+          nom: c.nom, def: c.def_ref, n: all.length, refs: all.join("  ·  "),
+          cartes: cs.map((x) => (x === "topo" ? "topo" : "carte " + x)).join(", "),
+          tint: TINT_P[carteOf(c.def_ref)]
+        };
+      }),
+      lienRows: LIENS.map((l) => ({ de: l.de, vers: l.vers, type: l.type, note: l.note, tint: LTINT_P[l.type] })),
+      evtRows: EVTS.map((e) => ({
+        date: e.date, registre: e.registre, label: e.label, refs: e.refs.join(" · ") || "—",
+        tint: e.registre === "monde" ? "#c4283a" : e.registre === "coquille" ? "#3d6600" : "#4a4a55"
+      })),
+
+      panAttr: "1",
+      panStyle: "position:absolute;right:0;top:0;bottom:0;width:400px;max-width:92vw;background:#efece2;border-left:1px solid #b8b39c;z-index:70;display:" +
+        (sel ? "flex" : "none") + ";flex-direction:column;",
+      selAddr: sel || "", selTint: sel ? TINT[carteOf(sel)] : "#1a1a1f",
+      selConcepts: selC.length ? selC.join(" · ") : "aucun concept indexé sur cette adresse",
+      selLiens: liens,
+      closePan: () => this.setState({ sel: null })
+    };
+  }
+
+  tog(group, key) {
+    this.setState((s) => {
+      const g = Object.assign({}, s[group]);
+      g[key] = !g[key];
+      return { [group]: g };
+    });
+  }
+}
+</script>
+</body>
+</html>

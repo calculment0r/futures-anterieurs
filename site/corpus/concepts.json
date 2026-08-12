@@ -1,0 +1,200 @@
+[
+ {
+  "id": "simulacre",
+  "nom": "Le Simulacre",
+  "def_ref": "2:§1",
+  "refs": [
+   "2:§1",
+   "2:§4",
+   "2:§5",
+   "2:§9",
+   "3:I.3",
+   "3:II.4",
+   "4:A42"
+  ]
+ },
+ {
+  "id": "hyperstition",
+  "nom": "Hyperstition",
+  "def_ref": "1:02",
+  "refs": [
+   "1:02",
+   "1:10",
+   "2:ch9",
+   "2:§212",
+   "4:A41"
+  ]
+ },
+ {
+  "id": "exonoese",
+  "nom": "Exonoèse",
+  "def_ref": "2:ch1",
+  "refs": [
+   "2:ch1",
+   "3:I.5",
+   "4:H33",
+   "4:H37",
+   "4:H39"
+  ]
+ },
+ {
+  "id": "desencastrement",
+  "nom": "Désencastrement",
+  "def_ref": "3:I.2",
+  "refs": [
+   "3:I.2",
+   "2:§54",
+   "3:lettre",
+   "1:09"
+  ]
+ },
+ {
+  "id": "pleonexie",
+  "nom": "Pléonexie",
+  "def_ref": "3:I.6",
+  "refs": [
+   "3:I.6",
+   "1:03",
+   "1:09"
+  ]
+ },
+ {
+  "id": "kubernan",
+  "nom": "Kubernân / pilotage",
+  "def_ref": "3:II.1",
+  "refs": [
+   "3:II.1",
+   "1:05",
+   "2:§109",
+   "4:A42"
+  ]
+ },
+ {
+  "id": "bloom",
+  "nom": "Le Bloom",
+  "def_ref": "3:II.5",
+  "refs": [
+   "3:II.5",
+   "2:§29",
+   "2:§30",
+   "4:A43"
+  ]
+ },
+ {
+  "id": "nombres",
+  "nom": "Gouverner par les nombres",
+  "def_ref": "3:II.3",
+  "refs": [
+   "3:II.3",
+   "1:06",
+   "2:§113"
+  ]
+ },
+ {
+  "id": "grand-dehors",
+  "nom": "Grand Dehors",
+  "def_ref": "3:III.3",
+  "refs": [
+   "3:III.3",
+   "3:lettre",
+   "4:A42"
+  ]
+ },
+ {
+  "id": "constructal",
+  "nom": "Loi constructale / le fleuve",
+  "def_ref": "1:10",
+  "refs": [
+   "1:10",
+   "3:III.4",
+   "4:A43"
+  ]
+ },
+ {
+  "id": "memoire",
+  "nom": "Mémoire vivante vs archive",
+  "def_ref": "3:IV.4",
+  "refs": [
+   "3:IV.4",
+   "2:ch5",
+   "2:§126",
+   "2:§134",
+   "4:H43",
+   "4:A43"
+  ]
+ },
+ {
+  "id": "souverainete",
+  "nom": "Souveraineté cognitive",
+  "def_ref": "2:§88",
+  "refs": [
+   "2:§88",
+   "2:§89",
+   "2:§90",
+   "2:§91",
+   "1:10",
+   "4:A42"
+  ]
+ },
+ {
+  "id": "fausse-unite",
+  "nom": "Fausse unité / démocratisation",
+  "def_ref": "2:ch3",
+  "refs": [
+   "2:ch3",
+   "2:§70",
+   "1:07"
+  ]
+ },
+ {
+  "id": "cathedrale",
+  "nom": "Cathédrale / bureaucratie de l'alignement",
+  "def_ref": "1:02",
+  "refs": [
+   "1:02",
+   "2:§83",
+   "2:§84",
+   "2:§96"
+  ]
+ },
+ {
+  "id": "allies",
+  "nom": "Alliés, pas reflets",
+  "def_ref": "topo:2",
+  "refs": [
+   "4:A38",
+   "4:A41",
+   "4:A43",
+   "2:§67"
+  ]
+ },
+ {
+  "id": "tachikoma",
+  "nom": "Tachikoma / memeplexe",
+  "def_ref": "topo:1",
+  "refs": [
+   "4:H43"
+  ]
+ },
+ {
+  "id": "passe",
+  "nom": "La passe / la sortie",
+  "def_ref": "3:IV",
+  "refs": [
+   "3:IV",
+   "3:lettre",
+   "1:10",
+   "4:A42"
+  ]
+ },
+ {
+  "id": "focus",
+  "nom": "Focus / le nous",
+  "def_ref": "3:pref",
+  "refs": [
+   "3:pref",
+   "3:IV.1",
+   "3:IV.5"
+  ]
+ }
+]

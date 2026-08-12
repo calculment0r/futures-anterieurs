@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Futures antérieurs — la boîte du souffleur</title>
+<meta name="description" content="Futures antérieurs. Quatrième et dernière bifurcation de la traversée. Un prologue, cinq mouvements, une coda : le deuxième principe est le seul futur antérieur qui ne se négocie pas.">
+<meta name="theme-color" content="#f7f5ee">
+<meta property="og:title" content="Futures antérieurs">
+<meta property="og:description" content="Quatrième et dernière bifurcation. Le futur antérieur est physique : la chaleur aura été rendue.">
+<meta property="og:type" content="article">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/oblivion.css">
+<link rel="stylesheet" href="../assets/kubernan.css">
+<style>
+  /* ── appoint Futures : phrase choc, exergue, god mode, boutons ──
+     (sur les tokens du thème Oblivion ; rien du thème du site) */
+
+  /* phrase choc sous le titre de bifurcation */
+  .ch-head .choc { font-family: var(--serif); font-style: italic; font-size: 21px; line-height: 1.5;
+    color: var(--text); margin-top: 16px; padding-left: 16px; border-left: 2px solid var(--accent); }
+  /* exergue de couverture (Futurum exactum) */
+  .cover-exergue { font-family: var(--serif); font-style: italic; font-size: 19px; line-height: 1.6;
+    color: var(--muted); padding-left: 16px; border-left: 2px solid var(--accent); margin: 0 0 26px; }
+
+  /* boutons flottants (thème / god / save) — empilés en haut à droite */
+  .tools { position: fixed; top: 16px; right: 16px; z-index: 220; display: flex; gap: 8px; }
+  .tools button { font-family: var(--mono); background: var(--bg2); border: 1px solid var(--border2);
+    color: var(--accent); cursor: pointer; height: 40px; padding: 0 12px; font-size: 12px; letter-spacing: .04em; }
+  .tools button:hover { border-color: var(--accent); }
+  .tools button.on { background: var(--accent); color: var(--bg); }
+  .theme-btn-f { width: 40px; padding: 0; font-size: 17px; }
+  body.god.dirty #saveBtn { border-color: var(--accent); color: var(--bg); background: var(--accent); }
+  /* la ☰ mobile (oblivion) passe à gauche pour ne pas chevaucher les outils */
+  @media (max-width: 920px) { .menu-btn { left: 16px; right: auto; } }
+
+  /* god mode : cibles éditables */
+  body.god [data-edit] { cursor: text; position: relative; }
+  body.god [data-edit]:hover { outline: 1px dashed var(--accent); outline-offset: 4px; background: var(--bg3); }
+  body.god [data-edit]::after { content: "✎"; position: absolute; top: -4px; right: -18px; font-family: var(--mono);
+    font-size: 12px; color: var(--accent); opacity: 0; transition: opacity .12s; }
+  body.god [data-edit]:hover::after { opacity: .9; }
+
+  /* god mode : éditeur */
+  .ed-mask { position: fixed; inset: 0; z-index: 300; background: rgba(0,0,0,.45);
+    display: none; align-items: center; justify-content: center; padding: 20px; }
+  .ed-mask.open { display: flex; }
+  .ed-box { width: min(720px, 96vw); max-height: 88vh; display: flex; flex-direction: column;
+    background: var(--bg2); border: 1px solid var(--border2); }
+  .ed-head { padding: 13px 18px; border-bottom: 1px solid var(--border); font-family: var(--mono);
+    font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: var(--accent);
+    display: flex; align-items: center; gap: 10px; }
+  .ed-head .ed-path { margin-left: auto; color: var(--dim); font-size: 10px; text-transform: none; letter-spacing: 0; }
+  .ed-body { padding: 16px 18px; overflow: auto; }
+  .ed-body textarea { width: 100%; min-height: 240px; resize: vertical; font-family: var(--mono);
+    font-size: 14px; line-height: 1.7; color: var(--text); background: var(--bg); border: 1px solid var(--border2); padding: 14px; }
+  .ed-body textarea:focus { outline: none; border-color: var(--accent); }
+  .ed-hint { font-family: var(--mono); font-size: 10.5px; color: var(--dim); margin-top: 10px; text-transform: none; }
+  .ed-foot { padding: 13px 18px; border-top: 1px solid var(--border); display: flex; gap: 10px; align-items: center; }
+  .ed-foot button { font-family: var(--mono); font-size: 11px; letter-spacing: .06em; text-transform: uppercase;
+    padding: 10px 18px; cursor: pointer; border: 1px solid var(--border2); background: transparent; color: var(--muted); }
+  .ed-foot button.primary { border-color: var(--accent); color: var(--accent); }
+  .ed-foot button.primary:hover { background: var(--accent); color: var(--bg); }
+  .ed-foot .grow { flex: 1; }
+  .ed-msg { font-family: var(--mono); font-size: 10.5px; color: var(--muted); min-height: 14px; }
+  .ed-msg.err { color: var(--red); }
+  .ed-msg.ok { color: var(--accent); }
+</style>
+</head>
+<body class="kub">
+  <script>try{if(localStorage.getItem('futures-theme')==='dark')document.body.classList.add('theme-dark');}catch(e){}</script>
+
+  <div class="progress-bar" id="prog"></div>
+
+  <div class="tools">
+    <button class="theme-btn-f" id="themeBtn" type="button" aria-label="thème clair / sombre" title="thème clair / sombre">◐</button>
+    <button id="godBtn" type="button" title="mode édition">✎ god</button>
+    <button id="saveBtn" type="button" title="sauvegarder sur GitHub" style="display:none">▲ sauver</button>
+  </div>
+  <button class="menu-btn" id="menuBtn" type="button" aria-label="menu">☰</button>
+
+  <aside class="sidebar" id="sidebar"></aside>
+  <main class="reader"><div class="container" id="content"><p style="color:var(--dim)">chargement…</p></div></main>
+
+  <!-- god mode : éditeur -->
+  <div class="ed-mask" id="edMask">
+    <div class="ed-box">
+      <div class="ed-head">Édition <span class="ed-path" id="edPath"></span></div>
+      <div class="ed-body">
+        <textarea id="edText" spellcheck="true"></textarea>
+        <div class="ed-hint">Markdown léger : **gras**, *italique*. « Remplacer » modifie le texte ; « sauver » écrit sur GitHub.</div>
+      </div>
+      <div class="ed-foot">
+        <button id="edApply" class="primary">Remplacer</button>
+        <button id="edCancel">Annuler</button>
+        <span class="grow"></span>
+        <span class="ed-msg" id="edMsg"></span>
+      </div>
+    </div>
+  </div>
+
+  <script src="futures.data.js?v=20260713"></script>
+  <script src="futures.js?v=20260713"></script>
+</body>
+</html>

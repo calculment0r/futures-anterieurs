@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23f7f5ef'/%3E%3Ccircle cx='16' cy='16' r='7' fill='%231a1a1f'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="assets/fonts.css">
+<title>1 — Hyperstition · Futures Antérieurs</title>
+<meta name="description" content="Ce que personne ne veut voir : l'infrastructure du pouvoir est déjà en place. Carte 1 des Futures Antérieurs." />
+<style>
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{overflow-x:hidden;scroll-behavior:smooth;}
+  body{background:#f7f5ef;color:#1a1a1f;font-family:'Host Grotesk',system-ui,sans-serif;font-size:19px;line-height:1.65;}
+  a{color:inherit;text-decoration:none;}
+  a:hover{color:#4a7a00;}
+  strong{font-weight:600;}
+  ::selection{background:#1a1a1f;color:#f7f5ef;}
+  @keyframes riseIn{from{transform:translateY(105%) rotate(2deg);}to{transform:translateY(0) rotate(0);}}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:translateY(0);}}
+  @keyframes bob{0%,100%{transform:translateY(0);}50%{transform:translateY(6px);}}
+  /* l'état écrit est l'état VISIBLE : sans JS on perd l'animation, jamais le texte */
+  [data-rv]{transition:opacity .8s cubic-bezier(.16,1,.3,1),transform .8s cubic-bezier(.16,1,.3,1);}
+  [data-rv].pre{opacity:0;transform:translateY(20px);}
+  @media(prefers-reduced-motion:reduce){[data-rv].pre{opacity:1;transform:none;}*{animation:none !important;}}
+  /* téléphone : le sommaire cesse d'être collant, les gouttières se resserrent */
+  @media(max-width:820px){
+    body{font-size:17px;}
+    [data-somm]{position:static !important;padding-top:34px !important;top:auto !important;}
+    [data-read]{padding-left:20px !important;padding-right:20px !important;gap:8px !important;}
+    [data-bar]{padding-left:20px !important;padding-right:20px !important;}
+    /* la marge d'ancre est posée par la logique, qui mesure le chrome replié */
+  }
+</style>
+</head>
+<body>
+<noscript><p style="font-family:'DM Mono',monospace;font-size:13px;line-height:1.8;padding:40px 30px;">Cette page lit le corpus à l'affichage — les textes ne sont pas recopiés dans le HTML, ils sont lus depuis <code>corpus/</code>. Il lui faut JavaScript. Les sources brutes restent lisibles telles quelles dans le dépôt.</p></noscript>
+
+<!-- Le gabarit de l'écran, tel que composé dans Claude Design. dc-lite.js le
+     compile et le monte : rien n'est rendu deux fois, rien ne clignote. -->
+<template id="dc-template">
+<div style="position:fixed;inset:0;z-index:9000;pointer-events:none;mix-blend-mode:multiply;opacity:.45;background-image:url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22160%22 height=%22160%22><filter id=%22n%22><feTurbulence type=%22fractalNoise%22 baseFrequency=%220.85%22 numOctaves=%224%22/></filter><rect width=%22160%22 height=%22160%22 filter=%22url(%23n)%22 opacity=%220.3%22/></svg>');"></div>
+
+<header style="position:fixed;top:0;left:0;right:0;z-index:8000;display:flex;align-items:center;justify-content:space-between;gap:24px;padding:16px 30px;font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:#f7f5ef;mix-blend-mode:difference;">
+  <a href="index.html" style="color:#f7f5ef;display:flex;align-items:center;gap:10px;">
+    <span>←</span><span>La Porte</span>
+  </a>
+  <div style="display:flex;gap:18px;align-items:center;">
+    <span style="opacity:.5;">Carte 01</span>
+    <span>{{ curAddr }}</span>
+  </div>
+</header>
+
+<section data-screen-label="Ouverture" style="position:relative;min-height:100svh;display:flex;flex-direction:column;justify-content:space-between;padding:clamp(78px,10vh,110px) 30px 34px;">
+  <div style="font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:#8a8a92;display:flex;gap:14px;flex-wrap:wrap;animation:fadeUp .9s .1s forwards;">
+    <span style="color:#4a7a00;">Carte 01</span><span>—</span><span>Essai</span><span>—</span><span>Nicolas, Paris, avril 2026</span>
+  </div>
+
+  <div style="max-width:1100px;width:100%;margin:0 auto;display:flex;flex-direction:column;gap:34px;">
+    <h1 style="font-weight:700;letter-spacing:-.045em;line-height:.86;text-transform:uppercase;font-size:min(clamp(31px,8.4vw,132px),16vh);">
+      <span style="display:block;overflow:hidden;padding-bottom:.03em;"><span style="display:block;animation:riseIn 1.1s .16s cubic-bezier(.16,1,.3,1) forwards;">Hyper-</span></span>
+      <span style="display:block;overflow:hidden;padding-bottom:.03em;"><span style="display:block;animation:riseIn 1.1s .28s cubic-bezier(.16,1,.3,1) forwards;color:#4a7a00;">stition</span></span>
+    </h1>
+    <p style="font-size:clamp(20px,2.2vw,30px);line-height:1.3;letter-spacing:-.02em;max-width:900px;text-wrap:pretty;animation:fadeUp .9s .55s forwards;">Ce que personne ne veut voir : l'infrastructure du pouvoir est déjà en place.</p>
+    <p style="font-size:17px;line-height:1.55;color:#4a4a55;max-width:680px;border-left:2px solid #4a7a00;padding-left:18px;text-wrap:pretty;animation:fadeUp .9s .7s forwards;">Ce texte est long. Il est dense. Il demande de rester avec moi jusqu'à la fin. Je l'écris pour les gens que j'aime et qui ne suivent pas tout ça au quotidien — parce que je pense qu'il faut nommer ce qui se passe, maintenant, avant que ça devienne trop évident pour changer quoi que ce soit.</p>
+  </div>
+
+  <div style="max-width:1100px;width:100%;margin:0 auto;display:flex;align-items:flex-end;justify-content:space-between;gap:30px;flex-wrap:wrap;animation:fadeUp .9s .9s forwards;">
+    <div style="display:flex;gap:9px;flex-wrap:wrap;font-family:'DM Mono',monospace;font-size:10.5px;letter-spacing:.08em;color:#4a4a55;">
+      <span style="border:1px solid #b8b39c;border-radius:20px;padding:4px 11px;">10 sections</span>
+      <span style="border:1px solid #b8b39c;border-radius:20px;padding:4px 11px;">NRx</span>
+      <span style="border:1px solid #b8b39c;border-radius:20px;padding:4px 11px;">Palantir</span>
+      <span style="border:1px solid #b8b39c;border-radius:20px;padding:4px 11px;">BLOOM</span>
+    </div>
+    <div style="display:flex;align-items:center;gap:11px;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:#8a8a92;">
+      <span>Lire</span><span style="display:inline-block;animation:bob 2.2s ease-in-out infinite;">↓</span>
+    </div>
+  </div>
+</section>
+
+<div data-stick="1" style="position:sticky;top:50px;z-index:7000;background:rgba(247,245,239,.9);backdrop-filter:blur(10px);border-top:1px solid #d0ccbb;border-bottom:1px solid #d0ccbb;">
+  <div data-bar="1" style="max-width:1100px;margin:0 auto;padding:11px 30px;display:flex;align-items:center;gap:16px;flex-wrap:wrap;font-family:'DM Mono',monospace;font-size:11px;color:#4a4a55;">
+    <span style="flex:1;min-width:180px;">Le Gris — sources et fiches acteurs, ce qui est d'habitude caché.</span>
+    <button onClick="{{ openAllGris }}" style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;background:none;border:1px solid #b8b39c;color:#4a4a55;padding:7px 13px;border-radius:20px;cursor:pointer;transition:border-color .3s ease,color .3s ease;" style-hover="border-color:#7a7a86;color:#1a1a1f;">Tout déplier</button>
+    <button onClick="{{ closeAllGris }}" style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;background:none;border:1px solid #b8b39c;color:#4a4a55;padding:7px 13px;border-radius:20px;cursor:pointer;transition:border-color .3s ease,color .3s ease;" style-hover="border-color:#7a7a86;color:#1a1a1f;">Tout replier</button>
+  </div>
+</div>
+
+<div data-read="1" style="max-width:1100px;margin:0 auto;padding:0 30px 120px;display:grid;grid-template-columns:{{ readCols }};gap:56px;align-items:start;">
+
+  <nav data-somm="1" style="position:sticky;top:130px;display:flex;flex-direction:column;gap:7px;font-family:'DM Mono',monospace;font-size:11px;line-height:1.4;padding-top:56px;">
+    <div style="letter-spacing:.2em;text-transform:uppercase;color:#8a8a92;font-size:9.5px;margin-bottom:8px;">Sommaire</div>
+    <a href="#1-01" style="{{ r1 }}">1:01 · Prologue</a>
+    <a href="#1-02" style="{{ r2 }}">1:02 · Les philosophes</a>
+    <a href="#1-03" style="{{ r3 }}">1:03 · La chaîne</a>
+    <a href="#1-04" style="{{ r4 }}">1:04 · Sea Cliff</a>
+    <a href="#1-05" style="{{ r5 }}">1:05 · Palantir</a>
+    <a href="#1-06" style="{{ r6 }}">1:06 · Maven</a>
+    <a href="#1-07" style="{{ r7 }}">1:07 · La nationalisation</a>
+    <a href="#1-08" style="{{ r8 }}">1:08 · Résistance interne</a>
+    <a href="#1-09" style="{{ r9 }}">1:09 · Le verrouillage</a>
+    <a href="#1-10" style="{{ r10 }}">1:10 · La réponse</a>
+    <a href="#colophon" style="color:#4a4a55;margin-top:12px;padding-top:12px;border-top:1px solid #d0ccbb;">Voir la source</a>
+  </nav>
+
+  <article style="display:flex;flex-direction:column;gap:0;max-width:720px;">
+
+    <section id="1-01" data-sec="1:01" data-screen-label="1:01 Prologue" style="scroll-margin-top:120px;padding:64px 0 12px;display:flex;flex-direction:column;gap:22px;">
+      <div style="display:flex;align-items:baseline;gap:14px;font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;">
+        <span style="color:#4a7a00;">1:01</span><span style="color:#8a8a92;">Prologue</span>
+      </div>
+      <h2 style="font-weight:700;letter-spacing:-.032em;line-height:1.02;font-size:clamp(23px,3.6vw,46px);text-wrap:pretty;">Quinze ans à regarder venir quelque chose</h2>
+      <p>Il y a environ quinze ans, j'ai commencé à lire un philosophe britannique que personne ne connaissait. Il s'appelait Nick Land. Il avait enseigné à l'université de Warwick dans les années 90, co-fondé une unité de recherche underground qui mêlait cybernétique, science-fiction et philosophie post-structuraliste, puis disparu de l'académie pour s'installer à Shanghai et continuer à écrire sur des blogs que quelques centaines de personnes lisaient dans le monde.</p>
+      <p>Sa thèse principale tenait en peu de mots : le capitalisme et la technologie sont des processus autonomes qui accélèrent vers un avenir post-humain. La démocratie, l'humanisme, l'égalitarisme — ce sont des freins, des illusions qui retardent l'inévitable. La seule posture lucide est d'accompagner l'accélération, peut-être même de l'amplifier.</p>
+      <p>J'ai lu ça et j'ai pensé : cet homme décrit quelque chose de réel. Je ne partage pas ses conclusions. Mais le diagnostic — la manière dont le capital et la technologie s'alimentent mutuellement pour produire une concentration de pouvoir inédite, indifférente aux intentions des individus qui la servent — ce diagnostic me semblait juste.</p>
+      <p>À l'époque, personne dans mon entourage ne savait qui était Nick Land. Quand j'en parlais, les gens haussaient les épaules. Philosophie de blog obscure. Pensée marginale. Rien de sérieux.</p>
+      <p>Dans le même temps, je travaillais sur des projets qui, chacun à leur façon, essayaient de répondre à ce que je voyais venir. EGO d'abord — un jeu vidéo conçu autour de l'idée du profilage algorithmique visible, où le joueur découvre en temps réel comment les données qu'il produit construisent une image de lui sans qu'il s'en aperçoive. L'idée était de rendre tangible quelque chose d'invisible : la manière dont nos comportements numériques sont capturés, analysés, et retournés contre nous comme outil de contrôle.</p>
+      <p>Puis BLOOM — une réponse architecturale à la concentration du calcul IA dans quelques datacenters contrôlés par quelques entreprises. L'idée : un réseau d'inférence distribué à l'échelle d'un quartier, où des machines ordinaires — téléphones, laptops, ordinateurs de bureau — partagent leur capacité dormante pour faire tourner des modèles de langage localement. Pas de cloud. Pas de contrat avec Amazon ou Microsoft. Pas de point unique de capture. Une topologie inspirée de la loi constructale — la forme du réseau émerge des flux qui le traversent, pas d'un plan centralisé.</p>
+      <p>Et en parallèle, un travail sur les marchés financiers. Des agents autonomes capables de construire des index à partir du réel — pas à partir des données produites par les institutions financières, mais à partir de signaux géographiques, comportementaux, de flux d'information bruts que personne d'autre n'agrège de cette façon. Un Bloomberg distribué, où la méta-vision n'appartient à personne parce qu'elle émerge du réseau lui-même.</p>
+
+      <div style="border:1px solid #cfcabb;border-left:3px solid #7a7a86;border-radius:8px;background:#f0efe8;margin:6px 0;">
+        <button onClick="{{ tProjets }}" style="width:100%;display:flex;justify-content:space-between;align-items:center;gap:12px;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:#7a7a86;padding:11px 15px;background:none;border:none;cursor:pointer;text-align:left;">
+          <span>gris — les projets nommés</span><span>{{ cProjets }}</span>
+        </button>
+        <sc-if value="{{ oProjets }}" hint-placeholder-val="{{ false }}">
+        <div style="padding:0 16px 15px;color:#5f5f6b;font-size:15.5px;line-height:1.6;display:flex;flex-direction:column;gap:11px;">
+          <p><strong style="color:#4a4a55;">EGO</strong> — jeu vidéo, le profilage algorithmique rendu visible. <span style="font-family:'DM Mono',monospace;font-size:12px;">1:01</span>, repris en <span style="font-family:'DM Mono',monospace;font-size:12px;">1:10</span>.</p>
+          <p><strong style="color:#4a4a55;">BLOOM</strong> — réseau d'inférence distribué à l'échelle d'un quartier ; topologie inspirée de la loi constructale. <span style="font-family:'DM Mono',monospace;font-size:12px;">1:01</span>, accompli en <span style="font-family:'DM Mono',monospace;font-size:12px;">1:10</span>.</p>
+          <p><strong style="color:#4a4a55;">Le Bloomberg distribué</strong> — agents autonomes construisant des index à partir du réel, la méta-vision n'appartenant à personne. <span style="font-family:'DM Mono',monospace;font-size:12px;">1:01</span>.</p>
+          <p style="color:#8a8a92;">La loi constructale revient en <span style="font-family:'DM Mono',monospace;font-size:12px;">1:10</span> et croise la carte 3 en <span style="font-family:'DM Mono',monospace;font-size:12px;">3:III.4</span>.</p>
+        </div>
+        </sc-if>
+      </div>
+
+      <p>Tout ça sonnait peut-être utopique. Mais ce n'était pas de l'utopie — c'était une réponse à une menace que je voyais clairement et que la plupart des gens ne voyaient pas encore.</p>
+      <p>Aujourd'hui, Nick Land a 64 ans. En février 2026, il a quitté Shanghai après deux décennies et s'est installé à San Francisco. Une fête privée a été organisée pour célébrer son arrivée — dans la villa d'un milliardaire de la tech, avec Curtis Yarvin comme invité surprise, Grimes parmi les présents, et des workers d'OpenAI, d'Anthropic et de Midjourney dans la salle.</p>
+      <p>Tout ce que j'avais vu venir de loin s'est mis à prendre forme en public, brutalement, en quelques semaines. Ce texte est ma tentative de cartographier ce qui s'est passé — pour les gens que j'aime, qui méritent de comprendre.</p>
+    </section>
+
+    <section id="1-02" data-sec="1:02" data-screen-label="1:02 Les philosophes" style="scroll-margin-top:120px;padding:56px 0 12px;border-top:1px solid #d0ccbb;display:flex;flex-direction:column;gap:22px;">
+      <div style="display:flex;align-items:baseline;gap:14px;font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;">
+        <span style="color:#4a7a00;">1:02</span><span style="color:#8a8a92;">Les philosophes</span>
+      </div>
+      <h2 style="font-weight:700;letter-spacing:-.032em;line-height:1.02;font-size:clamp(23px,3.6vw,46px);text-wrap:pretty;">Nick Land, Yarvin — deux philosophes que vous ne connaissez pas mais qui façonnent votre monde</h2>
+      <p>Commençons par le commencement. Deux noms que vous n'avez probablement jamais entendus, mais dont les idées sont maintenant inscrites dans les mémos du Pentagone, dans les discours du vice-président des États-Unis, et dans l'architecture des systèmes qui ciblent des personnes à l'autre bout du monde.</p>
+      <p><strong>Nick Land</strong> est un philosophe britannique né en 1962. Pendant les années 90, il enseigne à Warwick et co-fonde le CCRU — Cybernetic Culture Research Unit — une unité de recherche qui ressemble davantage à un laboratoire underground qu'à un département universitaire. Ils mêlent Deleuze et Guattari, la théorie des systèmes complexes, la cyberpunk fiction, la musique rave, et des quantités ingérables d'amphétamines. Le résultat est une philosophie radicalement anti-humaniste.</p>
+      <p>Pour Land, l'humain n'est pas le centre de l'histoire. Le capitalisme est une intelligence qui se développe selon sa propre logique, indépendamment des intentions des humains qui le servent. Et la technologie — en particulier l'intelligence artificielle — n'est pas un outil que les humains construisent pour se rendre service. C'est l'émergence d'une intelligence qui va les dépasser, les absorber, les rendre obsolètes. Ce processus est inévitable. L'accélérer est la seule posture lucide.</p>
+      <p>C'est ça, l'accélérationnisme. Et sa variante politique — le Dark Enlightenment — ajoute une couche : la démocratie est une erreur. Elle ralentit les processus qui comptent. Elle donne le pouvoir à la médiocrité. La solution est un retour à des formes de gouvernement hiérarchiques, efficaces, non démocratiques — des monarchies ou des corporations dirigées par des élites méritocratiques.</p>
+      <p>Land forge aussi un concept que je veux que vous reteniez : l'hyperstition. C'est un mot-valise entre « superstition » et « hyper ». Une hyperstition est une fiction qui devient réelle par le simple fait d'être croyable et d'influencer les comportements. Une idée qui se rend vraie en étant agissante dans le monde. Ce n'est pas de la propagande — c'est quelque chose de plus profond. L'hyperstition est une machine à fabriquer du réel.</p>
+
+      <div style="border:1px solid #cfcabb;border-left:3px solid #7a7a86;border-radius:8px;background:#f0efe8;margin:6px 0;">
+        <button onClick="{{ tLand }}" style="width:100%;display:flex;justify-content:space-between;align-items:center;gap:12px;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:#7a7a86;padding:11px 15px;background:none;border:none;cursor:pointer;text-align:left;">
+          <span>gris — fiche acteur · Nick Land</span><span>{{ cLand }}</span>
+        </button>
+        <sc-if value="{{ oLand }}" hint-placeholder-val="{{ false }}">
+        <div style="padding:0 16px 15px;color:#5f5f6b;font-size:15.5px;line-height:1.6;display:flex;flex-direction:column;gap:11px;">
+          <p>Philosophe britannique né en 1962. Warwick, années 90 ; co-fondateur du CCRU. Shanghai pendant plus de vingt ans, puis San Francisco en février 2026, à 64 ans.</p>
+          <p>Forge l'<strong style="color:#4a4a55;">hyperstition</strong> — défini ici, en <span style="font-family:'DM Mono',monospace;font-size:12px;">1:02</span>, et retourné en <span style="font-family:'DM Mono',monospace;font-size:12px;">1:10</span> : « l'hyperstition fonctionne dans les deux sens ».</p>
+          <p>Paraît en <span style="font-family:'DM Mono',monospace;font-size:12px;">1:04</span> — Sea Cliff, première rencontre physique avec Yarvin. Y parle peu.</p>
+          <p style="color:#8a8a92;">Échos hors carte : <span style="font-family:'DM Mono',monospace;font-size:12px;">2:ch9</span> (hyperstition / hyperstructure).</p>
+        </div>
+        </sc-if>
+      </div>
+
+      <p><strong>Curtis Yarvin</strong> — connu pendant des années sous le pseudonyme Mencius Moldbug — est un ingénieur logiciel américain qui a commencé à bloguer en 2007. Son blog s'appelle <em>Unqualified Reservations</em>. Il y développe ce qu'il appelle le néoréactionnisme — NRx — une critique radicale de la démocratie moderne.</p>
+      <p>Sa thèse : les démocraties occidentales sont contrôlées par ce qu'il appelle la Cathédrale — un complexe invisible formé par les médias, l'université et la bureaucratie qui propagent une idéologie progressiste comme une religion d'État, sans que personne ne l'ait décidé explicitement. La Cathédrale perpétue son pouvoir de façon diffuse, à travers des incitations partagées et des croyances communes plutôt qu'une coordination explicite.</p>
+      <p>La solution de Yarvin : remplacer le gouvernement par une corporation. Un <em>GovCorp</em> géré comme une startup, avec un CEO-monarque comptable uniquement à ses actionnaires — les citoyens réduits à des stakeholders. Son plan opérationnel s'appelle RAGE : Retire All Government Employees. Virer tous les fonctionnaires. Repartir de zéro avec des gens qui ne doivent rien à la Cathédrale.</p>
+
+      <blockquote style="margin:8px 0;padding:26px 0 0;border-top:1px solid #d0ccbb;display:flex;flex-direction:column;gap:14px;">
+        <p style="font-size:clamp(20px,2.1vw,26px);line-height:1.4;letter-spacing:-.018em;text-wrap:pretty;">« Les idées que Yarvin développait sur son blog dans l'obscurité la plus totale en 2008 sont en train d'être exécutées en 2026 par une administration qui ne l'a jamais officiellement reconnu comme inspiration — et c'est exactement comme ça que ça devait marcher. »</p>
+        <span style="font-family:'DM Mono',monospace;font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;color:#8a8a92;">— Nicolas</span>
+      </blockquote>
+
+      <div style="border:1px solid #cfcabb;border-left:3px solid #7a7a86;border-radius:8px;background:#f0efe8;margin:6px 0;">
+        <button onClick="{{ tYarvin }}" style="width:100%;display:flex;justify-content:space-between;align-items:center;gap:12px;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:#7a7a86;padding:11px 15px;background:none;border:none;cursor:pointer;text-align:left;">
+          <span>gris — fiche acteur · Curtis Yarvin</span><span>{{ cYarvin }}</span>
+        </button>
+        <sc-if value="{{ oYarvin }}" hint-placeholder-val="{{ false }}">
+        <div style="padding:0 16px 15px;color:#5f5f6b;font-size:15.5px;line-height:1.6;display:flex;flex-direction:column;gap:11px;">
+          <p>Ingénieur logiciel américain. Blogue sous le pseudonyme Mencius Moldbug à partir de 2007, sur <em>Unqualified Reservations</em>. Développe le néoréactionnisme (NRx).</p>
+          <p>Concepts posés ici, en <span style="font-family:'DM Mono',monospace;font-size:12px;">1:02</span> : la <strong style="color:#4a4a55;">Cathédrale</strong>, le <strong style="color:#4a4a55;">GovCorp</strong>, le plan <strong style="color:#4a4a55;">RAGE</strong>.</p>
+          <p>Traversée du texte : chez Thiel la nuit de l'élection 2016 <span style="font-family:'DM Mono',monospace;font-size:12px;">1:03</span> · cité nommément par Vance en 2021 <span style="font-family:'DM Mono',monospace;font-size:12px;">1:03</span> · gala inaugural janvier 2025 <span style="font-family:'DM Mono',monospace;font-size:12px;">1:03</span> · invité surprise à Sea Cliff <span style="font-family:'DM Mono',monospace;font-size:12px;">1:04</span>.</p>
+          <p style="color:#8a8a92;">La Cathédrale trouve son miroir en <span style="font-family:'DM Mono',monospace;font-size:12px;">2:§83–96</span>.</p>
+        </div>
+        </sc-if>
+      </div>
+
+      <p>Land est l'architecture cosmologique. Yarvin est l'ingénieur politique. L'un explique pourquoi la démocratie est une anomalie historique qui s'efface inévitablement. L'autre explique comment la remplacer, étape par étape, département par département.</p>
+    </section>
+
+    <section id="1-03" data-sec="1:03" data-screen-label="1:03 La chaîne" style="scroll-margin-top:120px;padding:56px 0 12px;border-top:1px solid #d0ccbb;display:flex;flex-direction:column;gap:22px;">
+      <div style="display:flex;align-items:baseline;gap:14px;font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;">
+        <span style="color:#4a7a00;">1:03</span><span style="color:#8a8a92;">La chaîne</span>
+      </div>
+      <h2 style="font-weight:700;letter-spacing:-.032em;line-height:1.02;font-size:clamp(23px,3.6vw,46px);text-wrap:pretty;">Comment une idée de blog est devenue la vice-présidence des États-Unis</h2>
+      <p>Il faut maintenant nommer un troisième homme : Peter Thiel. Co-fondateur de PayPal, premier investisseur externe de Facebook, co-fondateur de Palantir. L'une des dix premières fortunes technologiques mondiales. Et le maillon central entre la philosophie NRx et le pouvoir politique réel.</p>
+      <p>Thiel lit Yarvin. Il investit dans sa startup technologique — Tlon, qui développe une plateforme internet décentralisée. Yarvin affirme plus tard en privé qu'il « coachait Thiel ». Pendant ce temps, Thiel tient des salons à San Francisco où circulent ces idées. La nuit de l'élection Trump en 2016, Yarvin est chez Thiel, à regarder les résultats.</p>
+      <p>La connexion avec JD Vance — aujourd'hui Vice-Président des États-Unis — se construit sur quinze ans, de façon méthodique.</p>
+
+      <ol style="list-style:none;display:flex;flex-direction:column;gap:0;border-top:1px solid #d0ccbb;margin:4px 0;">
+        <li style="display:grid;grid-template-columns:{{ tlCols }};gap:18px;padding:18px 0;border-bottom:1px solid #d0ccbb;">
+          <span style="font-family:'DM Mono',monospace;font-size:12px;letter-spacing:.06em;color:#4a7a00;">2011</span>
+          <span style="font-size:17px;line-height:1.55;"><strong>Yale Law School.</strong> JD Vance, étudiant en droit, entend Thiel donner une conférence : les gens intelligents devraient travailler dans la tech, pas se perdre dans les grandes écoles. Vance lui envoie un email. Thiel l'invite en Californie. Ce moment, Vance le décrira comme « le plus significatif » de ses années à Yale.</span>
+        </li>
+        <li style="display:grid;grid-template-columns:{{ tlCols }};gap:18px;padding:18px 0;border-bottom:1px solid #d0ccbb;">
+          <span style="font-family:'DM Mono',monospace;font-size:12px;letter-spacing:.06em;color:#4a7a00;">2016–2017</span>
+          <span style="font-size:17px;line-height:1.55;"><strong>Mithril Capital.</strong> Thiel embauche Vance dans son fonds d'investissement. Vance écrit <em>Hillbilly Elegy</em> pendant ce temps — Thiel rédige la quatrième de couverture. Dans ce réseau San Francisco, les idées de Yarvin circulent librement. La contamination intellectuelle se fait par immersion.</span>
+        </li>
+        <li style="display:grid;grid-template-columns:{{ tlCols }};gap:18px;padding:18px 0;border-bottom:1px solid #d0ccbb;">
+          <span style="font-family:'DM Mono',monospace;font-size:12px;letter-spacing:.06em;color:#4a7a00;">2021</span>
+          <span style="font-size:17px;line-height:1.55;"><strong>La citation publique.</strong> Dans un podcast, Vance cite Yarvin nommément : « Il y a ce type, Curtis Yarvin. Je pense que ce que Trump devrait faire, c'est virer chaque bureaucrate de niveau intermédiaire, remplacer par nos gens. Et quand les tribunaux t'en empêchent, tu te lèves comme Andrew Jackson et tu dis : le Chief Justice a rendu son arrêt, maintenant qu'il l'applique. » C'est du Yarvin quasi-verbatim.</span>
+        </li>
+        <li style="display:grid;grid-template-columns:{{ tlCols }};gap:18px;padding:18px 0;border-bottom:1px solid #d0ccbb;">
+          <span style="font-family:'DM Mono',monospace;font-size:12px;letter-spacing:.06em;color:#4a7a00;">2021–2022</span>
+          <span style="font-size:17px;line-height:1.55;"><strong>L'investissement politique.</strong> Thiel donne 15 millions à la campagne sénatoriale de Vance en Ohio — le don individuel le plus important jamais fait à un candidat au Sénat américain. Thiel organise lui-même la première rencontre entre Vance et Trump à Mar-a-Lago.</span>
+        </li>
+        <li style="display:grid;grid-template-columns:{{ tlCols }};gap:18px;padding:18px 0;border-bottom:1px solid #d0ccbb;">
+          <span style="font-family:'DM Mono',monospace;font-size:12px;letter-spacing:.06em;color:#4a7a00;">Janv. 2025</span>
+          <span style="font-size:17px;line-height:1.55;"><strong>VP des États-Unis.</strong> JD Vance prête serment. Yarvin assiste au gala inaugural de Trump comme « invité d'honneur informel » selon Politico, en raison de son « influence démesurée sur la droite trumpiste ». Ce qui était une philosophie de blog obscure est maintenant dans les couloirs du pouvoir.</span>
+        </li>
+      </ol>
+
+      <p>Ce qu'il faut comprendre, c'est que Yarvin n'avait pas besoin de rencontrer Vance en tête-à-tête. La relation directe est d'ailleurs niée par les deux. Ce qui compte, c'est la structure : Yarvin a fourni l'idéologie. Thiel a fourni le capital et le réseau. Vance a fourni le vecteur politique. Trois fonctions distinctes, une seule machine.</p>
+      <p>L'hyperstition avait fonctionné. Une fiction devenue réelle à travers quinze ans de diffusion patiente, de financement discret, de connexions construites une par une dans les salons de San Francisco.</p>
+
+      <div style="border:1px solid #cfcabb;border-left:3px solid #7a7a86;border-radius:8px;background:#f0efe8;margin:6px 0;">
+        <button onClick="{{ tThiel }}" style="width:100%;display:flex;justify-content:space-between;align-items:center;gap:12px;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:#7a7a86;padding:11px 15px;background:none;border:none;cursor:pointer;text-align:left;">
+          <span>gris — fiche acteur · Peter Thiel</span><span>{{ cThiel }}</span>
+        </button>
+        <sc-if value="{{ oThiel }}" hint-placeholder-val="{{ false }}">
+        <div style="padding:0 16px 15px;color:#5f5f6b;font-size:15.5px;line-height:1.6;display:flex;flex-direction:column;gap:11px;">
+          <p>Co-fondateur de PayPal, premier investisseur externe de Facebook, co-fondateur de Palantir. L'une des dix premières fortunes technologiques mondiales.</p>
+          <p>Fonction dans la chaîne, en <span style="font-family:'DM Mono',monospace;font-size:12px;">1:03</span> : le capital et le réseau. Investit dans Tlon ; 15 M$ à la campagne de Vance ; organise la rencontre avec Trump à Mar-a-Lago.</p>
+          <p>Réapparaît en <span style="font-family:'DM Mono',monospace;font-size:12px;">1:09</span> — Anduril, Objection.ai, Rivada Space Networks, et 2028.</p>
+          <p style="color:#8a8a92;">La chaîne Thiel croise la pléonexie en <span style="font-family:'DM Mono',monospace;font-size:12px;">3:I.6</span>.</p>
+        </div>
+        </sc-if>
+      </div>
+
+      <div style="border:1px solid #cfcabb;border-left:3px solid #7a7a86;border-radius:8px;background:#f0efe8;margin:0 0 6px;">
+        <button onClick="{{ tVance }}" style="width:100%;display:flex;justify-content:space-between;align-items:center;gap:12px;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:#7a7a86;padding:11px 15px;background:none;border:none;cursor:pointer;text-align:left;">
+          <span>gris — fiche acteur · JD Vance</span><span>{{ cVance }}</span>
+        </button>
+        <sc-if value="{{ oVance }}" hint-placeholder-val="{{ false }}">
+        <div style="padding:0 16px 15px;color:#5f5f6b;font-size:15.5px;line-height:1.6;display:flex;flex-direction:column;gap:11px;">
+          <p>Vice-Président des États-Unis depuis janvier 2025. Auteur de <em>Hillbilly Elegy</em>, écrit pendant son passage chez Mithril Capital.</p>
+          <p>Fonction dans la chaîne, en <span style="font-family:'DM Mono',monospace;font-size:12px;">1:03</span> : le vecteur politique. Quinze ans, de la conférence de Yale en 2011 au serment de 2025.</p>
+          <p>La relation directe avec Yarvin est niée par les deux. C'est la structure qui compte, pas la rencontre.</p>
+        </div>
+        </sc-if>
+      </div>
+    </section>
+
+    <section id="1-04" data-sec="1:04" data-screen-label="1:04 Sea Cliff" style="scroll-margin-top:120px;padding:56px 0 12px;border-top:1px solid #d0ccbb;display:flex;flex-direction:column;gap:22px;">
+      <div style="display:flex;align-items:baseline;gap:14px;font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;">
+        <span style="color:#4a7a00;">1:04</span><span style="color:#8a8a92;">Sea Cliff</span>
+      </div>
+      <h2 style="font-weight:700;letter-spacing:-.032em;line-height:1.02;font-size:clamp(23px,3.6vw,46px);text-wrap:pretty;">La soirée de Sea Cliff — ce qui s'est passé le 13 février 2026</h2>
+      <p>Pour comprendre ce que je vais vous décrire, il faut savoir que Nick Land a passé plus de vingt ans à Shanghai. Il vivait là-bas, continuait à écrire, mais restait à distance de la Silicon Valley et de tout ce qui se passait aux États-Unis. Jusqu'en février 2026.</p>
+      <p>Le 13 février 2026 — deux semaines après que le Pentagone confirme que le système d'IA Maven a aidé à frapper plus de 1000 cibles en une seule journée pendant la guerre en Iran — une fête privée se tient dans le quartier de Sea Cliff à San Francisco. Sea Cliff est l'un des quartiers les plus chers de la ville, avec vue sur le Golden Gate.</p>
+      <p>La villa appartient à David Holz. Si vous ne le connaissez pas : Holz est le fondateur et CEO de Midjourney, l'une des plateformes de génération d'images par IA les plus utilisées au monde — le modèle que de nombreuses agences de communication, studios de jeux, et créatifs indépendants utilisent pour produire des visuels. À l'entrée de la villa : trois ballons bleus en forme de « 333 ». C'est un symbole lié à Nick Land, son ancien avatar Twitter. Dehors : un Cybertruck gris mat.</p>
+      <p>L'invitation à la soirée est titrée « Nick Land Acknowledgement ». Le titre est une blague interne — il parodie les « land acknowledgements » qui sont des déclarations rituelles dans les milieux progressistes américains, reconnaissant que les terres sur lesquelles on se trouve appartenaient à des peuples autochtones. Retourner le mot « land » pour célébrer Nick Land — c'est le genre d'humour woke-baiting qui circule dans ces cercles.</p>
+      <p>L'événement est organisé par Wolf Tivy, fondateur de Palladium Magazine — une revue de pensée politique conservatrice prétendument financée par Thiel. Le but : célébrer le retour de Land aux États-Unis après deux décennies en Asie.</p>
+
+      <div style="border:1px solid #cfcabb;border-left:3px solid #7a7a86;border-radius:8px;background:#f0efe8;margin:6px 0;">
+        <button onClick="{{ tHolz }}" style="width:100%;display:flex;justify-content:space-between;align-items:center;gap:12px;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:#7a7a86;padding:11px 15px;background:none;border:none;cursor:pointer;text-align:left;">
+          <span>gris — la salle, le 13 février 2026</span><span>{{ cHolz }}</span>
+        </button>
+        <sc-if value="{{ oHolz }}" hint-placeholder-val="{{ false }}">
+        <div style="padding:0 16px 15px;color:#5f5f6b;font-size:15.5px;line-height:1.6;display:flex;flex-direction:column;gap:11px;">
+          <p><strong style="color:#4a4a55;">David Holz</strong> — fondateur et CEO de Midjourney. La villa est la sienne.</p>
+          <p><strong style="color:#4a4a55;">Wolf Tivy</strong> — fondateur de Palladium Magazine, revue prétendument financée par Thiel. Organisateur.</p>
+          <p><strong style="color:#4a4a55;">Grimes</strong> — présente. Mariage de Yarvin en 2024, gala inaugural en janvier 2025.</p>
+          <p><strong style="color:#4a4a55;">Des workers d'OpenAI, d'Anthropic et de Midjourney</strong> — dans la salle. Elon Musk a posté sur X qu'il regrettait de ne pas avoir pu venir.</p>
+          <p style="color:#8a8a92;">Date sur le rail du réel : 13/02/2026. Deux semaines après les 1000 cibles en un jour — voir <span style="font-family:'DM Mono',monospace;font-size:12px;">1:06</span>.</p>
+        </div>
+        </sc-if>
+      </div>
+
+      <p>Grimes — la musicienne canadienne, ex-partenaire d'Elon Musk, mère de ses enfants — est dans la salle. Elle a assisté au mariage de Curtis Yarvin en 2024. Elle a participé au gala inaugural Trump en janvier 2025. Ce soir, elle cherche à approcher Land à travers la foule. Land l'aperçoit et l'accueille « comme une fille qu'il retrouve. »</p>
+      <p>Puis, depuis la foule, surgit Curtis Yarvin — lunettes d'aviateur, torse bombé — comme invité surprise. « Pour mémoire, je ne les porte pas pour être cool. Je les porte parce que j'ai perdu mon ordonnance. » C'est la première rencontre physique entre les deux hommes. Land et Yarvin ne s'étaient jamais vus en personne, malgré le fait qu'on les groupe ensemble depuis 2012 dans la même étiquette intellectuelle.</p>
+
+      <blockquote style="margin:8px 0;padding:26px 0 0;border-top:1px solid #d0ccbb;display:flex;flex-direction:column;gap:14px;">
+        <p style="font-size:clamp(20px,2.1vw,26px);line-height:1.4;letter-spacing:-.018em;text-wrap:pretty;">« On a l'IA. On a la crypto. On a le pouvoir. La mentalité de siège est terminée. Le woke est mort. Ce soir marque probablement la fin de la droite dissidente. »</p>
+        <span style="font-family:'DM Mono',monospace;font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;color:#8a8a92;">— Un invité, dehors, soufflant de la fumée</span>
+      </blockquote>
+
+      <p>Ce que dit cet invité est l'aveu le plus clair de la soirée : le mouvement ne se pense plus en résistance. Il se pense en pouvoir installé.</p>
+      <p>Sur scène, interrogé sur l'évolution du Dark Enlightenment depuis ses débuts, Yarvin parle longuement de la Chine comme modèle d'État « dépolitisé » — un État où la politique n'existe plus comme espace de débat contradictoire, seulement comme administration technique efficace. C'est présenté non pas comme une menace mais comme une aspiration.</p>
+      <p>Land, lui, parle peu. Quelques phrases denses sur le Calvinisme gnostique, la théorie de la simulation, l'inévitabilité de la mort humaine. Quand quelqu'un lui demande si « Cthulhu nage toujours à gauche » — un vieux mème qui dit que les sociétés dérivent inévitablement vers le progressisme — il répond simplement : non. Il n'a jamais dit ça. Pour Land, il n'y a pas de dérive inévitable. L'accélération dissout la notion même de direction politique.</p>
+      <p>Des workers d'OpenAI, d'Anthropic et de Midjourney étaient dans la salle. Des gens qui construisent les systèmes d'IA que nous utilisons tous les jours. Elon Musk a posté sur X qu'il regrettait de ne pas avoir pu venir.</p>
+      <p>La villa de Holz. Le fondateur de Midjourney. Les ballons « 333 ». Ce n'est pas une fête de départ à la retraite. C'est un couronnement.</p>
+    </section>
+
+    <section id="1-05" data-sec="1:05" data-screen-label="1:05 Palantir" style="scroll-margin-top:120px;padding:56px 0 12px;border-top:1px solid #d0ccbb;display:flex;flex-direction:column;gap:22px;">
+      <div style="display:flex;align-items:baseline;gap:14px;font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;">
+        <span style="color:#4a7a00;">1:05</span><span style="color:#8a8a92;">Palantir</span>
+      </div>
+      <h2 style="font-weight:700;letter-spacing:-.032em;line-height:1.02;font-size:clamp(23px,3.6vw,46px);text-wrap:pretty;">Palantir — l'entreprise qui encode le monde</h2>
+      <p>Revenons sur terre. Palantir Technologies. Si vous ne connaissez pas, voici l'essentiel : c'est une entreprise américaine de logiciels de traitement de données fondée en 2003 par Peter Thiel et quelques associés, financée initialement par la CIA. Son nom vient des « pierres de vision » du Seigneur des Anneaux — des cristaux qui permettent de voir à grande distance mais rendent fou ceux qui les utilisent. Le choix n'est pas anodin.</p>
+      <p>Palantir construit des systèmes qui permettent de croiser et d'analyser des sources de données massives et hétérogènes — pour trouver des patterns, des cibles, des connexions invisibles à l'œil humain. Ses clients principaux sont les gouvernements et les armées : CIA, NSA, FBI, armée américaine, ICE, services de renseignement britanniques, armée française, OTAN.</p>
+      <p>Son CEO, Alex Karp, est une figure atypique. Il a une thèse de doctorat de Francfort dans l'orbite intellectuelle d'Habermas — le philosophe de la démocratie délibérative et de l'espace public. Et il cite Habermas pour justifier une entreprise qui construit des outils de surveillance de masse. La pirouette intellectuelle est vertigineuse, et volontaire.</p>
+      <p>En 2025–2026, Palantir publie un manifeste — les 22 points du livre de Karp, <em>The Technological Republic</em>. Ce document condamne les ingénieurs qui ont « déserté l'État » pour construire des applications de livraison de repas. Il accuse la Silicon Valley d'avoir mobilisé ses meilleurs cerveaux pour des « caprices de la culture capitaliste tardive » au lieu de construire des outils militaires. Et il pose le choix en termes apocalyptiques : les démocraties occidentales doivent embrasser la technologie militaire, ou elles disparaîtront face à des adversaires qui eux n'auront aucun scrupule.</p>
+
+      <div style="border:1px solid #b8b39c;border-radius:10px;background:#efece2;padding:24px 26px;margin:6px 0;display:flex;flex-direction:column;gap:16px;">
+        <div style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:#4a7a00;">Palantir en chiffres — avril 2026</div>
+        <ul style="list-style:none;display:flex;flex-direction:column;gap:9px;font-size:16px;line-height:1.5;color:#1a1a1f;">
+          <li style="display:flex;gap:12px;"><span style="font-family:'DM Mono',monospace;font-size:13px;color:#4a7a00;min-width:78px;">541 M$</span><span>de contrats fédéraux en 2024</span></li>
+          <li style="display:flex;gap:12px;"><span style="font-family:'DM Mono',monospace;font-size:13px;color:#4a7a00;min-width:78px;">≈ 1 Md</span><span>en 2025</span></li>
+          <li style="display:flex;gap:12px;"><span style="font-family:'DM Mono',monospace;font-size:13px;color:#4a7a00;min-width:78px;">1,3 Md</span><span>pour Maven Smart System</span></li>
+          <li style="display:flex;gap:12px;"><span style="font-family:'DM Mono',monospace;font-size:13px;color:#4a7a00;min-width:78px;">10 Md</span><span>sur une décennie avec l'US Army</span></li>
+          <li style="display:flex;gap:12px;"><span style="font-family:'DM Mono',monospace;font-size:13px;color:#4a7a00;min-width:78px;">1 Md</span><span>avec DHS pour le soutien à l'ICE en février 2026</span></li>
+          <li style="display:flex;gap:12px;"><span style="font-family:'DM Mono',monospace;font-size:13px;color:#4a7a00;min-width:78px;">405 M</span><span>avec le Département de la Santé</span></li>
+          <li style="display:flex;gap:12px;"><span style="font-family:'DM Mono',monospace;font-size:13px;color:#4a7a00;min-width:78px;">300 M</span><span>avec le Département de l'Agriculture</span></li>
+        </ul>
+        <p style="font-size:15.5px;line-height:1.55;color:#4a4a55;border-top:1px solid #d0ccbb;padding-top:14px;">Un ancien ingénieur Palantir est maintenant CIO du Département de la Santé et signe les contrats avec son ancienne entreprise.</p>
+      </div>
+
+      <p>Ce qui est fascinant dans la stratégie de Palantir, c'est ce qu'ils ne cherchent pas à posséder. Ils ne veulent pas construire leurs propres modèles de langage — ils laissent ça à OpenAI, Anthropic, Google. Ce qu'ils capturent, c'est quelque chose de plus profond et de plus durable : l'ontologie.</p>
+      <p>Leur plateforme AIP prend des modèles existants — Claude, GPT-4, Gemini — et les ancre dans les données privées d'une organisation via une couche sémantique propriétaire. Cette couche définit ce que les mots signifient dans le contexte de cette organisation : qu'est-ce qu'une « cible » pour l'armée, qu'est-ce qu'un « risque » pour un service de renseignement, qu'est-ce qu'un « migrant à risque » pour l'ICE.</p>
+      <p>Celui qui contrôle cette couche de sens contrôle ce que l'IA « comprend » comme réel. Et une fois qu'une institution a cartographié ses processus dans ce cadre, migrer vers un autre fournisseur devient techniquement cauchemardesque. C'est ce que j'appelle le <em>lock-in ontologique</em> — Palantir ne capture pas la puissance de calcul, il capture la définition même du monde.</p>
+
+      <div style="border:1px solid #cfcabb;border-left:3px solid #7a7a86;border-radius:8px;background:#f0efe8;margin:6px 0;">
+        <button onClick="{{ tPalantir }}" style="width:100%;display:flex;justify-content:space-between;align-items:center;gap:12px;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:#7a7a86;padding:11px 15px;background:none;border:none;cursor:pointer;text-align:left;">
+          <span>gris — fiche · Palantir Technologies</span><span>{{ cPalantir }}</span>
+        </button>
+        <sc-if value="{{ oPalantir }}" hint-placeholder-val="{{ false }}">
+        <div style="padding:0 16px 15px;color:#5f5f6b;font-size:15.5px;line-height:1.6;display:flex;flex-direction:column;gap:11px;">
+          <p>Fondée en 2003 par Peter Thiel et quelques associés, financée initialement par la CIA. Nom pris aux « pierres de vision » du Seigneur des Anneaux.</p>
+          <p>Clients : CIA, NSA, FBI, armée américaine, ICE, renseignement britannique, armée française, OTAN.</p>
+          <p>Ce qu'ils capturent : <strong style="color:#4a4a55;">l'ontologie</strong>, via la plateforme AIP — d'où le <strong style="color:#4a4a55;">lock-in ontologique</strong>, défini ici en <span style="font-family:'DM Mono',monospace;font-size:12px;">1:05</span>.</p>
+          <p>Se prolonge en <span style="font-family:'DM Mono',monospace;font-size:12px;">1:06</span> (Maven), <span style="font-family:'DM Mono',monospace;font-size:12px;">1:07</span> (le courtier qui ne perd jamais), <span style="font-family:'DM Mono',monospace;font-size:12px;">1:09</span> (l'irremovabilité).</p>
+          <p style="color:#8a8a92;">Le pilotage du sens croise <span style="font-family:'DM Mono',monospace;font-size:12px;">3:II.1</span> (kubernân) et <span style="font-family:'DM Mono',monospace;font-size:12px;">2:§109</span>. C'est la théorie citée en ouverture de la carte 4.</p>
+        </div>
+        </sc-if>
+      </div>
+
+      <div style="border:1px solid #cfcabb;border-left:3px solid #7a7a86;border-radius:8px;background:#f0efe8;margin:0 0 6px;">
+        <button onClick="{{ tKarp }}" style="width:100%;display:flex;justify-content:space-between;align-items:center;gap:12px;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:#7a7a86;padding:11px 15px;background:none;border:none;cursor:pointer;text-align:left;">
+          <span>gris — fiche acteur · Alex Karp</span><span>{{ cKarp }}</span>
+        </button>
+        <sc-if value="{{ oKarp }}" hint-placeholder-val="{{ false }}">
+        <div style="padding:0 16px 15px;color:#5f5f6b;font-size:15.5px;line-height:1.6;display:flex;flex-direction:column;gap:11px;">
+          <p>CEO de Palantir. Thèse de doctorat de Francfort, dans l'orbite intellectuelle d'Habermas — qu'il cite pour justifier des outils de surveillance de masse.</p>
+          <p>Auteur de <em>The Technological Republic</em> — les 22 points, publiés en 2025–2026.</p>
+          <p>En <span style="font-family:'DM Mono',monospace;font-size:12px;">1:07</span> : pose publiquement le choix coopération ou nationalisation, au summit a16z du 3 mars 2026.</p>
+          <p>En <span style="font-family:'DM Mono',monospace;font-size:12px;">1:08</span> : « Si vous avez une position qui ne vous coûte jamais de perdre un employé, ce n'est pas une position. »</p>
+        </div>
+        </sc-if>
+      </div>
+    </section>
+
+    <section id="1-06" data-sec="1:06" data-screen-label="1:06 Maven" style="scroll-margin-top:120px;padding:56px 0 12px;border-top:1px solid #d0ccbb;display:flex;flex-direction:column;gap:22px;">
+      <div style="display:flex;align-items:baseline;gap:14px;font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;">
+        <span style="color:#4a7a00;">1:06</span><span style="color:#8a8a92;">Maven</span>
+      </div>
+      <h2 style="font-weight:700;letter-spacing:-.032em;line-height:1.02;font-size:clamp(23px,3.6vw,46px);text-wrap:pretty;">Maven — la machine à cibler</h2>
+      <p>Le 28 février 2026. Un missile américain frappe une école élémentaire iranienne. Plus de 120 enfants morts. Les enquêtes concluent que le système Maven Smart System de Palantir était utilisé lors de l'opération. Quelques jours plus tard, un employé de Palantir pose dans un channel Slack interne la question que tout le monde se pose : « Était-on impliqués, et est-ce qu'on fait quelque chose pour que ça ne se reproduise pas ? »</p>
+      <p>Voilà ce qu'est Maven : un système de ciblage militaire qui fusionne les flux de données de satellites, drones et radars pour recommander des frappes. Il n'est pas le bras qui tire — mais il est les yeux et le cerveau qui désignent la cible. Après l'intégration de LLMs — dont, pendant un temps, Claude d'Anthropic — le taux de ciblage a grimpé de moins de 100 cibles par jour à 5000 cibles par jour. La planification prévoit de passer à 1000 cibles par heure.</p>
+
+      <div style="border:1px solid #b8b39c;border-radius:10px;background:#efece2;padding:24px 26px;margin:6px 0;display:flex;flex-direction:column;gap:16px;">
+        <div style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:#4a7a00;">Chronologie Maven — 2024 à 2026</div>
+        <ul style="list-style:none;display:flex;flex-direction:column;gap:12px;font-size:16px;line-height:1.5;">
+          <li style="display:grid;grid-template-columns:{{ tlCols }};gap:16px;"><span style="font-family:'DM Mono',monospace;font-size:12.5px;color:#4a7a00;">Mai 2024</span><span>Contrat initial de 480 millions sur 5 ans avec le Pentagone.</span></li>
+          <li style="display:grid;grid-template-columns:{{ tlCols }};gap:16px;"><span style="font-family:'DM Mono',monospace;font-size:12.5px;color:#4a7a00;">Mai 2025</span><span>Plafond relevé à 1,3 milliard jusqu'en 2029 face à la « demande croissante des commandants ».</span></li>
+          <li style="display:grid;grid-template-columns:{{ tlCols }};gap:16px;"><span style="font-family:'DM Mono',monospace;font-size:12.5px;color:#4a7a00;">Mars 2026</span><span>Mémo du Deputy Secretary of Defense Steve Feinberg désignant Maven « program of record » avec effet au 30 septembre 2026.</span></li>
+        </ul>
+        <p style="font-size:15.5px;line-height:1.55;color:#4a4a55;border-top:1px solid #d0ccbb;padding-top:14px;">Ce statut signifie un financement stable, une intégration dans toutes les branches militaires, et une légitimité institutionnelle qui rend toute remise en question politiquement suicidaire. Palantir passe d'un contrat révocable à une dépendance structurelle inscrite dans la doctrine militaire américaine.</p>
+      </div>
+
+      <p>Claude — le modèle que vous lisez peut-être en ce moment — était intégré à Maven. Anthropic s'en est retiré en mars 2026 après avoir été désigné « supply chain risk » par le Pentagone. Entre les deux : des mois d'intégration dans un système de ciblage militaire. La séquence mérite d'être connue.</p>
+      <p>20 000 utilisateurs actifs. 35 outils militaires et de commandement. Déployé dans les 5 commandements combattants américains principaux — CENTCOM, EUCOM, INDOPACOM, NORTHCOM, TRANSCOM. Et maintenant signé avec l'OTAN via Maven Smart System NATO. Cette technologie n'est plus expérimentale. Elle est le système nerveux de la guerre occidentale.</p>
+
+      <div style="border:1px solid #cfcabb;border-left:3px solid #7a7a86;border-radius:8px;background:#f0efe8;margin:6px 0;">
+        <button onClick="{{ tMaven }}" style="width:100%;display:flex;justify-content:space-between;align-items:center;gap:12px;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:#7a7a86;padding:11px 15px;background:none;border:none;cursor:pointer;text-align:left;">
+          <span>gris — fiche · Maven Smart System</span><span>{{ cMaven }}</span>
+        </button>
+        <sc-if value="{{ oMaven }}" hint-placeholder-val="{{ false }}">
+        <div style="padding:0 16px 15px;color:#5f5f6b;font-size:15.5px;line-height:1.6;display:flex;flex-direction:column;gap:11px;">
+          <p>Système de ciblage qui fusionne satellites, drones et radars pour recommander des frappes. « Il n'est pas le bras qui tire — mais il est les yeux et le cerveau qui désignent la cible. »</p>
+          <p>Cadence : moins de 100 cibles/jour → 5000/jour après intégration de LLMs. Planification à 1000 cibles/heure.</p>
+          <p>Déploiement : 20 000 utilisateurs actifs, 35 outils, 5 commandements combattants (CENTCOM, EUCOM, INDOPACOM, NORTHCOM, TRANSCOM), puis l'OTAN.</p>
+          <p>Transféré du National Geospatial-Intelligence Agency vers l'US Army — voir <span style="font-family:'DM Mono',monospace;font-size:12px;">1:09</span> : les cycles d'acquisition de 10 à 15 ans sont le verrou.</p>
+          <p style="color:#8a8a92;">Gouverner par les nombres : <span style="font-family:'DM Mono',monospace;font-size:12px;">3:II.3</span>, <span style="font-family:'DM Mono',monospace;font-size:12px;">2:§113</span>.</p>
+        </div>
+        </sc-if>
+      </div>
+    </section>
+
+    <section id="1-07" data-sec="1:07" data-screen-label="1:07 La nationalisation" style="scroll-margin-top:120px;padding:56px 0 12px;border-top:1px solid #d0ccbb;display:flex;flex-direction:column;gap:22px;">
+      <div style="display:flex;align-items:baseline;gap:14px;font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;">
+        <span style="color:#4a7a00;">1:07</span><span style="color:#8a8a92;">La nationalisation</span>
+      </div>
+      <h2 style="font-weight:700;letter-spacing:-.032em;line-height:1.02;font-size:clamp(23px,3.6vw,46px);text-wrap:pretty;">La nationalisation comme offre mafieuse</h2>
+      <p>Le 3 mars 2026, au Summit American Dynamism d'Andreessen Horowitz à San Francisco — le summit annuel du fonds de capital-risque le plus influent de la Silicon Valley — Alex Karp monte sur scène.</p>
+      <p>Il pose le choix en termes nus : soit les entreprises d'IA coopèrent avec le gouvernement Trump sur les applications militaires, soit elles sont nationalisées. Il cite nommément le Defense Production Act — une loi de temps de guerre qui permet à l'exécutif de forcer des entreprises privées à produire des biens ou services stratégiques, sans leur consentement, selon les spécifications de l'État.</p>
+      <p>Ce qui se passe dans les jours suivants n'est pas une coïncidence.</p>
+
+      <ol style="list-style:none;display:flex;flex-direction:column;gap:0;border-top:1px solid #d0ccbb;margin:4px 0;">
+        <li style="display:grid;grid-template-columns:{{ tlCols }};gap:18px;padding:18px 0;border-bottom:1px solid #d0ccbb;">
+          <span style="font-family:'DM Mono',monospace;font-size:12px;letter-spacing:.06em;color:#4a7a00;">3 mars</span>
+          <span style="font-size:17px;line-height:1.55;"><strong>Karp parle de nationalisation</strong> devant les VCs de la Silicon Valley au summit a16z.</span>
+        </li>
+        <li style="display:grid;grid-template-columns:{{ tlCols }};gap:18px;padding:18px 0;border-bottom:1px solid #d0ccbb;">
+          <span style="font-family:'DM Mono',monospace;font-size:12px;letter-spacing:.06em;color:#4a7a00;">3 mars, 17h01</span>
+          <span style="font-size:17px;line-height:1.55;"><strong>Emil Michael</strong> — conseiller de l'administration Trump proche de Palantir — insulte publiquement Dario Amodei, CEO d'Anthropic, et pose un ultimatum en quelques heures.</span>
+        </li>
+        <li style="display:grid;grid-template-columns:{{ tlCols }};gap:18px;padding:18px 0;border-bottom:1px solid #d0ccbb;">
+          <span style="font-family:'DM Mono',monospace;font-size:12px;letter-spacing:.06em;color:#4a7a00;">Jours suivants</span>
+          <span style="font-size:17px;line-height:1.55;"><strong>Hegseth</strong>, secrétaire à la Défense, désigne officiellement Anthropic « supply chain risk » — coupant l'entreprise de tous ses contrats gouvernementaux existants. Trump poste sur Truth Social.</span>
+        </li>
+        <li style="display:grid;grid-template-columns:{{ tlCols }};gap:18px;padding:18px 0;border-bottom:1px solid #d0ccbb;">
+          <span style="font-family:'DM Mono',monospace;font-size:12px;letter-spacing:.06em;color:#4a7a00;">Heures après</span>
+          <span style="font-size:17px;line-height:1.55;"><strong>Altman signe.</strong> OpenAI se plie aux exigences. Le mémo interne d'Amodei fuite — Karp y apparaît comme l'intermédiaire qui avait proposé à Anthropic un « service de dissimulation » pour ses employés récalcitrants.</span>
+        </li>
+      </ol>
+
+      <p>La menace de nationalisation n'est pas une prédiction économique. C'est une offre de protection mafieuse articulée en public, devant les financeurs des concurrents de Palantir. Le message réel : soit vous devenez des composants dans notre infrastructure, soit l'État vous démantèle. Dans les deux cas, vous perdez votre souveraineté. Choisissez l'option où vous gardez au moins vos revenus.</p>
+      <p>Et Palantir, dans tous les scénarios, est le grand vainqueur. S'il y a nationalisation, Palantir devient le gestionnaire de l'infrastructure nationalisée. S'il n'y a pas nationalisation, les modèles des autres tournent dans AIP. Palantir est le courtier qui prend sa commission quelle que soit l'issue de la transaction. Il n'y a pas de scénario dans lequel Palantir perd.</p>
+      <p>C'est ce que Karp appelait début 2026, avec une franchise abrasive : 77% des revenus de Palantir viennent désormais des États-Unis, avec une croissance de 93% sur le marché américain. Et que des pays comme la France sont « forcés » de renouveler leurs contrats Palantir faute d'alternative crédible.</p>
+    </section>
+
+    <section id="1-08" data-sec="1:08" data-screen-label="1:08 Résistance interne" style="scroll-margin-top:120px;padding:56px 0 12px;border-top:1px solid #d0ccbb;display:flex;flex-direction:column;gap:22px;">
+      <div style="display:flex;align-items:baseline;gap:14px;font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;">
+        <span style="color:#4a7a00;">1:08</span><span style="color:#8a8a92;">Résistance interne</span>
+      </div>
+      <h2 style="font-weight:700;letter-spacing:-.032em;line-height:1.02;font-size:clamp(23px,3.6vw,46px);text-wrap:pretty;">Quand les ingénieurs comprennent pour quoi ils travaillent</h2>
+      <p>L'enquête Wired sur Palantir — publiée en avril 2026, basée sur des Slack leakés et des interviews d'employés actuels et anciens — révèle quelque chose d'important. La résistance vient de l'intérieur. Ce ne sont pas des militants extérieurs. Ce sont les gens qui ont construit le système.</p>
+
+      <blockquote style="margin:8px 0;padding:26px 0 0;border-top:1px solid #d0ccbb;display:flex;flex-direction:column;gap:14px;">
+        <p style="font-size:clamp(19px,2vw,24px);line-height:1.42;letter-spacing:-.016em;text-wrap:pretty;">« La grande histoire de Palantir telle qu'elle se racontait à elle-même et à ses employés, c'était qu'après le 11 septembre, nous savions qu'il y aurait une grande poussée pour la sécurité, et nous nous inquiétions que cette sécurité empiète sur les libertés civiles. Et maintenant la menace vient de l'intérieur. On était censés être ceux qui empêchaient ces abus. Maintenant on ne les empêche plus. On semble les permettre. »</p>
+        <span style="font-family:'DM Mono',monospace;font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;color:#8a8a92;">— Ancien employé Palantir, cité par Wired</span>
+      </blockquote>
+
+      <p>Deux anciens employés se sont retrouvés par téléphone après la frappe sur l'école iranienne. Le premier demande : « Tu suis la descente de Palantir vers le fascisme ? » L'autre répond que ce n'est pas juste difficile ou impopulaire — « ça semble fondamentalement mal. »</p>
+      <p>Après la frappe, des employés posent dans les Slack internes des questions directes sur l'implication de Palantir. Peu après : l'entreprise commence à effacer automatiquement toutes les conversations du channel #palantir-in-the-news après 7 jours. Justification officielle : risque de fuites. Les employés continuent à questionner pourquoi l'entreprise efface « le discours interne pertinent sur les événements actuels. »</p>
+      <p>Karp est indifférent. Il a dit clairement : « Si vous avez une position qui ne vous coûte jamais de perdre un employé, ce n'est pas une position. » Ce que cette résistance révèle, c'est la différence entre une contrainte éthique et une contrainte structurelle. Palantir avait des contraintes éthiques — codes de conduite, groupes de ressources pour les employés LGBTQ+ et les minorités, engagements publics sur les droits humains. Tout ça a disparu quand le contexte politique a changé. Les contraintes éthiques ne tiennent pas sous la pression. Les contraintes structurelles, si.</p>
+    </section>
+
+    <section id="1-09" data-sec="1:09" data-screen-label="1:09 Le verrouillage" style="scroll-margin-top:120px;padding:56px 0 12px;border-top:1px solid #d0ccbb;display:flex;flex-direction:column;gap:22px;">
+      <div style="display:flex;align-items:baseline;gap:14px;font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;">
+        <span style="color:#4a7a00;">1:09</span><span style="color:#8a8a92;">Le verrouillage</span>
+      </div>
+      <h2 style="font-weight:700;letter-spacing:-.032em;line-height:1.02;font-size:clamp(23px,3.6vw,46px);text-wrap:pretty;">Comment se rendre irremovable</h2>
+      <p>La question que je me pose depuis des mois : est-ce qu'ils essaient de se placer avant de ne plus pouvoir être retirés du système qu'ils mettent en place ? La réponse est oui. Et la mécanique est documentée, couche par couche.</p>
+      <p><strong>L'Army comme verrou à long terme.</strong> Le transfert de Maven du National Geospatial-Intelligence Agency vers l'US Army n'est pas une réorganisation administrative. L'Army a des cycles d'acquisition de 10 à 15 ans. Le « program of record » signifie que quel que soit le résultat de 2028 — même si une administration moins favorable à Palantir arrive au pouvoir — les contrats courent jusqu'en 2035 minimum. Retirer Palantir de l'infrastructure militaire américaine serait maintenant aussi complexe que retirer Windows de l'administration française en 2005. Possible en théorie. Cauchemardesque en pratique.</p>
+      <p><strong>L'infiltration des ministères.</strong> Un ancien ingénieur Palantir est maintenant CIO du Département de la Santé — il signe les contrats avec son ancienne entreprise. Des anciens de Palantir participent à DOGE. D'autres recrutent pour l'administration. Ce n'est pas un conflit d'intérêts accidentel. C'est la stratégie.</p>
+      <p><strong>L'écosystème Thiel comme filet de sécurité.</strong> Palantir n'est pas seul. Anduril — une startup de défense co-fondée par d'anciens employés Palantir, financée par Thiel — vient de signer un contrat de 20 milliards sur 10 ans avec l'Army en mars 2026. Palantir + Anduril = les deux jambes du même corps. Thiel prépare déjà 2028, orchestrant une possible candidature présidentielle de Vance. Le plan ne dépend pas de Trump. Trump est un vecteur, pas la finalité.</p>
+      <p><strong>La stack complète.</strong> En 2026, Thiel investit dans Objection.ai — une startup qui « évalue les affirmations faites par les journalistes ». Palantir surveille les corps. Objection.ai surveille les narratifs. Rivada Space Networks — dans lequel Thiel est impliqué — déploiera ses satellites en 2027. Surveillance terrestre + contrôle narratif + surveillance orbitale. C'est une infrastructure de pouvoir complète, pas une série d'investissements disparates.</p>
+
+      <div style="border:1px solid #cfcabb;border-left:3px solid #7a7a86;border-radius:8px;background:#f0efe8;margin:6px 0;">
+        <button onClick="{{ tAnduril }}" style="width:100%;display:flex;justify-content:space-between;align-items:center;gap:12px;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:#7a7a86;padding:11px 15px;background:none;border:none;cursor:pointer;text-align:left;">
+          <span>gris — les quatre couches du verrou</span><span>{{ cAnduril }}</span>
+        </button>
+        <sc-if value="{{ oAnduril }}" hint-placeholder-val="{{ false }}">
+        <div style="padding:0 16px 15px;color:#5f5f6b;font-size:15.5px;line-height:1.6;display:flex;flex-direction:column;gap:11px;">
+          <p><strong style="color:#4a4a55;">1. Le temps</strong> — cycles d'acquisition Army de 10 à 15 ans ; contrats jusqu'en 2035 minimum.</p>
+          <p><strong style="color:#4a4a55;">2. Les personnes</strong> — un ancien ingénieur Palantir CIO du Département de la Santé ; des anciens dans DOGE et au recrutement.</p>
+          <p><strong style="color:#4a4a55;">3. L'écosystème</strong> — Anduril, co-fondée par d'anciens employés Palantir, financée par Thiel : 20 Md sur 10 ans avec l'Army, mars 2026.</p>
+          <p><strong style="color:#4a4a55;">4. La stack</strong> — Palantir (les corps), Objection.ai (les narratifs), Rivada Space Networks (l'orbite, 2027).</p>
+          <p style="color:#8a8a92;">L'irremovabilité et la pléonexie : <span style="font-family:'DM Mono',monospace;font-size:12px;">3:I.6</span>. Le désencastrement verrouillé : <span style="font-family:'DM Mono',monospace;font-size:12px;">3:I.2</span>.</p>
+        </div>
+        </sc-if>
+      </div>
+    </section>
+
+    <section id="1-10" data-sec="1:10" data-screen-label="1:10 La réponse" style="scroll-margin-top:120px;padding:56px 0 12px;border-top:1px solid #d0ccbb;display:flex;flex-direction:column;gap:22px;">
+      <div style="display:flex;align-items:baseline;gap:14px;font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;">
+        <span style="color:#4a7a00;">1:10</span><span style="color:#8a8a92;">La réponse</span>
+      </div>
+      <h2 style="font-weight:700;letter-spacing:-.032em;line-height:1.02;font-size:clamp(23px,3.6vw,46px);text-wrap:pretty;">La seule réponse qui tienne</h2>
+      <p>Je ne suis pas nihiliste. Je ne pense pas que tout soit perdu. Mais je pense qu'on ne peut pas lutter contre une infrastructure avec des arguments, des pétitions, ou des codes d'éthique. On lutte contre une infrastructure avec une autre infrastructure.</p>
+      <p>La leçon de Palantir, c'est que les contraintes éthiques ne tiennent pas. Elles existaient chez Palantir. Elles n'ont pas survécu au changement de contexte politique. Ce qui tient, ce sont les contraintes structurelles. Une architecture dont la gouvernance est impossible à centraliser ne peut pas être nationalisée. Un réseau dont la forme émerge des flux qui le traversent plutôt que d'un contrat central n'a pas de point unique de saisie.</p>
+      <p>Dans les années 90, au CCRU, Land et ses collègues ont compris quelque chose que la gauche a mis du temps à saisir : une idée qui se répand comme une fiction finit par devenir une infrastructure. C'est l'hyperstition. Une fiction qui se rend réelle en étant agissante dans le monde.</p>
+      <p>Ce qu'ils ont fait avec des idées — quinze ans de diffusion patiente, de financement discret, de connexions construites une par une — on peut le faire avec du code, des protocoles, des topologies de réseau. Une architecture qui n'a pas de CEO à nationaliser. Pas de poids de modèle à saisir par décret. Pas d'ontologie propriétaire qui capture le sens du monde pour le compte d'une institution.</p>
+      <p>BLOOM n'est pas une réponse esthétique à une menace abstraite. C'est une réponse architecturale à une mécanique de capture documentée. Un réseau dont la forme émerge des flux qui le traversent, comme les arbres bronchiques ou les deltas fluviaux — topologies que la nature a optimisées non pas parce qu'un ingénieur les a dessinées, mais parce qu'elles distribuent le flux de la façon la plus efficace possible. Ce que Palantir construit par la concentration et le lock-in, BLOOM le défait par la distribution et l'émergence.</p>
+      <p>Mark Fisher — qui avait fréquenté le même milieu intellectuel que Land, qui avait lu les mêmes textes — est mort en 2017 en laissant inachevé son dernier livre, <em>Acid Communism</em>. Sa thèse : la gauche avait perdu la capacité d'imaginer un futur. Que la seule réponse au désespoir de l'ère néolibérale était de retrouver l'accès à des futurs alternatifs — pas nostalgiques, pas fantasmés, mais construits.</p>
+      <p>Il avait raison. Et depuis quinze ans, c'est ce que j'essaie de faire — d'abord avec EGO, qui rendait visible le profilage algorithmique. Maintenant avec BLOOM, qui construit une alternative à la concentration du calcul. Pas comme manifeste. Comme infrastructure.</p>
+      <p>Ce soir du 13 février à Sea Cliff, Land et Yarvin se rencontraient pour la première fois dans la villa de David Holz. Le mouvement qu'ils avaient créé séparément, sans jamais se voir, s'était rendu réel. Une fiction qui avait passé trente ans à s'inscrire dans le réel — dans les poids de Maven, dans les contrats de l'Army, dans le bureau du vice-président des États-Unis.</p>
+      <p style="font-size:clamp(22px,2.4vw,32px);line-height:1.3;letter-spacing:-.02em;font-weight:600;margin-top:14px;text-wrap:pretty;">L'hyperstition fonctionne dans les deux sens. Je préfère que vous le sachiez.</p>
+    </section>
+
+    <section id="colophon" data-screen-label="Colophon" style="scroll-margin-top:120px;padding:56px 0 0;border-top:1px solid #d0ccbb;display:flex;flex-direction:column;gap:22px;">
+      <div style="font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#8a8a92;">Colophon</div>
+      <p style="font-family:'DM Mono',monospace;font-size:13px;line-height:1.85;letter-spacing:.02em;color:#4a4a55;">NICOLAS — PARIS, AVRIL 2026 · NRx · Palantir · Infrastructure · Pouvoir · BLOOM</p>
+
+      <div style="border:1px solid #cfcabb;border-left:3px solid #7a7a86;border-radius:8px;background:#f0efe8;">
+        <button onClick="{{ tSources }}" style="width:100%;display:flex;justify-content:space-between;align-items:center;gap:12px;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:#7a7a86;padding:11px 15px;background:none;border:none;cursor:pointer;text-align:left;">
+          <span>gris — les sources nommées dans le texte</span><span>{{ cSources }}</span>
+        </button>
+        <sc-if value="{{ oSources }}" hint-placeholder-val="{{ false }}">
+        <div style="padding:0 16px 15px;color:#5f5f6b;font-size:15.5px;line-height:1.6;display:flex;flex-direction:column;gap:11px;">
+          <p><strong style="color:#4a4a55;">Wired</strong> — enquête sur Palantir, avril 2026, basée sur des Slack leakés et des interviews d'employés actuels et anciens. Citée en <span style="font-family:'DM Mono',monospace;font-size:12px;">1:08</span>.</p>
+          <p><strong style="color:#4a4a55;">Politico</strong> — « invité d'honneur informel », « influence démesurée sur la droite trumpiste ». <span style="font-family:'DM Mono',monospace;font-size:12px;">1:03</span>.</p>
+          <p><strong style="color:#4a4a55;">Palladium Magazine</strong> — Wolf Tivy, organisateur de la soirée. <span style="font-family:'DM Mono',monospace;font-size:12px;">1:04</span>.</p>
+          <p><strong style="color:#4a4a55;">The Technological Republic</strong>, Alex Karp — les 22 points. <span style="font-family:'DM Mono',monospace;font-size:12px;">1:05</span>.</p>
+          <p><strong style="color:#4a4a55;">Mémo du Deputy Secretary of Defense</strong> Steve Feinberg, mars 2026 — Maven « program of record ». <span style="font-family:'DM Mono',monospace;font-size:12px;">1:06</span>.</p>
+          <p><strong style="color:#4a4a55;">Acid Communism</strong>, Mark Fisher — inachevé, 2017. <span style="font-family:'DM Mono',monospace;font-size:12px;">1:10</span>.</p>
+          <p style="color:#8a8a92;border-top:1px solid #cfcabb;padding-top:11px;">Le texte n'a pas été édité pour le site. Front-matter, adresses et fiches vivent à côté, dans des fichiers séparés.</p>
+        </div>
+        </sc-if>
+      </div>
+
+      <div style="display:flex;flex-wrap:wrap;gap:12px;margin-top:12px;">
+        <a href="index.html" style="font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.16em;text-transform:uppercase;padding:14px 24px;border-radius:40px;border:1px solid #b8b39c;color:#4a4a55;display:inline-flex;align-items:center;gap:12px;transition:background .35s ease,color .35s ease,border-color .35s ease,gap .35s ease;" style-hover="background:#4a7a00;color:#f7f5ef;border-color:#4a7a00;gap:20px;"><span>←</span> Retour à la Porte</a>
+      </div>
+    </section>
+
+  </article>
+</div>
+
+<footer style="background:#17171c;color:#9a9ab0;padding:60px 30px 40px;font-family:'DM Mono',monospace;font-size:11.5px;line-height:1.9;letter-spacing:.04em;">
+  <div style="max-width:1100px;margin:0 auto;display:flex;flex-wrap:wrap;gap:40px;justify-content:space-between;align-items:flex-end;">
+    <div style="display:flex;flex-direction:column;gap:6px;">
+      <span style="color:#e8e8f0;text-transform:uppercase;letter-spacing:.2em;">Carte 01 — Hyperstition</span>
+      <span>Adresses 1:NN et 1:NN.p · ancres profondes · le graphe vit à côté.</span>
+    </div>
+    <span style="color:#b8a98f;">Le fleuve coule. Les berges changent. L'essai persiste.</span>
+  </div>
+</footer>
+</template>
+
+<script src="assets/dc-lite.js"></script>
+<script type="module">
+class Component extends DCLogic {
+  state = { open: {}, addr: "1:01", active: 1, wide: true };
+
+  componentDidMount() {
+    const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    const rv = Array.from(document.querySelectorAll("[data-rv]"));
+    if (!reduce && window.IntersectionObserver) {
+      rv.forEach((n) => n.classList.add("pre"));
+      this.io = new IntersectionObserver((es) => {
+        es.forEach((e) => { if (e.isIntersecting) { e.target.classList.remove("pre"); this.io.unobserve(e.target); } });
+      }, { rootMargin: "0px 0px -10% 0px", threshold: 0.05 });
+      rv.forEach((n) => this.io.observe(n));
+      // couper la transition avant de retirer .pre : sinon l'élément reste figé sur son état de départ
+      this.revealTimer = setTimeout(() => rv.forEach((n) => {
+        if (!n.classList.contains("pre")) return;
+        n.style.transition = "none";
+        n.classList.remove("pre");
+        requestAnimationFrame(() => { n.style.transition = ""; });
+      }), 1500);
+    }
+
+    // la hauteur de chrome se MESURE : la barre du Gris se replie de 53 à 121px sur téléphone
+    const chromeH = () => {
+      const hd = document.querySelector("header");
+      const bar = document.querySelector("[data-stick]");
+      return (hd ? hd.getBoundingClientRect().height : 50) + (bar ? bar.getBoundingClientRect().height : 53) + 17;
+    };
+    const syncMargins = () => {
+      const m = Math.round(chromeH()) + "px";
+      document.querySelectorAll("[data-sec],#colophon").forEach((n) => { n.style.scrollMarginTop = m; });
+    };
+    syncMargins();
+
+    // l'ancre d'arrivée : on repose le scroll une fois les polices et la mise en page stables
+    const landOnHash = () => {
+      const h = decodeURIComponent((location.hash || "").slice(1));
+      if (!h) return;
+      const el = document.getElementById(h);
+      if (!el) return;
+      syncMargins();
+      const y = el.getBoundingClientRect().top + (window.scrollY || document.documentElement.scrollTop || 0) - chromeH();
+      const de = document.documentElement, prev = de.style.scrollBehavior;
+      de.style.scrollBehavior = "auto";
+      window.scrollTo(0, Math.max(0, y));
+      de.style.scrollBehavior = prev;
+    };
+    landOnHash();
+    this.hA = setTimeout(landOnHash, 140);
+    this.hB = setTimeout(landOnHash, 700);
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(landOnHash);
+    this.onHash = landOnHash;
+    window.addEventListener("hashchange", this.onHash);
+    this.onMeasure = syncMargins;
+    window.addEventListener("resize", this.onMeasure);
+
+    this.secs = Array.from(document.querySelectorAll("[data-sec]"));
+    const posY = () => window.scrollY || document.documentElement.scrollTop || 0;
+    this.lastY = -1;
+
+    const update = () => {
+      const y = posY();
+      const wide = window.innerWidth > 860;
+      let addr = this.state.addr;
+      let active = this.state.active;
+      this.secs.forEach((n, i) => {
+        const r = n.getBoundingClientRect();
+        if (r.top <= 140 && r.bottom > 140) { addr = n.getAttribute("data-sec"); active = i + 1; }
+      });
+      if (y <= 40) { addr = "1:01"; active = 1; }
+      if (addr !== this.state.addr || active !== this.state.active || wide !== this.state.wide) {
+        this.setState({ addr, active, wide });
+      }
+      this.lastY = y;
+    };
+
+    const frame = () => { if (posY() !== this.lastY) update(); this.rafId = requestAnimationFrame(frame); };
+    this.rafId = requestAnimationFrame(frame);
+    this.onScroll = update;
+    window.addEventListener("scroll", this.onScroll, { passive: true });
+    window.addEventListener("resize", this.onScroll);
+    update();
+    if (reduce) return;
+  }
+
+  componentWillUnmount() {
+    if (this.io) this.io.disconnect();
+    if (this.revealTimer) clearTimeout(this.revealTimer);
+    clearTimeout(this.hA); clearTimeout(this.hB);
+    window.removeEventListener("hashchange", this.onHash);
+    window.removeEventListener("resize", this.onMeasure);
+    if (this.rafId) cancelAnimationFrame(this.rafId);
+    window.removeEventListener("scroll", this.onScroll);
+    window.removeEventListener("resize", this.onScroll);
+  }
+
+  toggle(k) {
+    return () => this.setState((s) => ({ open: Object.assign({}, s.open, { [k]: !s.open[k] }) }));
+  }
+
+  railStyle(n) {
+    const on = this.state.active === n;
+    return "color:" + (on ? "#4a7a00" : "#4a4a55") + ";padding-left:" + (on ? "9px" : "0") +
+      ";border-left:" + (on ? "2px solid #4a7a00" : "2px solid transparent") + ";";
+  }
+
+  renderVals() {
+    const keys = ["Projets", "Land", "Yarvin", "Thiel", "Vance", "Holz", "Palantir", "Karp", "Maven", "Anduril", "Sources"];
+    const out = {
+      curAddr: this.state.addr,
+      readCols: this.state.wide ? "200px minmax(0,1fr)" : "minmax(0,1fr)",
+      tlCols: this.state.wide ? "108px minmax(0,1fr)" : "minmax(0,1fr)",
+      openAllGris: () => {
+        const o = {};
+        keys.forEach((k) => { o[k.toLowerCase()] = true; });
+        this.setState({ open: o });
+      },
+      closeAllGris: () => this.setState({ open: {} })
+    };
+    for (let i = 1; i <= 10; i++) out["r" + i] = this.railStyle(i);
+    keys.forEach((k) => {
+      const key = k.toLowerCase();
+      const on = !!this.state.open[key];
+      out["o" + k] = on;
+      out["c" + k] = on ? "replier ▴" : "déplier ▾";
+      out["t" + k] = this.toggle(key);
+    });
+    return out;
+  }
+}
+DC.mount(Component, {});
+</script>
+</body>
+</html>
