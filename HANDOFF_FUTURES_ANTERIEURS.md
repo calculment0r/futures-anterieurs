@@ -77,7 +77,9 @@ la propagation.
 - **Polices auto-hébergées** : `site/assets/fonts/` + `fonts.css` (Host Grotesk,
   DM Mono, OFL 1.1). Aucun CDN tiers — le manifeste de la Porte les range parmi ce
   qu'on ne fera pas.
-- **Les auteurs** : `site/auteurs.html` est écrite à la main, hors du pipeline —
+- **Les auteurs** : graphe de proximité repris de NECTAR — un lien n'existe que
+  si deux auteurs sont proches, et rien ne s'éteint quand on en tient un.
+  `site/auteurs.html` est écrite à la main, hors du pipeline —
   `build_portail.py` ne la régénère pas, elle est sa propre source. Ses données
   (`corpus/auteurs.json`, 60 auteurs et 133 liens) passent par `design/corpus/`
   comme le reste. Schéma dans `design/corpus/README-auteurs.md`.
