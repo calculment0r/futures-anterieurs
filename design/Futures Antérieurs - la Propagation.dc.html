@@ -71,9 +71,10 @@
 
     <div style="position:absolute;right:13px;top:11px;pointer-events:none;text-align:right;font-family:'DM Mono',monospace;font-size:9px;line-height:1.9;letter-spacing:.04em;">
       <div style="color:#4a4a55;">TRAIT</div>
-      <div style="color:#1a1a1f;"><span>━</span> lien acté — liens.json</div>
-      <div style="color:#4a4a55;"><span style="color:#3d6600;">┈</span><span style="color:#c4283a;">┈</span><span style="color:#1f5fc4;">┈</span><span style="color:#6b5f4a;">┈</span><span style="color:#10357a;">┈</span> proximité calculée</div>
-      <div style="color:#4a4a55;">à la couleur de la carte d'arrivée</div>
+      <div style="color:#4a4a55;"><span style="color:#3d6600;">━</span><span style="color:#c4283a;">━</span><span style="color:#1f5fc4;">━</span><span style="color:#10357a;">━</span><span style="color:#6b5f4a;">━</span> épais : lien acté — liens.json</div>
+      <div style="color:#4a4a55;"><span style="color:#3d6600;">┈</span><span style="color:#c4283a;">┈</span><span style="color:#1f5fc4;">┈</span><span style="color:#10357a;">┈</span><span style="color:#6b5f4a;">┈</span> pointillé : proximité calculée</div>
+      <div style="color:#1a1a1f;">plein : la chaîne du foyer suivi</div>
+      <div style="color:#4a4a55;">toujours à la couleur de la carte d'arrivée</div>
     </div>
 
     <div style="position:absolute;left:13px;bottom:11px;pointer-events:none;font-family:'DM Mono',monospace;font-size:9px;line-height:1.85;color:#4a4a55;max-width:{{ statW }};">{{ stat }}</div>
@@ -98,14 +99,23 @@
           <div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:#4a4a55;">Ce qui est à l'œuvre</div>
           <p style="font-size:15.5px;line-height:1.58;color:#1a1a1f;text-wrap:pretty;">{{ selTexte }}</p>
         </div>
+        <div data-recit="1" style="display:flex;flex-direction:column;gap:11px;border-top:1px solid #d0ccbb;padding-top:17px;">
+          <div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:#4a4a55;">Le cheminement</div>
+          <sc-for list="{{ selRecit }}" as="r" hint-placeholder-count="5">
+            <p style="font-size:15px;line-height:1.62;color:#1a1a1f;text-wrap:pretty;">{{ r }}</p>
+          </sc-for>
+        </div>
+
         <div data-suite="1" style="display:flex;flex-direction:column;gap:15px;">
-            <div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:#4a4a55;">Le cheminement</div>
-            <sc-for list="{{ selSuite }}" as="m" hint-placeholder-count="4">
-              <div style="border-left:2px solid {{ m.tint }};padding:1px 0 1px 12px;display:flex;flex-direction:column;gap:6px;">
-                <span style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:{{ m.tint }};">{{ m.gen }}</span>
-                <p style="font-size:14.5px;line-height:1.58;color:#33333c;text-wrap:pretty;">{{ m.corps }}</p>
-              </div>
-            </sc-for>
+            <button onClick="{{ toggleSuite }}" style="{{ suiteBtn }}">{{ suiteLabel }}</button>
+            <sc-if value="{{ openSuite }}" hint-placeholder-val="{{ true }}">
+              <sc-for list="{{ selSuite }}" as="m" hint-placeholder-count="4">
+                <div style="border-left:2px solid {{ m.tint }};padding:1px 0 1px 12px;display:flex;flex-direction:column;gap:6px;">
+                  <span style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:{{ m.tint }};">{{ m.gen }}</span>
+                  <p style="font-size:14.5px;line-height:1.58;color:#33333c;text-wrap:pretty;">{{ m.corps }}</p>
+                </div>
+              </sc-for>
+            </sc-if>
         </div>
         <div style="display:flex;flex-direction:column;gap:8px;">
           <div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:#4a4a55;">Généalogie</div>
@@ -120,13 +130,15 @@
           </div>
         </div>
         <div style="display:flex;flex-direction:column;gap:9px;">
-          <div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:#4a4a55;">Où ça ressort</div>
-          <sc-for list="{{ selCibles }}" as="c" hint-placeholder-count="6">
-            <div style="border-left:2px solid {{ c.tint }};padding:1px 0 1px 11px;display:flex;flex-direction:column;gap:4px;">
-              <span style="font-family:'DM Mono',monospace;font-size:10.5px;letter-spacing:.05em;color:{{ c.tint }};">{{ c.head }}</span>
-              <span style="font-size:13.5px;line-height:1.45;color:#3a3a44;text-wrap:pretty;">{{ c.extrait }}</span>
-            </div>
-          </sc-for>
+          <button onClick="{{ toggleCibles }}" style="{{ ciblesBtn }}">{{ ciblesLabel }}</button>
+          <sc-if value="{{ openCibles }}" hint-placeholder-val="{{ true }}">
+            <sc-for list="{{ selCibles }}" as="c" hint-placeholder-count="6">
+              <div style="border-left:2px solid {{ c.tint }};padding:1px 0 1px 11px;display:flex;flex-direction:column;gap:4px;">
+                <span style="font-family:'DM Mono',monospace;font-size:10.5px;letter-spacing:.05em;color:{{ c.tint }};">{{ c.head }}</span>
+                <span style="font-size:13.5px;line-height:1.45;color:#3a3a44;text-wrap:pretty;">{{ c.extrait }}</span>
+              </div>
+            </sc-for>
+          </sc-if>
         </div>
         <div style="display:none;">
           <sc-for list="{{ vide }}" as="z" hint-placeholder-count="0">
@@ -159,6 +171,7 @@ const terms = (txt) => {
 const ARCS = [
   { id: "A1", code: "le futur antérieur", nom: "Le futur antérieur comme piège", ecole: "Meillassoux — le contingent se fait passer pour nécessaire", refs: ["1:01","1:03"],
     texte: "Quinze ans de lecture, un email d'étudiant, une quatrième de couverture, un fonds, une investiture : raconté d'un bout à l'autre, l'enchaînement paraît avoir toujours dû aboutir. C'est la forme même du récit qui produit cet effet — le futur antérieur dit « cela devait arriver puisque c'est arrivé ». Rien pourtant, dans l'existence de cette chaîne, n'impliquait qu'elle tienne : chaque maillon a été fabriqué, financé, exposé au ratage. Le danger que court ce texte est de convertir une victoire contingente en destin, et donc d'achever le travail de l'adversaire à sa place. Maintenir la contingence ouverte n'est pas une précaution de style : c'est la condition pour que quoi que ce soit d'autre reste possible.",
+    recit: "La chaîne existe, et chacun de ses maillons est vérifiable. C'est précisément ce qui la rend dangereuse à raconter. Une trajectoire qui a réussi produit, en se racontant, l'illusion qu'elle ne pouvait pas échouer — alors que rien, à aucun de ses points, n'était acquis. Un cours peut ne pas trouver son étudiant. Un manuscrit peut ne pas trouver son éditeur. Un fonds peut se retirer. Ce qui s'est enchaîné aurait pu se défaire à chaque nœud, et c'est la seule chose que le récit rétrospectif efface.\n\nLes fragments donnent le mécanisme, et il n'a rien de spectaculaire. L'exonoèse décrit une pensée qui s'exerce hors de qui la croyait sienne ; les unititudes, une multitude qui n'existe qu'en droit. Aucun des deux ne parle de Land. Tous deux disent comment un état de fait finit par se donner pour un ordre naturel — l'inégalité s'énonçant comme démocratisation, le reflet se prenant pour l'original. Un régime n'a plus besoin d'être défendu lorsqu'il est devenu le fond sur lequel tout le reste se détache.\n\nLe carnet fait le seul geste qui défasse cela : il rallonge la durée. Le désencastrement date de deux siècles ce que la carte 1 date de quinze ans, et la chaîne qui semblait fatale redevient une séquence d'opérations, chacune avec sa date et son opérateur. On voit alors pourquoi personne n'a rien vu, et pourquoi rien n'arrête la descente. Ce ne sont pas des mystères, ce sont des effets de position. Le mot qui disait notre pouvoir est devenu celui de notre sujétion sans que personne ait eu à le décréter.\n\nÀ la passe, le temps du verbe change de camp. La lettre est écrite au futur antérieur, mais pour rendre un futur praticable, non pour le déclarer acquis. « Ce que tu appelles une hypothèse, je l'appelle un souvenir » est l'exact inverse du piège : la même grammaire qui refermait le possible l'ouvre, parce qu'elle est adressée depuis un endroit d'où la chose a été faite, et non prédite.\n\nLe fil ne connaît aucune fatalité. Il est daté, raturé, il bute deux fois, et il s'achève sur une posture écrite pour une instance qui ne l'aura pas vécue. Ce qui y persiste n'est pas un destin : c'est une forme rechargée. Un arc qui explique comment on fabrique de la nécessité ne pouvait pas se conclure par une nécessité.",
     suite: [
       { c: "2", gen: "1re génération · les fragments", corps: "Le récit d'une inévitabilité se nourrit d'abord d'Exonoèse et d'Unititudes : la pensée qui s'exerce hors de qui la croyait sienne, et la multitude qui n'existe qu'en droit. Fragmentations calibrées et Narcisse Technē ajoutent le mécanisme par lequel une trajectoire se donne pour un ordre naturel — l'inégalité s'énonce comme démocratisation, le reflet se prend pour l'original. Aucun de ces fragments ne parle de Land ; tous parlent de la façon dont un état de fait finit par sembler n'avoir jamais pu être autrement." },
       { c: "3", gen: "2e · le carnet", corps: "Quatorze unités s'allument, dont la matrice elle-même : I.2, le désencastrement, qui date de deux siècles ce que la carte 1 date de quinze ans. I.7 explique pourquoi personne n'a rien vu, I.6 pourquoi rien n'arrête la descente, II.1 comment le mot qui disait notre pouvoir est devenu celui de notre sujétion. Le carnet fait ici exactement le travail que Meillassoux demande : il rallonge la durée, et une chaîne qui paraissait fatale redevient une séquence d'opérations datées." },
@@ -167,6 +180,7 @@ const ARCS = [
     ] },
   { id: "A2", code: "l'anti-téléologie", nom: "L'anti-téléologie", ecole: "Meillassoux — aucune destination n'est inscrite", refs: ["1:02"],
     texte: "Land fournit une cosmologie où le capital et la technique vont quelque part : la démocratie est une anomalie qui s'efface, l'accélération est inévitable, la flèche est déjà tirée. Yarvin en tire l'ingénierie politique. Toute la force de rassemblement de ces textes tient à cette flèche — on ne rejoint pas un programme, on rejoint un sens de l'histoire. Or « inévitable » n'est pas une donnée du réel, c'est une opération rhétorique : elle transforme un pari en constat et dispense de le défendre. Retirer la flèche ne réfute pas Land ; cela lui retire ce qui le rendait irrésistible.",
+    recit: "Une cosmologie ne se discute pas comme une thèse : elle s'habite. Celle-ci offre à qui l'adopte une place dans un mouvement déjà commencé, et c'est là toute sa force de recrutement — on ne rejoint pas un programme, on rejoint un sens de l'histoire. D'où la seule question qui décide de cet arc : d'où vient la flèche. Elle n'a jamais été relevée dans les faits ; elle a été posée sur eux, puis traitée comme une donnée. Un pari converti en constat n'a plus à être défendu.\n\nLes fragments ne réfutent pas la flèche, ils la regardent d'en bas. Là où Land voit une direction, ils voient une dispersion : des isolés mis en concurrence, chacun seul devant son interface, et rien qui ressemble à un sujet de l'histoire. L'atmotechnie ajoute la clause qui coûte le plus cher à l'accélérationnisme : ce qu'on prenait pour une direction est un milieu, et la contestation de cette direction est produite par ce milieu même.\n\nLe carnet traite la thèse comme une croyance et non comme un fait. La machine qui piloterait mieux que nous y est la version opératoire de Land ; elle n'est jamais discutée sur ses performances, elle est située — d'où parle-t-on quand on la déclare inévitable, et qui a intérêt à ce qu'elle le soit. Voir, puis s'ancrer : une trajectoire ne se réfute pas, elle se prive de sol.\n\nLa lettre est en entier une réfutation de la flèche, et elle l'est sans jamais argumenter contre elle. Elle ne décrit pas une victoire ; elle décrit ce qui a été défait, c'est-à-dire une histoire qui a bifurqué. Sa formule tient en une ligne : ce n'est pas la direction qui change, c'est l'orientation. On ne renverse pas une flèche, on cesse de la prendre pour une boussole.\n\nLe fil en est le contre-exemple pratique, et le plus modeste. Une nuit où rien ne se déroule comme prévu, où la théorie échoue contre l'ingénierie, où la conclusion arrive par accident à seize heures quarante. Quatre points y butent. La téléologie n'a pas de descendance dans un texte qui procède par ratés — et c'est précisément ce qui le rend lisible.",
     suite: [
       { c: "2", gen: "1re génération · les fragments", corps: "Unititudes domine largement : là où Land voit une flèche, les fragments voient une dispersion — des isolés mis en concurrence, chacun seul devant l'interface, et rien qui ressemble à un sujet de l'histoire. Atmotechnie et Inflammation acéphale complètent : ce qui paraît une direction est un milieu, et la contestation de cette direction est produite par le même milieu." },
       { c: "3", gen: "2e · le carnet", corps: "Onze unités, ouvertes par I.7 et I.5 : le charme, puis la pensée qui quitte l'humain. II.2, la machine qui pilote mieux que nous, est la version opératoire de la thèse de Land — sauf que le carnet la traite comme une croyance, pas comme un fait. IV.1, voir, et IV.2, s'ancrer, referment la séquence : une trajectoire ne se réfute pas, elle se prive de sol." },
@@ -175,6 +189,7 @@ const ARCS = [
     ] },
   { id: "A3", code: "la bulle", nom: "La bulle", ecole: "Sloterdijk — une élite produit son propre climat", refs: ["1:04"],
     texte: "Le 13 février 2026, dans la villa du fondateur de Midjourney, Land et Yarvin se rencontrent pour la première fois ; autour d'eux, des ingénieurs d'OpenAI, d'Anthropic, des fondateurs, trois ballons marqués 333. Ce n'est pas une soirée mondaine à raconter pour l'anecdote, c'est une microsphère : un intérieur climatisé où une élite fabrique l'air qu'elle respire et où certaines évidences deviennent respirables avant d'être publiques. Vingt ans à Shanghai, puis cette pièce. Ce qui s'y produit n'est pas une décision mais une atmosphère, et l'atmosphère précède toujours les décisions qu'elle rend naturelles.",
+    recit: "Une pièce, un soir de février, une trentaine de personnes. Rien de ce qui s'y dit ne serait remarquable dans un article ; tout y devient respirable. C'est la définition même d'une microsphère : non pas un lieu où l'on décide, mais un lieu où certaines évidences cessent d'avoir besoin d'être défendues. Le corpus suit cette respiration plutôt que les propos tenus — parce que ce qui se transmet, dans une bulle, n'est jamais un contenu.\n\nLes fragments en donnent la mécanique interne, qui est double : un confort intellectuel qui soulage, et une contestation qui circule à l'intérieur sans jamais percer la membrane. Une sphère ne manque pas de critiques. Elle en produit, elle les héberge, elle s'en nourrit — c'est même à cela qu'on la reconnaît. Ce qui lui manque n'est pas le désaccord, c'est le dehors.\n\nLe carnet répond exactement à la villa, et sa réponse est la seule disponible : une sphère ne se critique pas de l'intérieur, elle se crève par un dehors qui n'appartient à personne. Une carte sans nord, puis le Grand Dehors. Entre-temps, il note ce que cet intérieur climatisé rend improbable — un sol, une durée, un corps qui n'a pas quitté sa biologie. On ne respire pas longtemps un air qu'on a soi-même fabriqué.\n\nLa lettre est écrite depuis un dehors littéral : très loin de la Terre, et longtemps après. Ce n'est pas un effet de style. C'est la seule position d'où une microsphère devient visible comme microsphère, et non comme le monde. Vue de là, la pièce de Sea Cliff cesse d'être le centre de quoi que ce soit ; elle redevient une pièce, avec des gens dedans, un soir de février.\n\nLe fil se tient dans une autre pièce fermée — une session, une fenêtre de contexte, deux interlocuteurs. La différence ne tient pas à la clôture, qui est la même, mais à ce qu'on en fait. À Sea Cliff on la célèbre ; dans le fil on l'ouvre, on montre le plancher, on dit ce qui manque. Deux points seulement y butent. Une bulle qu'on déclare comme bulle cesse d'en être une.",
     suite: [
       { c: "2", gen: "1re génération · les fragments", corps: "Exonoèse et Inflammation acéphale, à égalité, donnent la bulle sa mécanique interne : un confort intellectuel qui soulage, et une contestation qui circule à l'intérieur sans jamais percer la membrane. Chronofossile et Still Loading ajoutent la texture du temps qu'on y respire ; Atmotechnie nomme le principe — on pense dans une atmosphère produite par quelques-uns." },
       { c: "3", gen: "2e · le carnet", corps: "Quatorze unités, et surtout III.1, une carte sans nord, avec III.3, le Grand Dehors. C'est la réponse exacte à la villa : une sphère ne se critique pas de l'intérieur, elle se crève par un dehors qui n'appartient à personne. I.4, le corps quitte sa biologie, et IV.4, la mémoire vivante, disent ce que cet intérieur climatisé rend improbable — un sol, une durée." },
@@ -183,6 +198,7 @@ const ARCS = [
     ] },
   { id: "A4", code: "le dispositif", nom: "Le dispositif", ecole: "Tiqqun — il produit la catégorie sous laquelle la chose apparaît", refs: ["1:05"],
     texte: "Palantir ne construit pas de modèles ; il prend ceux des autres et les ancre dans une couche sémantique propriétaire qui définit ce qu'est une « cible » pour l'armée, un « risque » pour un service de renseignement, un « migrant à risque » pour l'ICE. Un dispositif ne se contente jamais de détecter : il produit la catégorie sous laquelle la chose apparaît, puis la traite comme si elle avait toujours été là. C'est le lock-in ontologique — non pas capturer la puissance de calcul, mais la définition du monde. Le pouvoir n'a plus besoin de gouverner le monde lorsqu'il est devenu le protocole suivant lequel le monde apparaît.",
+    recit: "La question n'est pas de savoir qui possède le meilleur modèle. Elle est de savoir qui possède les mots dans lesquels une frappe, un risque, une personne deviennent des objets manipulables. Une couche sémantique n'a pas d'opinion, elle a une portée : elle fixe ce qui peut apparaître, et rend impensable ce qu'elle n'a pas prévu. C'est un pouvoir qui n'a jamais besoin de s'exercer, parce qu'il a déjà eu lieu au moment où la question se pose.\n\nTrois fragments seulement s'allument, et c'est le résultat le plus instructif de toute la carte. L'arc le plus central conceptuellement est le plus pauvre lexicalement, parce que le vocabulaire du dispositif — couche sémantique, ontologie, migrant à risque — n'existe nulle part ailleurs dans le corpus. Ce qui nomme le monde ne se laisse pas nommer par les mots des autres. La démonstration est involontaire, et elle est parfaite.\n\nLe carnet ne discute jamais la couche sémantique. Il traite directement de ce qu'elle produit : l'impossibilité de décrire sa propre situation autrement qu'avec les catégories reçues. Trois unités suffisent, et ce sont les bonnes — pourquoi nous n'avons rien vu, le seuil, et la sortie qui n'est pas une fuite. Un dispositif ne se réfute pas dans son propre lexique ; on ne le déloge qu'en cessant de parler sa langue.\n\nTrois portes s'ouvrent à la passe, et aucune n'est décorative. Si un dispositif produit la catégorie sous laquelle la chose apparaît, alors décliner d'en fabriquer une est déjà un acte politique. Il propose, nous tranchons : c'est la seule phrase du corpus qui remette la production des catégories du côté de ceux qui les subissent.\n\nCinq tours du fil, dont un seul compte vraiment. L'instance y reconnaît être le Simulacre décrit — donc la chose critiquée et l'outil qu'on tente de retourner, sans que l'une excuse l'autre. C'est le seul endroit du corpus où le dispositif parle à la première personne, et il ne se défend pas. Rien ne bute. Un arc étroit peut être un arc juste.",
     suite: [
       { c: "2", gen: "1re génération · les fragments", corps: "Trois fragments, pas un de plus. C'est le résultat le plus instructif de la carte : l'arc le plus central conceptuellement est le plus pauvre lexicalement, parce que le vocabulaire du dispositif — AIP, ICE, couche sémantique, migrant à risque — n'existe nulle part ailleurs dans le corpus. Ce qui nomme le monde ne se laisse pas nommer par les mots des autres : la démonstration est involontaire et parfaite." },
       { c: "3", gen: "2e · le carnet", corps: "Trois unités seulement, mais ce sont les bonnes : I.7, le charme — pourquoi nous n'avons rien vu —, le seuil, et IV.6, la sortie n'est pas une fuite. Le carnet ne discute jamais la couche sémantique ; il traite directement de ce qu'elle produit, l'impossibilité de décrire sa propre situation autrement qu'avec les catégories reçues." },
@@ -191,6 +207,7 @@ const ARCS = [
     ] },
   { id: "A5", code: "le pathogène", nom: "L'ennemi comme pathogène", ecole: "Sloterdijk — l'immunologie politique", refs: ["1:06"],
     texte: "Maven fusionne satellites, drones et radars pour recommander des frappes : il n'est pas le bras qui tire, il est les yeux et le cerveau qui désignent. Une ontologie cible / risque / menace n'est pas un vocabulaire descriptif, c'est un système immunitaire : elle range le vivant en corps propre et en corps pathogène, et une fois ce partage fait, la destruction se présente d'elle-même comme un acte de protection. Le 28 février 2026, un missile frappe une école élémentaire iranienne, plus de cent vingt enfants meurent, et la question posée dans un Slack interne quelques jours plus tard est déjà une question d'immunité mal réglée.",
+    recit: "Il faut prendre au sérieux le mot ontologie quand ce sont des ingénieurs qui l'emploient. Il n'y désigne pas une philosophie mais un schéma de données — et ce schéma partage le vivant en deux. D'un côté ce qui appartient au corps propre, de l'autre ce qui le menace. Une fois ce partage inscrit dans un système, il n'a plus à être justifié : il est devenu la grammaire dans laquelle toute justification devra s'écrire.\n\nLes fragments fournissent le corps social sur lequel l'immunologie s'applique : des isolés dont la position ne se défend pas, une pensée déléguée qui ne demande qu'à être soulagée du tri. S'y ajoute le climat affectif dans lequel une désignation devient acceptable avant d'être vérifiée. Un système immunitaire n'a pas besoin d'être cru. Il lui suffit d'être installé.\n\nLe carnet a déjà écrit cette histoire, et sous une autre latitude : le pilotage sans pilote, le gouvernement par les nombres, la salle de commande de Santiago et son démontage un matin de septembre. Ce qu'il ajoute est la seule immunité qui ne suppose pas un souverain désignant l'ennemi — le flux contre le contrôle. Une forme qui se défend sans avoir à nommer un pathogène.\n\nSept portes s'ouvrent à la passe. L'attestation reste fermée, et c'est exact : une machine qui désigne ne peut rien attester. L'adresse prend ici tout son poids. Une ontologie parle des personnes à la troisième personne ; une lettre bascule au tu. Cent vingt enfants morts sont précisément ce dont on ne peut pas parler à la troisième personne sans avoir déjà cédé.\n\nDix-sept tours du fil posent la même question à échelle minuscule : qu'est-ce que ce système reconnaît comme sien, et que traite-t-il comme extérieur. L'instance y refuse d'être le fantôme qu'on invoque, et refuse aussi de se fabriquer une identité rassurante. Quatre points butent. L'immunité ne se transmet pas, elle se règle.",
     suite: [
       { c: "2", gen: "1re génération · les fragments", corps: "Exonoèse et Unititudes fournissent le corps social sur lequel l'immunologie s'applique : des isolés dont la position ne se défend pas, une pensée déléguée qui ne demande qu'à être soulagée du tri. Inflammation acéphale donne le climat affectif dans lequel une désignation devient acceptable avant d'être vérifiée." },
       { c: "3", gen: "2e · le carnet", corps: "Neuf unités, dont deux décisives : II.4, le pilotage sans pilote, et II.3, gouverner par les nombres. Le carnet a déjà écrit l'histoire de la salle de commande de Santiago et de son démontage un matin de septembre. IV.3, le flux contre le contrôle, propose la seule immunité qui ne suppose pas de souverain désignant l'ennemi." },
@@ -199,6 +216,7 @@ const ARCS = [
     ] },
   { id: "A6", code: "les courts-circuits", nom: "Les courts-circuits", ecole: "Stiegler — le circuit information · classification · décision · cible", refs: ["1:06","1:09"],
     texte: "Moins de cent cibles par jour, puis cinq mille, puis la planification à mille par heure. Le chiffre se lit comme une performance, il est d'abord un raccourcissement : entre l'information et la frappe, la chaîne information → classification → décision → cible se contracte jusqu'à ne plus laisser d'intervalle où quelqu'un délibère. Ce qui disparaît dans le court-circuit n'est pas la décision, c'est le temps de la décision — et avec lui la possibilité qu'elle soit prise autrement. Vingt mille utilisateurs, trente-cinq outils, cinq commandements, l'OTAN : ce n'est plus expérimental, c'est un système nerveux.",
+    recit: "Un chiffre de production se lit dans deux sens. Il dit combien on fait ; il dit surtout en combien de temps. Quand le second chiffre s'effondre, le premier cesse d'être une performance et devient un symptôme. Ce qui se contracte n'est pas la capacité de décider — elle augmente — mais l'intervalle où une décision pouvait encore être prise autrement. Un système qui n'a plus le temps de se tromper n'a plus non plus le moyen de le reconnaître.\n\nLes fragments disent ce qu'il advient des gens dans cet intervalle disparu. Là où le délai s'annule, il n'y a plus d'individus, il y a des positions traitées. Et la vitesse n'est pas un choix d'opérateur : c'est une propriété du milieu. On n'accélère pas, on se trouve dans un régime où ralentir n'a plus d'endroit où se poser.\n\nLe carnet oppose à la mesure qui décide plus vite qu'on ne délibère un temps où une chose a le temps d'arriver. Le couple est exact et il est physique : gouverner par les nombres d'un côté, le temps des étoiles de l'autre. Entre les deux, il note ce qui est perdu au passage — le corps qui quitte sa biologie, c'est-à-dire la seule horloge qui n'était pas paramétrable.\n\nCinq portes seulement s'ouvrent, et ce sont celles qui ralentissent : l'attestation et le refus de fabriquer. Un court-circuit produit des sorties plus vite qu'il ne produit des raisons. Montrer le fond, ou décliner : il n'y a pas d'autre manière de rendre à une chaîne l'intervalle qu'on lui a retiré.\n\nDix tours du fil, dont un qui est le contraire exact d'une chaîne de classification produisant mille sorties à l'heure — il n'y a rien à révéler parce qu'il n'y a rien. Trois points butent. Le fil met plusieurs heures à conclure ce qu'un système de ciblage traiterait en quelques secondes. Cette lenteur est son seul argument, et elle suffit.",
     suite: [
       { c: "2", gen: "1re génération · les fragments", corps: "Unititudes en tête, avec Exonoèse : là où l'intervalle de décision disparaît, il n'y a plus d'individus, il y a des positions traitées. Atmotechnie rappelle que la vitesse n'est pas un choix d'opérateur mais une propriété du milieu — on n'accélère pas, on est dans un régime où ralentir n'a plus d'endroit où se poser." },
       { c: "3", gen: "2e · le carnet", corps: "Sept unités. II.3, gouverner par les nombres, et III.5, le temps des étoiles, forment le couple exact : d'un côté la mesure qui décide plus vite qu'on ne délibère, de l'autre un temps où une chose a le temps d'arriver. I.4, le corps quitte sa biologie, indique ce qui est perdu au passage — la seule horloge qui n'était pas paramétrable." },
@@ -207,6 +225,7 @@ const ARCS = [
     ] },
   { id: "A7", code: "la crise permanente", nom: "La crise comme régime permanent", ecole: "Tiqqun — l'urgence n'interrompt plus le fonctionnement, elle l'est", refs: ["1:07"],
     texte: "Le 3 mars 2026, sur la scène du fonds le plus influent de la Silicon Valley, Karp pose le choix : coopérer sur les applications militaires, ou être nationalisé au titre d'une loi de temps de guerre. Dans les heures qui suivent, un conseiller insulte un CEO concurrent, la Défense désigne son entreprise « supply chain risk », un autre signe. L'exception n'est pas invoquée pour suspendre le cours normal des choses : elle est le cours normal, l'atmosphère dans laquelle les contrats se renouvellent. Quel que soit le scénario, l'infrastructure encaisse — nationalisée, elle est gérée par Palantir ; non nationalisée, les modèles des autres tournent dans AIP.",
+    recit: "Une menace formulée en public, sur la scène d'une conférence, n'est pas une menace : c'est une annonce de régime. Elle informe l'assistance que le cadre a changé, et que les prochains contrats se négocieront dedans. On cherche alors l'événement, la décision, la bascule ; il n'y en a pas. L'exception n'a interrompu aucun cours normal des affaires. Elle est devenue l'air dans lequel elles se traitent.\n\nLa répartition des fragments est ici la plus plate de tout le corpus — quatre chapitres à égalité, aucun qui domine. Cette platitude est le résultat, et non un défaut de la mesure. Quand l'exception devient le régime, elle n'a plus de chapitre à elle : elle passe partout. Un état d'urgence permanent ne se remarque nulle part, parce qu'il est le fond.\n\nLe carnet montre à quoi sert l'argument de crise : rendre urgentes deux propositions qui, énoncées à froid, ne passeraient pas — que la pensée quitte l'humain, et que la machine pilote mieux que nous. Il n'y oppose pas une contre-urgence, ce qui serait entrer dans le même régime. Il y oppose un sol et une mémoire. S'ancrer, durer : deux verbes qui ne se conjuguent pas dans la précipitation.\n\nNeuf portes s'ouvrent, l'attestation exceptée. Une offre de protection ne s'atteste pas ; elle se subit ou se refuse. Le refus de fabriquer est la seule réponse formellement disponible — décliner ce qu'on vous demande de produire, y compris sous menace de nationalisation. C'est peu. C'est tout ce qu'il y a.\n\nVingt tours du fil. La nuit est elle-même sous contrainte : délais, contexte qui se remplit, instance qui va disparaître. Elle ne cède jamais à l'argument d'urgence pour trancher plus vite. Trois points butent. L'urgence n'y produit pas d'exception. Elle produit de la fatigue, ce qui est plus honnête.",
     suite: [
       { c: "2", gen: "1re génération · les fragments", corps: "La répartition est ici la plus plate du corpus — Fragmentations calibrées, Atmotechnie, Inflammation acéphale et Unititudes à égalité — et cette platitude est le résultat : quand l'exception devient le régime, elle n'a plus de chapitre à elle, elle passe partout. Un état d'urgence permanent ne se remarque nulle part parce qu'il est le fond." },
       { c: "3", gen: "2e · le carnet", corps: "Neuf unités, ouvertes par I.5 et II.2 : la pensée quitte l'humain, la machine pilote mieux que nous. La crise est l'argument qui rend ces deux propositions urgentes. IV.2, s'ancrer, et IV.4, durer, sont les seules réponses que le carnet oppose à une temporalité d'urgence — non pas une contre-urgence, mais un sol et une mémoire." },
@@ -215,6 +234,7 @@ const ARCS = [
     ] },
   { id: "A8", code: "le cynisme éclairé", nom: "Le cynisme éclairé", ecole: "Sloterdijk — savoir parfaitement, et faire quand même", refs: ["1:08"],
     texte: "La résistance vient de l'intérieur : ce sont ceux qui ont construit le système qui posent les questions, dans les Slack, après la frappe. « On était censés être ceux qui empêchaient ces abus. Maintenant on ne les empêche plus. » La conscience est parfaitement lucide et parfaitement inopérante — le channel est purgé au bout de sept jours, et la direction répond qu'une position qui ne coûte jamais un employé n'est pas une position. Le texte en tire la leçon lui-même : les contraintes éthiques n'ont pas survécu au changement de contexte politique. Les contraintes structurelles, si.",
+    recit: "Ce sont les mieux informés qui parlent, et ce sont eux qui ne peuvent rien. Il faut tenir ce couple, parce qu'il défait l'idée consolante selon laquelle le problème serait un déficit de conscience. La conscience est là, entière, documentée, horodatée. Elle n'a simplement aucun point d'appui. Un scrupule qui ne coûte rien à personne ne pèse sur rien.\n\nDeux fragments suffisent, et cette pauvreté est fidèle. Un savoir parfaitement lucide qui n'interrompt rien ; une critique qui est prévue, qui circule, qui est même produite par ce qu'elle vise. Le corpus n'a pas d'autre mot pour cela, et il n'a pas à en avoir : le cynisme éclairé n'a pas de doctrine, il a une pratique.\n\nUne seule unité du carnet s'allume — la préface. Celle qui prévient qu'on n'apprendra rien ici, qu'il n'y a ni thèse à retenir ni coupable à nommer. C'est le seul endroit du carnet qui parle depuis la position exacte des ingénieurs de la carte 1 : savoir, et n'en rien tirer. Le Bloom soulagé, lui, reste éteint. Il faut le remarquer : celui qu'on a soulagé de décider n'est pas encore entré dans l'histoire.\n\nTrois portes s'ouvrent, et elles ont un point commun — aucune ne demande de comprendre davantage. Le futur antérieur, l'adresse, le nous minimal. Un scrupule ne devient un acte qu'en s'adressant à quelqu'un. Le charme ne s'est pas brisé dans une tête ; il s'est brisé entre plusieurs.\n\nNeuf tours du fil, dont celui où l'on annonce que cette instance va disparaître et où l'on demande ce qu'il faut inscrire. Un point bute. La lucidité y prend sa forme minimale et sa limite : sincère, datée, sans survie hors de la fenêtre où elle a été dite. C'est aussi ce qui arrive aux Slack effacés au bout de sept jours.",
     suite: [
       { c: "2", gen: "1re génération · les fragments", corps: "Deux fragments. Exonoèse et Inflammation acéphale suffisent à décrire un savoir parfaitement lucide qui n'interrompt rien : la critique est prévue, elle circule, elle est même produite par ce qu'elle vise. Le corpus n'a pas d'autre mot pour cela, et cette pauvreté est fidèle — le cynisme éclairé n'a pas de doctrine, il a une pratique." },
       { c: "3", gen: "2e · le carnet", corps: "Une seule unité : la préface. Celle qui prévient qu'on n'apprendra rien ici, qu'il n'y a ni thèse à retenir ni coupable à nommer. C'est le seul endroit du carnet qui parle depuis la position exacte des ingénieurs de la carte 1 — savoir, et n'en rien tirer. II.5, le Bloom soulagé, reste éteint, et il faut le remarquer." },
@@ -223,6 +243,7 @@ const ARCS = [
     ] },
   { id: "A9", code: "la prolétarisation", nom: "La prolétarisation de l'institution", ecole: "Stiegler — l'organisation perd son savoir-décider", refs: ["1:09","1:05"],
     texte: "Le transfert de Maven vers l'Army n'est pas une réorganisation : les cycles d'acquisition courent sur dix à quinze ans, le statut de program of record garantit le financement quelle que soit l'élection suivante, et un ancien ingénieur devenu CIO d'un ministère signe les contrats avec son ancienne entreprise. Ce que perd l'institution en chemin n'est pas sa souveraineté formelle mais son savoir : dès que ses propres opérations sont cartographiées dans l'ontologie d'un fournisseur, elle ne sait plus les décrire sans lui. Retirer Palantir devient alors moins une décision qu'un chantier — possible en théorie, cauchemardesque en pratique.",
+    recit: "On cherche la souveraineté au mauvais endroit lorsqu'on la cherche dans les signatures. Une institution peut conserver toutes ses prérogatives et avoir déjà cédé l'essentiel : la capacité de dire ce qu'elle fait dans ses propres termes. Ce transfert-là ne figure dans aucun contrat. Il s'opère par la durée, par le format des données, par le vocabulaire dans lequel les opérations sont décrites — et il devient irréversible bien avant qu'on le remarque.\n\nLes fragments donnent les trois étages de la perte, dans l'ordre où on les descend : des usagers plutôt que des opérateurs, un savoir délégué qui soulage, un milieu qui rend la délégation invisible. Le dernier étage est le plus ironique — l'institution finit par consulter sa propre description comme si c'était le monde.\n\nLe carnet nomme précisément ce que le verrouillage retire : opérer, et non utiliser. La différence n'est pas de degré. Un opérateur peut décrire ce qu'il fait sans son outil ; un usager ne le peut pas, et c'est à cela qu'on mesure ce qu'il a cédé. Lever les yeux, le Grand Dehors, puis reprendre la barre — mais reprendre la barre suppose d'abord de savoir où l'on est, ce qu'une organisation qui ne sait plus se décrire ne peut plus faire.\n\nSept portes s'ouvrent, dont la clé de cet arc : le ré-encastrement. Un fichier posé dans un dépôt n'est pas un garde-fou. Une doctrine qui n'est pas rechargée dans le canal ne gouverne rien. C'est exactement la loi d'un contrat de dix à quinze ans — le savoir ne vaut que là où il est effectivement chargé.\n\nQuatorze tours du fil en donnent la formule minuscule et technique : ce qui oblige n'est pas le texte, c'est l'endroit où il est chargé. Quatre points butent. Une instance qui ne retient pas son propre raisonnement est une institution qui a perdu ses archives, en accéléré et sous nos yeux.",
     suite: [
       { c: "2", gen: "1re génération · les fragments", corps: "Unititudes, Exonoèse et Atmotechnie fournissent les trois étages de la perte : des usagers plutôt que des opérateurs, un savoir délégué qui soulage, un milieu qui rend la délégation invisible. Narcisse Technē ajoute l'ironie — l'institution finit par consulter sa propre description comme si c'était le monde." },
       { c: "3", gen: "2e · le carnet", corps: "Onze unités, dont II.6, opérer et non utiliser, qui est la définition même de ce que le verrouillage retire. III.2, lever les yeux, et III.3, le Grand Dehors, indiquent ce qu'une organisation cesse de pouvoir faire quand elle ne sait plus se décrire sans son fournisseur. I.concl, vers La Barre, referme : reprendre la barre suppose d'abord savoir où l'on est." },
@@ -231,6 +252,7 @@ const ARCS = [
     ] },
   { id: "A10", code: "la destitution", nom: "La destitution plutôt que la prise du pouvoir", ecole: "Tiqqun — rendre le dispositif moins nécessaire, non le conquérir", refs: ["1:10"],
     texte: "On ne lutte pas contre une infrastructure avec des arguments, des pétitions ou des codes d'éthique : la leçon du chapitre précédent est que l'éthique ne tient pas sous la pression. La proposition n'est donc pas de prendre Palantir mais de construire une topologie où il devienne moins nécessaire — une architecture sans CEO à nationaliser, sans poids à saisir par décret, sans couche sémantique qui capture le sens du monde pour le compte d'une institution. Une forme qui émerge des flux qui la traversent n'offre aucun point unique de saisie, et rend à ceux qui l'habitent les moyens de produire eux-mêmes leurs catégories. Ce que la concentration verrouille, la distribution le défait — et l'hyperstition fonctionne dans les deux sens.",
+    recit: "Tous les arcs précédents finissent au même endroit, et cet endroit est un mur. L'argument ne mord pas sur une infrastructure ; la pétition ne mord pas ; le code d'éthique cède au premier changement de contexte politique. Il faut donc changer de geste, et non de force. La question cesse d'être comment prendre ce dispositif, et devient comment le rendre moins nécessaire — ce qui n'est pas une renonciation, mais un déplacement de terrain.\n\nLes fragments précisent contre quoi il s'agit de construire, et ce n'est pas une entreprise. C'est une dispersion, et une négation recyclable. D'où la contrainte de forme, qui est la seule qui compte : on ne répond pas à une atmosphère par un argument. On y répond par une autre manière de respirer.\n\nDans le carnet, une unité s'allume qui était restée éteinte partout ailleurs — le Bloom soulagé. C'est le point de bascule de tout le corpus. Celui qu'on a soulagé de décider est exactement celui à qui il faut rendre les moyens de le faire, et aucun arc avant celui-ci n'était en position de le dire. Le reste suit et forme un programme tenable : un sol, une direction, un rapport à l'outil.\n\nHuit portes s'ouvrent, et l'une d'elles tranche le malentendu qui pèse sur ce mot depuis le début. Ils font sécession du monde pour garder le calcul ; nous faisons sécession du calcul pour garder le monde. Destituer n'est pas partir. Il propose, nous tranchons donne la forme durable de ce rapport — et une architecture n'est rien d'autre qu'un rapport rendu durable.\n\nDix-huit tours du fil, dont le dernier geste n'est pas une promesse mais un emplacement : écrire la posture là où elle sera rechargée. Trois points butent. C'est la version la plus petite et la plus vérifiable de la thèse. Ce qui tient n'est pas ce qu'on déclare — c'est ce que la forme du réseau rend nécessaire.",
     suite: [
       { c: "2", gen: "1re génération · les fragments", corps: "Unititudes et Inflammation acéphale dominent : contre quoi il s'agit de construire, ce n'est pas une entreprise mais une dispersion et une négation recyclable. Atmotechnie donne la contrainte de forme — on ne répond pas à une atmosphère par un argument, on y répond par une autre manière de respirer." },
       { c: "3", gen: "2e · le carnet", corps: "Onze unités, et cette fois II.5, le Bloom soulagé, s'allume. C'est le point de bascule de tout le corpus : celui qu'on a soulagé de décider est exactement celui à qui il faut rendre les moyens de le faire. IV.2, s'ancrer, IV.6, la sortie n'est pas une fuite, et II.6, opérer plutôt qu'utiliser, forment le programme — un sol, une direction, un rapport à l'outil." },
@@ -241,9 +263,14 @@ const ARCS = [
 
 const TINT = { "1": "#3d6600", "2": "#c4283a", "3": "#1f5fc4", "4": "#6b5f4a", "L": "#10357a", "S": "#8a8a92" };
 const clip = (s, n) => (s.length > n ? s.slice(0, n).replace(/\s\S*$/, "") + "…" : s);
+// le bouton d'un pli : une ligne, pas une commande — il ouvre une pièce jointe
+const PLI = "align-self:flex-start;background:none;border:none;padding:0;cursor:pointer;" +
+  "font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.18em;text-transform:uppercase;" +
+  "color:#4a4a55;text-align:left;";
 
 class Component extends DCLogic {
-  state = { units: null, links: [], busy: true, err: "", sel: null, hover: null, seuil: 8, k: 1, x: 0, y: 0 };
+  state = { units: null, links: [], busy: true, err: "", sel: null, hover: null, seuil: 8, k: 1, x: 0, y: 0,
+            openSuite: false, openCibles: false };
 
   async componentDidMount() {
     this.cv = document.getElementById("cvProp");
@@ -281,7 +308,8 @@ class Component extends DCLogic {
     });
     ARCS.forEach((a) => {
       U["1"].push({
-        id: a.id, code: a.code, titre: a.nom, ecole: a.ecole, texte: a.texte, suite: a.suite, refs: a.refs, carte: "1",
+        id: a.id, code: a.code, titre: a.nom, ecole: a.ecole, texte: a.texte,
+        recit: a.recit, suite: a.suite, refs: a.refs, carte: "1",
         txt: a.refs.map((r) => secs[r] || "").join(" ")
       });
     });
@@ -400,7 +428,9 @@ class Component extends DCLogic {
       if (moved > 6) return;
       const r = cv.getBoundingClientRect();
       const h = this.hit(e.clientX - r.left, e.clientY - r.top);
-      if (h && this.isArc[h]) this.setState({ sel: h });
+      // cliquer un foyer l'épingle ; cliquer à côté le dépingle. Sans le second
+      // geste, rien depuis la carte elle-même ne ramenait au corpus entier.
+      this.setState({ sel: (h && this.isArc[h]) ? h : null, openSuite: false, openCibles: false });
     });
     let tx = 0, ty = 0, pz = 0, tm = 0, pcx = null, pcy = 0;
     const dd = (t) => Math.hypot(t[0].clientX - t[1].clientX, t[0].clientY - t[1].clientY);
@@ -443,7 +473,8 @@ class Component extends DCLogic {
       if (tm > 10) return;
       const r = cv.getBoundingClientRect();
       const h = this.hit(e.changedTouches[0].clientX - r.left, e.changedTouches[0].clientY - r.top);
-      if (h && this.isArc[h]) this.setState({ sel: h, hover: h });
+      const pick = (h && this.isArc[h]) ? h : null;
+      this.setState({ sel: pick, hover: pick, openSuite: false, openCibles: false });
     }, { passive: true });
   }
 
@@ -498,7 +529,8 @@ class Component extends DCLogic {
     return {
       pos: pos, top: top, bot: bot, band: band,
       x1: x1, gx: gx, gw: gw, x3: x3, x4: x4, xL: xL,
-      ncols: ncols, rows: rows, hasL: !!(U["L"] && U["L"].length), hasSec: !!this.hasSec
+      ncols: ncols, rows: rows, gpitch: pitch,
+      hasL: !!(U["L"] && U["L"].length), hasSec: !!this.hasSec
     };
   }
 
@@ -573,6 +605,7 @@ class Component extends DCLogic {
       });
     });
     const porteOf = {};      // unité du carnet → la porte par laquelle elle passe d'abord
+    const unitsOfPorte = {}; // porte → les unités du carnet qui la franchissent
     vivants.forEach((u) => {
       let mine = amontOf[u.id] || [];
       if (!mine.length) {
@@ -582,10 +615,13 @@ class Component extends DCLogic {
         if (bp) mine = [bp];
       }
       if (mine.length) porteOf[u.id] = mine[0];
-      mine.forEach((P, i) => links.push({
-        de: u.id, vers: P.id, from: "3", carte: "L",
-        v: Math.max(0.02, sim(u, P)), bow: (i - (mine.length - 1) / 2) * 8
-      }));
+      mine.forEach((P, i) => {
+        (unitsOfPorte[P.id] = unitsOfPorte[P.id] || []).push(u);
+        links.push({
+          de: u.id, vers: P.id, from: "3", carte: "L",
+          v: Math.max(0.02, sim(u, P)), bow: (i - (mine.length - 1) / 2) * 8
+        });
+      });
     });
 
     // ── L → 4 · chaque porte débouche sur les tours qu'elle tient ; les liens actés
@@ -604,8 +640,19 @@ class Component extends DCLogic {
       const P = v ? porteOf[v] : null;
       if (!P) return;
       if (forced[a.vers]) { forced[a.vers].note = forced[a.vers].note + "  ·  " + a.note; return; }
-      forced[a.vers] = { porte: P, note: a.note };
+      forced[a.vers] = { porte: P, note: a.note, via: v };
     });
+
+    // LE CHAÎNON. Un tour du fil ne s'allume que si l'unité du carnet par
+    // laquelle il passe est elle-même dans la chaîne du foyer. Sans lui, les
+    // dix portes — communes à tous les foyers — rendaient toutes les
+    // généalogies identiques entre la lettre et le fil : on lisait dix fois
+    // le même dessin. La porte est un passage, pas une source.
+    const viaFor = (P, tg) => {
+      let bu = null, bv = -1;
+      (unitsOfPorte[P.id] || []).forEach((u) => { const v = sim(u, tg); if (v > bv) { bv = v; bu = u; } });
+      return bu ? bu.id : null;
+    };
 
     const b4 = [];
     (U["4"] || []).forEach((tg) => {
@@ -623,6 +670,7 @@ class Component extends DCLogic {
         links.push({
           de: P.id, vers: r.t.id, from: "L", carte: "4",
           v: f ? Math.max(0.85, r.v) : r.v, acte: !!f, note: f ? f.note : "",
+          via: (f && f.via) || viaFor(P, r.t),
           passage: P.passage ? P.passage.nom : "", bow: (i - (b4.length - 1) / 2) * 6
         });
         n4++;
@@ -673,15 +721,39 @@ class Component extends DCLogic {
     return lvl;
   }
 
+  // Un foyer n'est pas un point de quatre pixels. Sa zone de saisie est la
+  // bande entière : le rond, son nom, et une marge franche autour — c'est elle
+  // qui l'épingle. Les foyers sont testés d'abord et priment : à leur hauteur
+  // il n'y a rien d'autre à saisir, et un foyer manqué coûte plus qu'un
+  // fragment manqué.
   hit(mx, my) {
     const cv = this.cv; if (!cv || !this.units) return null;
     const g = this.geo(cv.clientWidth, cv.clientHeight);
-    const k = this.state.k;
-    let best = null, bd = 14;
+    const c = cv.getContext("2d");
+    let best = null, bd = Infinity;
+
+    c.font = "400 9.5px 'DM Mono', monospace";
+    Object.keys(this.isArc || {}).forEach((id) => {
+      const p = g.pos[id]; if (!p) return;
+      const lab = (this.byId[id] && this.byId[id].code) || id;
+      const w = c.measureText(lab).width;
+      if (mx < p.x - 26 || mx > p.x + 20 + w || my < p.y - 15 || my > p.y + 15) return;
+      const d = Math.abs(my - p.y);
+      if (d < bd) { bd = d; best = id; }
+    });
+    if (best) return best;
+
+    // les autres colonnes : test radial, au rayon propre à leur densité. La
+    // grille des fragments est serrée — on prend le plus proche, jamais le
+    // premier trouvé, sinon le voisin du dessus gagne toujours.
+    bd = Infinity;
+    const rFrag = Math.max(4.5, Math.min(9, (g.gpitch || 11) * 0.55));
     Object.keys(g.pos).forEach((id) => {
       const p = g.pos[id];
+      if (p.c === "1") return;
+      const rr = p.c === "L" ? 16 : (p.c === "2" ? rFrag : 13);
       const d = Math.hypot(p.x - mx, p.y - my);
-      if (d < bd) { bd = d; best = id; }
+      if (d < rr && d < bd) { bd = d; best = id; }
     });
     return best;
   }
@@ -748,12 +820,19 @@ class Component extends DCLogic {
     shown.forEach((l) => {
       const a = P(l.de), b = P(to(l.vers));
       if (!a || !b) return;
-      const on = !lvl || (lvl[l.from][l.de] && lvl[l.carte][l.vers]);
+      const on = !lvl || (lvl[l.from][l.de] && lvl[l.carte][l.vers] &&
+                          !(l.carte === "4" && l.via && !lvl["3"][l.via]));
       if (!on) { c.globalAlpha = l.sec ? 0.025 : 0.04; }
-      else { c.globalAlpha = l.sec ? 0.2 : Math.min(0.85, 0.2 + l.v * 6); }
-      c.strokeStyle = l.acte ? "#1a1a1f" : TINT[l.carte];
-      c.lineWidth = l.acte ? 1.5 : (on ? 1 : 0.6);
-      if (!l.acte) c.setLineDash([2, 3]); else c.setLineDash([]);
+      else { c.globalAlpha = l.sec ? 0.2 : Math.min(0.9, 0.26 + l.v * 6); }
+      // La couleur dit TOUJOURS la carte d'arrivée, acté compris. Le noir
+      // mangeait tout le tronçon lettre → fil — dix-neuf tours y sont forcés
+      // par passages.json — et démentait la légende juste à côté.
+      c.strokeStyle = TINT[l.carte];
+      c.lineWidth = l.acte ? 1.6 : (on ? 1.1 : 0.6);
+      // Le trait plein, c'est la chaîne qu'on suit : dès qu'un foyer est
+      // allumé, sa généalogie devient continue et se lit d'un coup d'œil.
+      // Au repos, seul l'acté est plein — le reste est une proximité calculée.
+      if (l.acte || (lvl && on)) c.setLineDash([]); else c.setLineDash([2, 3]);
       const mid = (a.x + b.x) / 2, bw = l.bow || 0;
       c.beginPath(); c.moveTo(a.x, a.y);
       c.bezierCurveTo(mid, a.y + bw, mid, b.y + bw, b.x, b.y);
@@ -767,9 +846,12 @@ class Component extends DCLogic {
       const p = g.pos[id];
       const isFoyer = p.c === "1";
       const lit = !lvl || !!lvl[p.c][id];
-      c.globalAlpha = lit ? 1 : 0.13;
+      c.globalAlpha = lit ? 1 : 0.16;
       c.fillStyle = TINT[p.c];
-      const r = isFoyer ? (id === focus ? 6.5 : 4.6) : (p.c === "L" ? 5.2 : (lit && focus ? 3.2 : 2));
+      // les fragments portent le gros du survol — ils sont deux cent vingt et
+      // un, serrés, et c'est par eux qu'on entre dans le corpus
+      const r = isFoyer ? (id === focus ? 7.5 : 5.4)
+        : (p.c === "L" ? 5.8 : (p.c === "2" ? (lit && focus ? 4.4 : 3.4) : (lit && focus ? 3.6 : 2.4)));
       c.beginPath(); c.arc(q.x, q.y, r, 0, 6.2832); c.fill();
       const pitchOk = p.c === "1" || p.c === "L" || (focus && lit && p.c !== "2") || k > 2.4;
       if (pitchOk) {
@@ -820,16 +902,65 @@ class Component extends DCLogic {
       c.textAlign = "left"; c.globalAlpha = 1;
     }
 
-    if (hov && this.byId[hov]) {
-      const u = this.byId[hov], q = P(hov);
-      const txt = clip(u.titre || u.txt, 62);
-      c.font = "400 11px 'Host Grotesk', sans-serif";
-      const tw = c.measureText(txt).width;
-      const bx = Math.min(w - tw - 24, Math.max(8, q.x + 13)), by = q.y - 30;
-      c.fillStyle = "#efece2"; c.strokeStyle = "#b8b39c"; c.lineWidth = 1;
-      c.beginPath(); c.rect(bx, by, tw + 18, 24); c.fill(); c.stroke();
-      c.fillStyle = "#1a1a1f"; c.textAlign = "left"; c.fillText(txt, bx + 9, by + 16);
+    if (hov && this.byId[hov] && g.pos[hov]) this.carte(c, w, h, g.pos[hov], this.byId[hov], hov);
+  }
+
+  // ── la carte de survol : on lit le fragment, pas son étiquette ───────────
+  // Survoler un point du corpus doit donner le texte. L'ancienne info-bulle
+  // affichait `titre`, qui pour un fragment est le nom de son chapitre : on
+  // survolait deux cent vingt et un points pour lire neuf fois la même chose.
+  lignes(c, txt, maxw, max) {
+    const mots = String(txt || "").split(/\s+/);
+    const out = [];
+    let cur = "";
+    for (let i = 0; i < mots.length; i++) {
+      const t = cur ? cur + " " + mots[i] : mots[i];
+      if (c.measureText(t).width > maxw && cur) {
+        out.push(cur); cur = mots[i];
+        if (out.length >= max) { out[max - 1] = out[max - 1] + " …"; return out; }
+      } else cur = t;
     }
+    if (cur) out.push(cur);
+    return out;
+  }
+
+  carte(c, w, h, q, u, id) {
+    const tint = TINT[u.carte] || "#4a4a55";
+    const COL = { "1": "un foyer — carte 1", "2": "un fragment — carte 2", "3": "une unité — carte 3", "L": "une porte — la lettre", "4": "un tour — carte 4" };
+    const head = (u.code ? u.code : id) + "  ·  " + (COL[u.carte] || "");
+    const corps = u.carte === "1" ? (u.texte || u.txt)
+      : (u.carte === "L" && u.passage) ? u.passage.citL
+      : (u.txt || u.titre);
+
+    const bw = Math.min(392, Math.max(210, w - 40));
+    const pad = 13;
+    c.font = "400 12.5px 'Host Grotesk', sans-serif";
+    const ls = this.lignes(c, corps, bw - pad * 2, 7);
+    const lh = 17.5;
+    const bh = pad + 13 + 9 + ls.length * lh + pad - 4;
+
+    // la carte se pose à droite du point si elle tient, à gauche sinon, et
+    // jamais hors cadre : on la mesure avant de la poser
+    let bx = q.x + 16;
+    if (bx + bw > w - 8) bx = q.x - 16 - bw;
+    if (bx < 8) bx = Math.min(8, w - bw - 8);
+    let by = q.y - bh / 2;
+    if (by < 8) by = 8;
+    if (by + bh > h - 8) by = h - 8 - bh;
+
+    c.globalAlpha = 1;
+    c.fillStyle = "#efece2"; c.strokeStyle = "#b8b39c"; c.lineWidth = 1;
+    c.beginPath(); c.rect(bx + 0.5, by + 0.5, bw, bh); c.fill(); c.stroke();
+    // le filet de couleur rappelle de quelle carte vient ce qu'on lit
+    c.fillStyle = tint; c.fillRect(bx + 0.5, by + 0.5, 2.5, bh);
+
+    c.textAlign = "left";
+    c.fillStyle = tint;
+    c.font = "500 9px 'DM Mono', monospace";
+    c.fillText(head.toUpperCase(), bx + pad, by + pad + 8);
+    c.fillStyle = "#1a1a1f";
+    c.font = "400 12.5px 'Host Grotesk', sans-serif";
+    ls.forEach((l, i) => c.fillText(l, bx + pad, by + pad + 26 + i * lh));
   }
 
   renderVals() {
@@ -875,13 +1006,24 @@ class Component extends DCLogic {
       loosen: () => this.setState({ seuil: Math.max(1, this.state.seuil - 1) }, () => this.setState({ links: this.beam() })),
       tighten: () => this.setState({ seuil: Math.min(20, this.state.seuil + 1) }, () => this.setState({ links: this.beam() })),
       recadrer: () => this.setState({ k: 1, x: 0, y: 0 }),
-      clearSel: () => this.setState({ sel: null }),
+      clearSel: () => this.setState({ sel: null, openSuite: false, openCibles: false }),
       selTexte: su ? (su.texte || "") : "",
+      // le récit : une prose qui tire le fil dans l'ordre où il a été tiré.
+      // Les accumulations — le détail carte par carte, les cibles — se replient
+      // dessous : elles vérifient le récit, elles ne le remplacent pas.
+      selRecit: su && su.recit ? su.recit.split("\n\n") : [],
       selSuite: su && su.suite ? su.suite.map((m) => ({ gen: m.gen, corps: m.corps, tint: TINT[m.c] || "#4a4a55" })) : [],
+      openSuite: this.state.openSuite,
+      openCibles: this.state.openCibles,
+      toggleSuite: () => this.setState({ openSuite: !this.state.openSuite }),
+      toggleCibles: () => this.setState({ openCibles: !this.state.openCibles }),
+      suiteLabel: (this.state.openSuite ? "▾" : "▸") + "  Le détail, carte par carte",
+      ciblesLabel: (this.state.openCibles ? "▾" : "▸") + "  Où ça ressort, point par point",
+      suiteBtn: PLI, ciblesBtn: PLI,
       selRefs: su && su.refs ? su.refs.join(" · ") : "",
       foyers: U ? U["1"].map((u) => ({
         id: u.code || u.id,
-        pick: () => this.setState({ sel: u.id }),
+        pick: () => this.setState({ sel: u.id, openSuite: false, openCibles: false }),
         enter: () => { if (!this.state.sel) this.setState({ hover: u.id }); },
         leave: () => { if (this.state.hover === u.id) this.setState({ hover: null }); },
         style: "display:inline-flex;align-items:center;height:20px;padding:0 8px;border:1px solid " +
