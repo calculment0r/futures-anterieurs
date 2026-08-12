@@ -23,6 +23,11 @@
   @keyframes riseIn{from{transform:translateY(105%) rotate(2deg);}to{transform:translateY(0) rotate(0);}}
   @keyframes fadeUp{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:translateY(0);}}
   @keyframes bob{0%,100%{transform:translateY(0);}50%{transform:translateY(6px);}}
+  /* l'accès aux trois outils ne disparaît jamais ; c'est le rappel
+     de la carte courante qui cède la place quand elle manque */
+  @media(max-width:900px){ header{font-size:10px !important;gap:12px !important;padding:14px 18px !important;}
+    [data-outils]{gap:11px !important;margin-left:auto !important;} [data-ref]{display:none !important;} }
+  @media(max-width:560px){ [data-outils]{gap:9px !important;font-size:9px;} }
   @media(max-width:820px){
     body{font-size:16.5px;}
     [data-read]{padding-left:20px !important;padding-right:20px !important;}
@@ -38,8 +43,8 @@
 
 <header style="position:fixed;top:0;left:0;right:0;z-index:8000;display:flex;align-items:center;justify-content:space-between;gap:20px;padding:16px 30px;font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:#f7f5ef;mix-blend-mode:difference;">
   <a href="./Futures Antérieurs - la Porte.dc.html" style="color:#f7f5ef;display:flex;align-items:center;gap:10px;"><span>←</span><span>La Porte</span></a>
-  <div style="display:flex;gap:16px;align-items:center;">
-    <span style="opacity:.5;">Carte 04</span>
+  <nav data-outils="1" style="display:flex;gap:16px;align-items:center;margin-left:auto;"><a href="index.html#cartes" style="color:#f7f5ef;opacity:.55;transition:opacity .3s ease,letter-spacing .3s ease;" style-hover="opacity:1;letter-spacing:.2em;">Les cartes</a><a href="propagation.html" style="color:#f7f5ef;opacity:.55;transition:opacity .3s ease,letter-spacing .3s ease;" style-hover="opacity:1;letter-spacing:.2em;">La propagation</a><a href="auteurs.html" style="color:#f7f5ef;opacity:.55;transition:opacity .3s ease,letter-spacing .3s ease;" style-hover="opacity:1;letter-spacing:.2em;">Les auteurs</a></nav>
+  <div data-ref="1" style="display:flex;gap:16px;align-items:center;"><span style="opacity:.5;">Carte 04</span>
     <span>{{ curAddr }}</span>
   </div>
 </header>
