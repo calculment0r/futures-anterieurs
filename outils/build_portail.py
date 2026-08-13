@@ -46,6 +46,7 @@ CORPUS = [
     "1_HYPERSTION.md", "2_FRAGMENTS.md", "3_KUBERNAN.md", "4_ARCHIBALD.md",
     "liens.json", "passages.json", "concepts.json", "evenements.json",
     "auteurs.json",
+    "fragments-liens.json",
 ]
 
 PROPS = {"index.html": "{ scrollLisse: true }"}
