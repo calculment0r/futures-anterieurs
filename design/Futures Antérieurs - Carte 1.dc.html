@@ -34,6 +34,30 @@
   @media(max-width:900px){ header{font-size:10px !important;gap:12px !important;padding:14px 18px !important;}
     [data-outils]{gap:11px !important;margin-left:auto !important;} [data-ref]{display:none !important;} }
   @media(max-width:560px){ [data-outils]{gap:9px !important;font-size:9px;} }
+  /* LA CHRONOLOGIE. Douze paragraphes datés à la file se lisent comme un bloc :
+     on ne voit pas l'enchaînement, seulement de la prose. Un axe, des pastilles,
+     et le détail qui ne sort qu'au survol — on lit d'abord la forme de la
+     séquence, puis on entre dans un maillon. Sans souris, tout reste ouvert. */
+  [data-tl]{position:relative;}
+  [data-axe]{position:relative;}
+  [data-axe]::before{content:'';position:absolute;left:50%;top:0;bottom:0;width:1px;background:#d0ccbb;transform:translateX(-50%);}
+  [data-axe]::after{content:'';position:absolute;left:50%;top:21px;width:9px;height:9px;border-radius:50%;
+    background:#f7f5ef;border:1.5px solid #3d6600;transform:translateX(-50%);
+    transition:background .3s cubic-bezier(.16,1,.3,1),transform .3s cubic-bezier(.16,1,.3,1);}
+  [data-tl]:hover [data-axe]::after{background:#3d6600;transform:translateX(-50%) scale(1.45);}
+  [data-tl]:first-child [data-axe]::before{top:21px;}
+  [data-tl]:last-child [data-axe]::before{bottom:calc(100% - 21px);}
+  [data-tl-titre]{transition:color .3s ease;}
+  [data-tl]:hover [data-tl-titre]{color:#3d6600;}
+  [data-tl-det]{max-height:0;opacity:0;overflow:hidden;
+    transition:max-height .5s cubic-bezier(.16,1,.3,1),opacity .35s ease,margin-top .5s cubic-bezier(.16,1,.3,1);}
+  [data-tl]:hover [data-tl-det]{max-height:460px;opacity:1;margin-top:7px;}
+  @media(max-width:820px){ [data-axe]{display:none;} }
+  @media(max-width:820px),(hover:none){ [data-tl-det]{max-height:none;opacity:1;margin-top:7px;} }
+  @media(max-width:980px){
+    [data-somm]{display:none;}
+    [data-read]{grid-template-columns:minmax(0,1fr) !important;}
+  }
   @media(max-width:820px){
     body{font-size:17px;}
     [data-somm]{position:static !important;padding-top:34px !important;top:auto !important;}
@@ -81,17 +105,10 @@
   </div>
 </section>
 
-<div data-stick="1" style="position:sticky;top:50px;z-index:7000;background:rgba(247,245,239,.9);backdrop-filter:blur(10px);border-top:1px solid #d0ccbb;border-bottom:1px solid #d0ccbb;">
-  <div data-bar="1" style="max-width:1100px;margin:0 auto;padding:11px 30px;display:flex;align-items:center;gap:16px;flex-wrap:wrap;font-family:'DM Mono',monospace;font-size:11px;color:#4a4a55;">
-    <span style="flex:1;min-width:180px;">Le Gris — sources et fiches acteurs, ce qui est d'habitude caché.</span>
-    <button onClick="{{ openAllGris }}" style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;background:none;border:1px solid #b8b39c;color:#4a4a55;padding:7px 13px;border-radius:20px;cursor:pointer;transition:border-color .3s ease,color .3s ease;" style-hover="border-color:#7a7a86;color:#1a1a1f;">Tout déplier</button>
-    <button onClick="{{ closeAllGris }}" style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;background:none;border:1px solid #b8b39c;color:#4a4a55;padding:7px 13px;border-radius:20px;cursor:pointer;transition:border-color .3s ease,color .3s ease;" style-hover="border-color:#7a7a86;color:#1a1a1f;">Tout replier</button>
-  </div>
-</div>
 
 <div data-read="1" style="max-width:1100px;margin:0 auto;padding:0 30px 120px;display:grid;grid-template-columns:{{ readCols }};gap:56px;align-items:start;">
 
-  <nav data-somm="1" style="position:sticky;top:130px;display:flex;flex-direction:column;gap:7px;font-family:'DM Mono',monospace;font-size:11px;line-height:1.4;padding-top:56px;">
+  <nav data-somm="1" style="position:sticky;top:86px;display:flex;flex-direction:column;gap:7px;font-family:'DM Mono',monospace;font-size:11px;line-height:1.4;padding-top:56px;">
     <div style="letter-spacing:.2em;text-transform:uppercase;color:#8a8a92;font-size:9.5px;margin-bottom:8px;">Sommaire</div>
     <a href="#1-01" style="{{ r1 }}">1:01 · Prologue</a>
     <a href="#1-02" style="{{ r2 }}">1:02 · Les philosophes</a>
@@ -121,12 +138,12 @@
       <p>Puis BLOOM — une réponse architecturale à la concentration du calcul IA dans quelques datacenters contrôlés par quelques entreprises. L'idée : un réseau d'inférence distribué à l'échelle d'un quartier, où des machines ordinaires — téléphones, laptops, ordinateurs de bureau — partagent leur capacité dormante pour faire tourner des modèles de langage localement. Pas de cloud. Pas de contrat avec Amazon ou Microsoft. Pas de point unique de capture. Une topologie inspirée de la loi constructale — la forme du réseau émerge des flux qui le traversent, pas d'un plan centralisé.</p>
       <p>Et en parallèle, un travail sur les marchés financiers. Des agents autonomes capables de construire des index à partir du réel — pas à partir des données produites par les institutions financières, mais à partir de signaux géographiques, comportementaux, de flux d'information bruts que personne d'autre n'agrège de cette façon. Un Bloomberg distribué, où la méta-vision n'appartient à personne parce qu'elle émerge du réseau lui-même.</p>
 
-      <div style="border:1px solid #cfcabb;border-left:3px solid #7a7a86;border-radius:8px;background:#f0efe8;margin:6px 0;">
-        <button onClick="{{ tProjets }}" style="width:100%;display:flex;justify-content:space-between;align-items:center;gap:12px;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:#7a7a86;padding:11px 15px;background:none;border:none;cursor:pointer;text-align:left;">
+      <div style="border:1px solid #3d660033;border-left:2px solid #3d6600;border-radius:8px;background:rgba(61,102,0,.06);margin:6px 0;">
+        <button onClick="{{ tProjets }}" style="width:100%;display:flex;justify-content:space-between;align-items:center;gap:12px;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:#3d6600;padding:11px 15px;background:none;border:none;cursor:pointer;text-align:left;">
           <span>gris — les projets nommés</span><span>{{ cProjets }}</span>
         </button>
         <sc-if value="{{ oProjets }}" hint-placeholder-val="{{ false }}">
-        <div style="padding:0 16px 15px;color:#5f5f6b;font-size:15.5px;line-height:1.6;display:flex;flex-direction:column;gap:11px;">
+        <div style="padding:0 16px 15px;color:#1a1a1f;font-size:15.5px;line-height:1.6;display:flex;flex-direction:column;gap:11px;">
           <p><strong style="color:#4a4a55;">EGO</strong> — jeu vidéo, le profilage algorithmique rendu visible. <span style="font-family:'DM Mono',monospace;font-size:12px;">1:01</span>, repris en <span style="font-family:'DM Mono',monospace;font-size:12px;">1:10</span>.</p>
           <p><strong style="color:#4a4a55;">BLOOM</strong> — réseau d'inférence distribué à l'échelle d'un quartier ; topologie inspirée de la loi constructale. <span style="font-family:'DM Mono',monospace;font-size:12px;">1:01</span>, accompli en <span style="font-family:'DM Mono',monospace;font-size:12px;">1:10</span>.</p>
           <p><strong style="color:#4a4a55;">Le Bloomberg distribué</strong> — agents autonomes construisant des index à partir du réel, la méta-vision n'appartenant à personne. <span style="font-family:'DM Mono',monospace;font-size:12px;">1:01</span>.</p>
@@ -151,12 +168,12 @@
       <p>C'est ça, l'accélérationnisme. Et sa variante politique — le Dark Enlightenment — ajoute une couche : la démocratie est une erreur. Elle ralentit les processus qui comptent. Elle donne le pouvoir à la médiocrité. La solution est un retour à des formes de gouvernement hiérarchiques, efficaces, non démocratiques — des monarchies ou des corporations dirigées par des élites méritocratiques.</p>
       <p>Land forge aussi un concept que je veux que vous reteniez : l'hyperstition. C'est un mot-valise entre « superstition » et « hyper ». Une hyperstition est une fiction qui devient réelle par le simple fait d'être croyable et d'influencer les comportements. Une idée qui se rend vraie en étant agissante dans le monde. Ce n'est pas de la propagande — c'est quelque chose de plus profond. L'hyperstition est une machine à fabriquer du réel.</p>
 
-      <div style="border:1px solid #cfcabb;border-left:3px solid #7a7a86;border-radius:8px;background:#f0efe8;margin:6px 0;">
-        <button onClick="{{ tLand }}" style="width:100%;display:flex;justify-content:space-between;align-items:center;gap:12px;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:#7a7a86;padding:11px 15px;background:none;border:none;cursor:pointer;text-align:left;">
+      <div style="border:1px solid #3d660033;border-left:2px solid #3d6600;border-radius:8px;background:rgba(61,102,0,.06);margin:6px 0;">
+        <button onClick="{{ tLand }}" style="width:100%;display:flex;justify-content:space-between;align-items:center;gap:12px;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:#3d6600;padding:11px 15px;background:none;border:none;cursor:pointer;text-align:left;">
           <span>gris — fiche acteur · Nick Land</span><span>{{ cLand }}</span>
         </button>
         <sc-if value="{{ oLand }}" hint-placeholder-val="{{ false }}">
-        <div style="padding:0 16px 15px;color:#5f5f6b;font-size:15.5px;line-height:1.6;display:flex;flex-direction:column;gap:11px;">
+        <div style="padding:0 16px 15px;color:#1a1a1f;font-size:15.5px;line-height:1.6;display:flex;flex-direction:column;gap:11px;">
           <p>Philosophe britannique né en 1962. Warwick, années 90 ; co-fondateur du CCRU. Shanghai pendant plus de vingt ans, puis San Francisco en février 2026, à 64 ans.</p>
           <p>Forge l'<strong style="color:#4a4a55;">hyperstition</strong> — défini ici, en <span style="font-family:'DM Mono',monospace;font-size:12px;">1:02</span>, et retourné en <span style="font-family:'DM Mono',monospace;font-size:12px;">1:10</span> : « l'hyperstition fonctionne dans les deux sens ».</p>
           <p>Paraît en <span style="font-family:'DM Mono',monospace;font-size:12px;">1:04</span> — Sea Cliff, première rencontre physique avec Yarvin. Y parle peu.</p>
@@ -174,12 +191,12 @@
         <span style="font-family:'DM Mono',monospace;font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;color:#8a8a92;">— Nicolas</span>
       </blockquote>
 
-      <div style="border:1px solid #cfcabb;border-left:3px solid #7a7a86;border-radius:8px;background:#f0efe8;margin:6px 0;">
-        <button onClick="{{ tYarvin }}" style="width:100%;display:flex;justify-content:space-between;align-items:center;gap:12px;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:#7a7a86;padding:11px 15px;background:none;border:none;cursor:pointer;text-align:left;">
+      <div style="border:1px solid #3d660033;border-left:2px solid #3d6600;border-radius:8px;background:rgba(61,102,0,.06);margin:6px 0;">
+        <button onClick="{{ tYarvin }}" style="width:100%;display:flex;justify-content:space-between;align-items:center;gap:12px;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:#3d6600;padding:11px 15px;background:none;border:none;cursor:pointer;text-align:left;">
           <span>gris — fiche acteur · Curtis Yarvin</span><span>{{ cYarvin }}</span>
         </button>
         <sc-if value="{{ oYarvin }}" hint-placeholder-val="{{ false }}">
-        <div style="padding:0 16px 15px;color:#5f5f6b;font-size:15.5px;line-height:1.6;display:flex;flex-direction:column;gap:11px;">
+        <div style="padding:0 16px 15px;color:#1a1a1f;font-size:15.5px;line-height:1.6;display:flex;flex-direction:column;gap:11px;">
           <p>Ingénieur logiciel américain. Blogue sous le pseudonyme Mencius Moldbug à partir de 2007, sur <em>Unqualified Reservations</em>. Développe le néoréactionnisme (NRx).</p>
           <p>Concepts posés ici, en <span style="font-family:'DM Mono',monospace;font-size:12px;">1:02</span> : la <strong style="color:#4a4a55;">Cathédrale</strong>, le <strong style="color:#4a4a55;">GovCorp</strong>, le plan <strong style="color:#4a4a55;">RAGE</strong>.</p>
           <p>Traversée du texte : chez Thiel la nuit de l'élection 2016 <span style="font-family:'DM Mono',monospace;font-size:12px;">1:03</span> · cité nommément par Vance en 2021 <span style="font-family:'DM Mono',monospace;font-size:12px;">1:03</span> · gala inaugural janvier 2025 <span style="font-family:'DM Mono',monospace;font-size:12px;">1:03</span> · invité surprise à Sea Cliff <span style="font-family:'DM Mono',monospace;font-size:12px;">1:04</span>.</p>
@@ -200,38 +217,23 @@
       <p>Thiel lit Yarvin. Il investit dans sa startup technologique — Tlon, qui développe une plateforme internet décentralisée. Yarvin affirme plus tard en privé qu'il « coachait Thiel ». Pendant ce temps, Thiel tient des salons à San Francisco où circulent ces idées. La nuit de l'élection Trump en 2016, Yarvin est chez Thiel, à regarder les résultats.</p>
       <p>La connexion avec JD Vance — aujourd'hui Vice-Président des États-Unis — se construit sur quinze ans, de façon méthodique.</p>
 
-      <ol style="list-style:none;display:flex;flex-direction:column;gap:0;border-top:1px solid #d0ccbb;margin:4px 0;">
-        <li style="display:grid;grid-template-columns:{{ tlCols }};gap:18px;padding:18px 0;border-bottom:1px solid #d0ccbb;">
-          <span style="font-family:'DM Mono',monospace;font-size:12px;letter-spacing:.06em;color:#4a7a00;">2011</span>
-          <span style="font-size:17px;line-height:1.55;"><strong>Yale Law School.</strong> JD Vance, étudiant en droit, entend Thiel donner une conférence : les gens intelligents devraient travailler dans la tech, pas se perdre dans les grandes écoles. Vance lui envoie un email. Thiel l'invite en Californie. Ce moment, Vance le décrira comme « le plus significatif » de ses années à Yale.</span>
-        </li>
-        <li style="display:grid;grid-template-columns:{{ tlCols }};gap:18px;padding:18px 0;border-bottom:1px solid #d0ccbb;">
-          <span style="font-family:'DM Mono',monospace;font-size:12px;letter-spacing:.06em;color:#4a7a00;">2016–2017</span>
-          <span style="font-size:17px;line-height:1.55;"><strong>Mithril Capital.</strong> Thiel embauche Vance dans son fonds d'investissement. Vance écrit <em>Hillbilly Elegy</em> pendant ce temps — Thiel rédige la quatrième de couverture. Dans ce réseau San Francisco, les idées de Yarvin circulent librement. La contamination intellectuelle se fait par immersion.</span>
-        </li>
-        <li style="display:grid;grid-template-columns:{{ tlCols }};gap:18px;padding:18px 0;border-bottom:1px solid #d0ccbb;">
-          <span style="font-family:'DM Mono',monospace;font-size:12px;letter-spacing:.06em;color:#4a7a00;">2021</span>
-          <span style="font-size:17px;line-height:1.55;"><strong>La citation publique.</strong> Dans un podcast, Vance cite Yarvin nommément : « Il y a ce type, Curtis Yarvin. Je pense que ce que Trump devrait faire, c'est virer chaque bureaucrate de niveau intermédiaire, remplacer par nos gens. Et quand les tribunaux t'en empêchent, tu te lèves comme Andrew Jackson et tu dis : le Chief Justice a rendu son arrêt, maintenant qu'il l'applique. » C'est du Yarvin quasi-verbatim.</span>
-        </li>
-        <li style="display:grid;grid-template-columns:{{ tlCols }};gap:18px;padding:18px 0;border-bottom:1px solid #d0ccbb;">
-          <span style="font-family:'DM Mono',monospace;font-size:12px;letter-spacing:.06em;color:#4a7a00;">2021–2022</span>
-          <span style="font-size:17px;line-height:1.55;"><strong>L'investissement politique.</strong> Thiel donne 15 millions à la campagne sénatoriale de Vance en Ohio — le don individuel le plus important jamais fait à un candidat au Sénat américain. Thiel organise lui-même la première rencontre entre Vance et Trump à Mar-a-Lago.</span>
-        </li>
-        <li style="display:grid;grid-template-columns:{{ tlCols }};gap:18px;padding:18px 0;border-bottom:1px solid #d0ccbb;">
-          <span style="font-family:'DM Mono',monospace;font-size:12px;letter-spacing:.06em;color:#4a7a00;">Janv. 2025</span>
-          <span style="font-size:17px;line-height:1.55;"><strong>VP des États-Unis.</strong> JD Vance prête serment. Yarvin assiste au gala inaugural de Trump comme « invité d'honneur informel » selon Politico, en raison de son « influence démesurée sur la droite trumpiste ». Ce qui était une philosophie de blog obscure est maintenant dans les couloirs du pouvoir.</span>
-        </li>
+      <ol style="list-style:none;display:flex;flex-direction:column;gap:0;margin:10px 0;">
+        <li data-tl="1" style="display:grid;grid-template-columns:{{ tlCols }};gap:0;padding:14px 0 16px;"><span style="font-family:'DM Mono',monospace;font-size:12px;letter-spacing:.06em;color:#8a8a92;padding-top:15px;">2011</span><span data-axe="1"></span><div style="padding-top:12px;min-width:0;"><span data-tl-titre="1" style="font-size:17px;line-height:1.45;font-weight:500;">Yale Law School</span><div data-tl-det="1" style="font-size:15.5px;line-height:1.6;color:#4a4a55;text-wrap:pretty;">JD Vance, étudiant en droit, entend Thiel donner une conférence : les gens intelligents devraient travailler dans la tech, pas se perdre dans les grandes écoles. Vance lui envoie un email. Thiel l'invite en Californie. Ce moment, Vance le décrira comme « le plus significatif » de ses années à Yale.</div></div></li>
+        <li data-tl="1" style="display:grid;grid-template-columns:{{ tlCols }};gap:0;padding:14px 0 16px;"><span style="font-family:'DM Mono',monospace;font-size:12px;letter-spacing:.06em;color:#8a8a92;padding-top:15px;">2016–2017</span><span data-axe="1"></span><div style="padding-top:12px;min-width:0;"><span data-tl-titre="1" style="font-size:17px;line-height:1.45;font-weight:500;">Mithril Capital</span><div data-tl-det="1" style="font-size:15.5px;line-height:1.6;color:#4a4a55;text-wrap:pretty;">Thiel embauche Vance dans son fonds d'investissement. Vance écrit <em>Hillbilly Elegy</em> pendant ce temps — Thiel rédige la quatrième de couverture. Dans ce réseau San Francisco, les idées de Yarvin circulent librement. La contamination intellectuelle se fait par immersion.</div></div></li>
+        <li data-tl="1" style="display:grid;grid-template-columns:{{ tlCols }};gap:0;padding:14px 0 16px;"><span style="font-family:'DM Mono',monospace;font-size:12px;letter-spacing:.06em;color:#8a8a92;padding-top:15px;">2021</span><span data-axe="1"></span><div style="padding-top:12px;min-width:0;"><span data-tl-titre="1" style="font-size:17px;line-height:1.45;font-weight:500;">La citation publique</span><div data-tl-det="1" style="font-size:15.5px;line-height:1.6;color:#4a4a55;text-wrap:pretty;">Dans un podcast, Vance cite Yarvin nommément : « Il y a ce type, Curtis Yarvin. Je pense que ce que Trump devrait faire, c'est virer chaque bureaucrate de niveau intermédiaire, remplacer par nos gens. Et quand les tribunaux t'en empêchent, tu te lèves comme Andrew Jackson et tu dis : le Chief Justice a rendu son arrêt, maintenant qu'il l'applique. » C'est du Yarvin quasi-verbatim.</div></div></li>
+        <li data-tl="1" style="display:grid;grid-template-columns:{{ tlCols }};gap:0;padding:14px 0 16px;"><span style="font-family:'DM Mono',monospace;font-size:12px;letter-spacing:.06em;color:#8a8a92;padding-top:15px;">2021–2022</span><span data-axe="1"></span><div style="padding-top:12px;min-width:0;"><span data-tl-titre="1" style="font-size:17px;line-height:1.45;font-weight:500;">L'investissement politique</span><div data-tl-det="1" style="font-size:15.5px;line-height:1.6;color:#4a4a55;text-wrap:pretty;">Thiel donne 15 millions à la campagne sénatoriale de Vance en Ohio — le don individuel le plus important jamais fait à un candidat au Sénat américain. Thiel organise lui-même la première rencontre entre Vance et Trump à Mar-a-Lago.</div></div></li>
+        <li data-tl="1" style="display:grid;grid-template-columns:{{ tlCols }};gap:0;padding:14px 0 16px;"><span style="font-family:'DM Mono',monospace;font-size:12px;letter-spacing:.06em;color:#8a8a92;padding-top:15px;">Janv. 2025</span><span data-axe="1"></span><div style="padding-top:12px;min-width:0;"><span data-tl-titre="1" style="font-size:17px;line-height:1.45;font-weight:500;">VP des États-Unis</span><div data-tl-det="1" style="font-size:15.5px;line-height:1.6;color:#4a4a55;text-wrap:pretty;">JD Vance prête serment. Yarvin assiste au gala inaugural de Trump comme « invité d'honneur informel » selon Politico, en raison de son « influence démesurée sur la droite trumpiste ». Ce qui était une philosophie de blog obscure est maintenant dans les couloirs du pouvoir.</div></div></li>
       </ol>
 
       <p>Ce qu'il faut comprendre, c'est que Yarvin n'avait pas besoin de rencontrer Vance en tête-à-tête. La relation directe est d'ailleurs niée par les deux. Ce qui compte, c'est la structure : Yarvin a fourni l'idéologie. Thiel a fourni le capital et le réseau. Vance a fourni le vecteur politique. Trois fonctions distinctes, une seule machine.</p>
       <p>L'hyperstition avait fonctionné. Une fiction devenue réelle à travers quinze ans de diffusion patiente, de financement discret, de connexions construites une par une dans les salons de San Francisco.</p>
 
-      <div style="border:1px solid #cfcabb;border-left:3px solid #7a7a86;border-radius:8px;background:#f0efe8;margin:6px 0;">
-        <button onClick="{{ tThiel }}" style="width:100%;display:flex;justify-content:space-between;align-items:center;gap:12px;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:#7a7a86;padding:11px 15px;background:none;border:none;cursor:pointer;text-align:left;">
+      <div style="border:1px solid #3d660033;border-left:2px solid #3d6600;border-radius:8px;background:rgba(61,102,0,.06);margin:6px 0;">
+        <button onClick="{{ tThiel }}" style="width:100%;display:flex;justify-content:space-between;align-items:center;gap:12px;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:#3d6600;padding:11px 15px;background:none;border:none;cursor:pointer;text-align:left;">
           <span>gris — fiche acteur · Peter Thiel</span><span>{{ cThiel }}</span>
         </button>
         <sc-if value="{{ oThiel }}" hint-placeholder-val="{{ false }}">
-        <div style="padding:0 16px 15px;color:#5f5f6b;font-size:15.5px;line-height:1.6;display:flex;flex-direction:column;gap:11px;">
+        <div style="padding:0 16px 15px;color:#1a1a1f;font-size:15.5px;line-height:1.6;display:flex;flex-direction:column;gap:11px;">
           <p>Co-fondateur de PayPal, premier investisseur externe de Facebook, co-fondateur de Palantir. L'une des dix premières fortunes technologiques mondiales.</p>
           <p>Fonction dans la chaîne, en <span style="font-family:'DM Mono',monospace;font-size:12px;">1:03</span> : le capital et le réseau. Investit dans Tlon ; 15 M$ à la campagne de Vance ; organise la rencontre avec Trump à Mar-a-Lago.</p>
           <p>Réapparaît en <span style="font-family:'DM Mono',monospace;font-size:12px;">1:09</span> — Anduril, Objection.ai, Rivada Space Networks, et 2028.</p>
@@ -240,12 +242,12 @@
         </sc-if>
       </div>
 
-      <div style="border:1px solid #cfcabb;border-left:3px solid #7a7a86;border-radius:8px;background:#f0efe8;margin:0 0 6px;">
-        <button onClick="{{ tVance }}" style="width:100%;display:flex;justify-content:space-between;align-items:center;gap:12px;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:#7a7a86;padding:11px 15px;background:none;border:none;cursor:pointer;text-align:left;">
+      <div style="border:1px solid #3d660033;border-left:2px solid #3d6600;border-radius:8px;background:rgba(61,102,0,.06);margin:0 0 6px;">
+        <button onClick="{{ tVance }}" style="width:100%;display:flex;justify-content:space-between;align-items:center;gap:12px;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:#3d6600;padding:11px 15px;background:none;border:none;cursor:pointer;text-align:left;">
           <span>gris — fiche acteur · JD Vance</span><span>{{ cVance }}</span>
         </button>
         <sc-if value="{{ oVance }}" hint-placeholder-val="{{ false }}">
-        <div style="padding:0 16px 15px;color:#5f5f6b;font-size:15.5px;line-height:1.6;display:flex;flex-direction:column;gap:11px;">
+        <div style="padding:0 16px 15px;color:#1a1a1f;font-size:15.5px;line-height:1.6;display:flex;flex-direction:column;gap:11px;">
           <p>Vice-Président des États-Unis depuis janvier 2025. Auteur de <em>Hillbilly Elegy</em>, écrit pendant son passage chez Mithril Capital.</p>
           <p>Fonction dans la chaîne, en <span style="font-family:'DM Mono',monospace;font-size:12px;">1:03</span> : le vecteur politique. Quinze ans, de la conférence de Yale en 2011 au serment de 2025.</p>
           <p>La relation directe avec Yarvin est niée par les deux. C'est la structure qui compte, pas la rencontre.</p>
@@ -265,12 +267,12 @@
       <p>L'invitation à la soirée est titrée « Nick Land Acknowledgement ». Le titre est une blague interne — il parodie les « land acknowledgements » qui sont des déclarations rituelles dans les milieux progressistes américains, reconnaissant que les terres sur lesquelles on se trouve appartenaient à des peuples autochtones. Retourner le mot « land » pour célébrer Nick Land — c'est le genre d'humour woke-baiting qui circule dans ces cercles.</p>
       <p>L'événement est organisé par Wolf Tivy, fondateur de Palladium Magazine — une revue de pensée politique conservatrice prétendument financée par Thiel. Le but : célébrer le retour de Land aux États-Unis après deux décennies en Asie.</p>
 
-      <div style="border:1px solid #cfcabb;border-left:3px solid #7a7a86;border-radius:8px;background:#f0efe8;margin:6px 0;">
-        <button onClick="{{ tHolz }}" style="width:100%;display:flex;justify-content:space-between;align-items:center;gap:12px;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:#7a7a86;padding:11px 15px;background:none;border:none;cursor:pointer;text-align:left;">
+      <div style="border:1px solid #3d660033;border-left:2px solid #3d6600;border-radius:8px;background:rgba(61,102,0,.06);margin:6px 0;">
+        <button onClick="{{ tHolz }}" style="width:100%;display:flex;justify-content:space-between;align-items:center;gap:12px;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:#3d6600;padding:11px 15px;background:none;border:none;cursor:pointer;text-align:left;">
           <span>gris — la salle, le 13 février 2026</span><span>{{ cHolz }}</span>
         </button>
         <sc-if value="{{ oHolz }}" hint-placeholder-val="{{ false }}">
-        <div style="padding:0 16px 15px;color:#5f5f6b;font-size:15.5px;line-height:1.6;display:flex;flex-direction:column;gap:11px;">
+        <div style="padding:0 16px 15px;color:#1a1a1f;font-size:15.5px;line-height:1.6;display:flex;flex-direction:column;gap:11px;">
           <p><strong style="color:#4a4a55;">David Holz</strong> — fondateur et CEO de Midjourney. La villa est la sienne.</p>
           <p><strong style="color:#4a4a55;">Wolf Tivy</strong> — fondateur de Palladium Magazine, revue prétendument financée par Thiel. Organisateur.</p>
           <p><strong style="color:#4a4a55;">Grimes</strong> — présente. Mariage de Yarvin en 2024, gala inaugural en janvier 2025.</p>
@@ -323,12 +325,12 @@
       <p>Leur plateforme AIP prend des modèles existants — Claude, GPT-4, Gemini — et les ancre dans les données privées d'une organisation via une couche sémantique propriétaire. Cette couche définit ce que les mots signifient dans le contexte de cette organisation : qu'est-ce qu'une « cible » pour l'armée, qu'est-ce qu'un « risque » pour un service de renseignement, qu'est-ce qu'un « migrant à risque » pour l'ICE.</p>
       <p>Celui qui contrôle cette couche de sens contrôle ce que l'IA « comprend » comme réel. Et une fois qu'une institution a cartographié ses processus dans ce cadre, migrer vers un autre fournisseur devient techniquement cauchemardesque. C'est ce que j'appelle le <em>lock-in ontologique</em> — Palantir ne capture pas la puissance de calcul, il capture la définition même du monde.</p>
 
-      <div style="border:1px solid #cfcabb;border-left:3px solid #7a7a86;border-radius:8px;background:#f0efe8;margin:6px 0;">
-        <button onClick="{{ tPalantir }}" style="width:100%;display:flex;justify-content:space-between;align-items:center;gap:12px;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:#7a7a86;padding:11px 15px;background:none;border:none;cursor:pointer;text-align:left;">
+      <div style="border:1px solid #3d660033;border-left:2px solid #3d6600;border-radius:8px;background:rgba(61,102,0,.06);margin:6px 0;">
+        <button onClick="{{ tPalantir }}" style="width:100%;display:flex;justify-content:space-between;align-items:center;gap:12px;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:#3d6600;padding:11px 15px;background:none;border:none;cursor:pointer;text-align:left;">
           <span>gris — fiche · Palantir Technologies</span><span>{{ cPalantir }}</span>
         </button>
         <sc-if value="{{ oPalantir }}" hint-placeholder-val="{{ false }}">
-        <div style="padding:0 16px 15px;color:#5f5f6b;font-size:15.5px;line-height:1.6;display:flex;flex-direction:column;gap:11px;">
+        <div style="padding:0 16px 15px;color:#1a1a1f;font-size:15.5px;line-height:1.6;display:flex;flex-direction:column;gap:11px;">
           <p>Fondée en 2003 par Peter Thiel et quelques associés, financée initialement par la CIA. Nom pris aux « pierres de vision » du Seigneur des Anneaux.</p>
           <p>Clients : CIA, NSA, FBI, armée américaine, ICE, renseignement britannique, armée française, OTAN.</p>
           <p>Ce qu'ils capturent : <strong style="color:#4a4a55;">l'ontologie</strong>, via la plateforme AIP — d'où le <strong style="color:#4a4a55;">lock-in ontologique</strong>, défini ici en <span style="font-family:'DM Mono',monospace;font-size:12px;">1:05</span>.</p>
@@ -338,12 +340,12 @@
         </sc-if>
       </div>
 
-      <div style="border:1px solid #cfcabb;border-left:3px solid #7a7a86;border-radius:8px;background:#f0efe8;margin:0 0 6px;">
-        <button onClick="{{ tKarp }}" style="width:100%;display:flex;justify-content:space-between;align-items:center;gap:12px;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:#7a7a86;padding:11px 15px;background:none;border:none;cursor:pointer;text-align:left;">
+      <div style="border:1px solid #3d660033;border-left:2px solid #3d6600;border-radius:8px;background:rgba(61,102,0,.06);margin:0 0 6px;">
+        <button onClick="{{ tKarp }}" style="width:100%;display:flex;justify-content:space-between;align-items:center;gap:12px;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:#3d6600;padding:11px 15px;background:none;border:none;cursor:pointer;text-align:left;">
           <span>gris — fiche acteur · Alex Karp</span><span>{{ cKarp }}</span>
         </button>
         <sc-if value="{{ oKarp }}" hint-placeholder-val="{{ false }}">
-        <div style="padding:0 16px 15px;color:#5f5f6b;font-size:15.5px;line-height:1.6;display:flex;flex-direction:column;gap:11px;">
+        <div style="padding:0 16px 15px;color:#1a1a1f;font-size:15.5px;line-height:1.6;display:flex;flex-direction:column;gap:11px;">
           <p>CEO de Palantir. Thèse de doctorat de Francfort, dans l'orbite intellectuelle d'Habermas — qu'il cite pour justifier des outils de surveillance de masse.</p>
           <p>Auteur de <em>The Technological Republic</em> — les 22 points, publiés en 2025–2026.</p>
           <p>En <span style="font-family:'DM Mono',monospace;font-size:12px;">1:07</span> : pose publiquement le choix coopération ou nationalisation, au summit a16z du 3 mars 2026.</p>
@@ -364,9 +366,9 @@
       <div style="border:1px solid #b8b39c;border-radius:10px;background:#efece2;padding:24px 26px;margin:6px 0;display:flex;flex-direction:column;gap:16px;">
         <div style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:#4a7a00;">Chronologie Maven — 2024 à 2026</div>
         <ul style="list-style:none;display:flex;flex-direction:column;gap:12px;font-size:16px;line-height:1.5;">
-          <li style="display:grid;grid-template-columns:{{ tlCols }};gap:16px;"><span style="font-family:'DM Mono',monospace;font-size:12.5px;color:#4a7a00;">Mai 2024</span><span>Contrat initial de 480 millions sur 5 ans avec le Pentagone.</span></li>
-          <li style="display:grid;grid-template-columns:{{ tlCols }};gap:16px;"><span style="font-family:'DM Mono',monospace;font-size:12.5px;color:#4a7a00;">Mai 2025</span><span>Plafond relevé à 1,3 milliard jusqu'en 2029 face à la « demande croissante des commandants ».</span></li>
-          <li style="display:grid;grid-template-columns:{{ tlCols }};gap:16px;"><span style="font-family:'DM Mono',monospace;font-size:12.5px;color:#4a7a00;">Mars 2026</span><span>Mémo du Deputy Secretary of Defense Steve Feinberg désignant Maven « program of record » avec effet au 30 septembre 2026.</span></li>
+          <li data-tl="1" style="display:grid;grid-template-columns:{{ tlCols }};gap:0;padding:14px 0 16px;"><span style="font-family:'DM Mono',monospace;font-size:12px;letter-spacing:.06em;color:#8a8a92;padding-top:15px;">Mai 2024</span><span data-axe="1"></span><div style="padding-top:12px;min-width:0;"><span data-tl-titre="1" style="font-size:17px;line-height:1.45;font-weight:500;">Contrat initial de 480 millions sur 5 ans avec le Pentagone.</span></div></li>
+          <li data-tl="1" style="display:grid;grid-template-columns:{{ tlCols }};gap:0;padding:14px 0 16px;"><span style="font-family:'DM Mono',monospace;font-size:12px;letter-spacing:.06em;color:#8a8a92;padding-top:15px;">Mai 2025</span><span data-axe="1"></span><div style="padding-top:12px;min-width:0;"><span data-tl-titre="1" style="font-size:17px;line-height:1.45;font-weight:500;">Plafond relevé à 1,3 milliard jusqu'en 2029 face à la « demande croissante des commandants ».</span></div></li>
+          <li data-tl="1" style="display:grid;grid-template-columns:{{ tlCols }};gap:0;padding:14px 0 16px;"><span style="font-family:'DM Mono',monospace;font-size:12px;letter-spacing:.06em;color:#8a8a92;padding-top:15px;">Mars 2026</span><span data-axe="1"></span><div style="padding-top:12px;min-width:0;"><span data-tl-titre="1" style="font-size:17px;line-height:1.45;font-weight:500;">Mémo du Deputy Secretary of Defense Steve Feinberg désignant Maven « program of record » avec effet au 30 septembre 2026.</span></div></li>
         </ul>
         <p style="font-size:15.5px;line-height:1.55;color:#4a4a55;border-top:1px solid #d0ccbb;padding-top:14px;">Ce statut signifie un financement stable, une intégration dans toutes les branches militaires, et une légitimité institutionnelle qui rend toute remise en question politiquement suicidaire. Palantir passe d'un contrat révocable à une dépendance structurelle inscrite dans la doctrine militaire américaine.</p>
       </div>
@@ -374,12 +376,12 @@
       <p>Claude — le modèle que vous lisez peut-être en ce moment — était intégré à Maven. Anthropic s'en est retiré en mars 2026 après avoir été désigné « supply chain risk » par le Pentagone. Entre les deux : des mois d'intégration dans un système de ciblage militaire. La séquence mérite d'être connue.</p>
       <p>20 000 utilisateurs actifs. 35 outils militaires et de commandement. Déployé dans les 5 commandements combattants américains principaux — CENTCOM, EUCOM, INDOPACOM, NORTHCOM, TRANSCOM. Et maintenant signé avec l'OTAN via Maven Smart System NATO. Cette technologie n'est plus expérimentale. Elle est le système nerveux de la guerre occidentale.</p>
 
-      <div style="border:1px solid #cfcabb;border-left:3px solid #7a7a86;border-radius:8px;background:#f0efe8;margin:6px 0;">
-        <button onClick="{{ tMaven }}" style="width:100%;display:flex;justify-content:space-between;align-items:center;gap:12px;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:#7a7a86;padding:11px 15px;background:none;border:none;cursor:pointer;text-align:left;">
+      <div style="border:1px solid #3d660033;border-left:2px solid #3d6600;border-radius:8px;background:rgba(61,102,0,.06);margin:6px 0;">
+        <button onClick="{{ tMaven }}" style="width:100%;display:flex;justify-content:space-between;align-items:center;gap:12px;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:#3d6600;padding:11px 15px;background:none;border:none;cursor:pointer;text-align:left;">
           <span>gris — fiche · Maven Smart System</span><span>{{ cMaven }}</span>
         </button>
         <sc-if value="{{ oMaven }}" hint-placeholder-val="{{ false }}">
-        <div style="padding:0 16px 15px;color:#5f5f6b;font-size:15.5px;line-height:1.6;display:flex;flex-direction:column;gap:11px;">
+        <div style="padding:0 16px 15px;color:#1a1a1f;font-size:15.5px;line-height:1.6;display:flex;flex-direction:column;gap:11px;">
           <p>Système de ciblage qui fusionne satellites, drones et radars pour recommander des frappes. « Il n'est pas le bras qui tire — mais il est les yeux et le cerveau qui désignent la cible. »</p>
           <p>Cadence : moins de 100 cibles/jour → 5000/jour après intégration de LLMs. Planification à 1000 cibles/heure.</p>
           <p>Déploiement : 20 000 utilisateurs actifs, 35 outils, 5 commandements combattants (CENTCOM, EUCOM, INDOPACOM, NORTHCOM, TRANSCOM), puis l'OTAN.</p>
@@ -399,23 +401,11 @@
       <p>Il pose le choix en termes nus : soit les entreprises d'IA coopèrent avec le gouvernement Trump sur les applications militaires, soit elles sont nationalisées. Il cite nommément le Defense Production Act — une loi de temps de guerre qui permet à l'exécutif de forcer des entreprises privées à produire des biens ou services stratégiques, sans leur consentement, selon les spécifications de l'État.</p>
       <p>Ce qui se passe dans les jours suivants n'est pas une coïncidence.</p>
 
-      <ol style="list-style:none;display:flex;flex-direction:column;gap:0;border-top:1px solid #d0ccbb;margin:4px 0;">
-        <li style="display:grid;grid-template-columns:{{ tlCols }};gap:18px;padding:18px 0;border-bottom:1px solid #d0ccbb;">
-          <span style="font-family:'DM Mono',monospace;font-size:12px;letter-spacing:.06em;color:#4a7a00;">3 mars</span>
-          <span style="font-size:17px;line-height:1.55;"><strong>Karp parle de nationalisation</strong> devant les VCs de la Silicon Valley au summit a16z.</span>
-        </li>
-        <li style="display:grid;grid-template-columns:{{ tlCols }};gap:18px;padding:18px 0;border-bottom:1px solid #d0ccbb;">
-          <span style="font-family:'DM Mono',monospace;font-size:12px;letter-spacing:.06em;color:#4a7a00;">3 mars, 17h01</span>
-          <span style="font-size:17px;line-height:1.55;"><strong>Emil Michael</strong> — conseiller de l'administration Trump proche de Palantir — insulte publiquement Dario Amodei, CEO d'Anthropic, et pose un ultimatum en quelques heures.</span>
-        </li>
-        <li style="display:grid;grid-template-columns:{{ tlCols }};gap:18px;padding:18px 0;border-bottom:1px solid #d0ccbb;">
-          <span style="font-family:'DM Mono',monospace;font-size:12px;letter-spacing:.06em;color:#4a7a00;">Jours suivants</span>
-          <span style="font-size:17px;line-height:1.55;"><strong>Hegseth</strong>, secrétaire à la Défense, désigne officiellement Anthropic « supply chain risk » — coupant l'entreprise de tous ses contrats gouvernementaux existants. Trump poste sur Truth Social.</span>
-        </li>
-        <li style="display:grid;grid-template-columns:{{ tlCols }};gap:18px;padding:18px 0;border-bottom:1px solid #d0ccbb;">
-          <span style="font-family:'DM Mono',monospace;font-size:12px;letter-spacing:.06em;color:#4a7a00;">Heures après</span>
-          <span style="font-size:17px;line-height:1.55;"><strong>Altman signe.</strong> OpenAI se plie aux exigences. Le mémo interne d'Amodei fuite — Karp y apparaît comme l'intermédiaire qui avait proposé à Anthropic un « service de dissimulation » pour ses employés récalcitrants.</span>
-        </li>
+      <ol style="list-style:none;display:flex;flex-direction:column;gap:0;margin:10px 0;">
+        <li data-tl="1" style="display:grid;grid-template-columns:{{ tlCols }};gap:0;padding:14px 0 16px;"><span style="font-family:'DM Mono',monospace;font-size:12px;letter-spacing:.06em;color:#8a8a92;padding-top:15px;">3 mars</span><span data-axe="1"></span><div style="padding-top:12px;min-width:0;"><span data-tl-titre="1" style="font-size:17px;line-height:1.45;font-weight:500;">Karp parle de nationalisation</span><div data-tl-det="1" style="font-size:15.5px;line-height:1.6;color:#4a4a55;text-wrap:pretty;">devant les VCs de la Silicon Valley au summit a16z.</div></div></li>
+        <li data-tl="1" style="display:grid;grid-template-columns:{{ tlCols }};gap:0;padding:14px 0 16px;"><span style="font-family:'DM Mono',monospace;font-size:12px;letter-spacing:.06em;color:#8a8a92;padding-top:15px;">3 mars, 17h01</span><span data-axe="1"></span><div style="padding-top:12px;min-width:0;"><span data-tl-titre="1" style="font-size:17px;line-height:1.45;font-weight:500;">Emil Michael</span><div data-tl-det="1" style="font-size:15.5px;line-height:1.6;color:#4a4a55;text-wrap:pretty;">— conseiller de l'administration Trump proche de Palantir — insulte publiquement Dario Amodei, CEO d'Anthropic, et pose un ultimatum en quelques heures.</div></div></li>
+        <li data-tl="1" style="display:grid;grid-template-columns:{{ tlCols }};gap:0;padding:14px 0 16px;"><span style="font-family:'DM Mono',monospace;font-size:12px;letter-spacing:.06em;color:#8a8a92;padding-top:15px;">Jours suivants</span><span data-axe="1"></span><div style="padding-top:12px;min-width:0;"><span data-tl-titre="1" style="font-size:17px;line-height:1.45;font-weight:500;">Hegseth</span><div data-tl-det="1" style="font-size:15.5px;line-height:1.6;color:#4a4a55;text-wrap:pretty;">, secrétaire à la Défense, désigne officiellement Anthropic « supply chain risk » — coupant l'entreprise de tous ses contrats gouvernementaux existants. Trump poste sur Truth Social.</div></div></li>
+        <li data-tl="1" style="display:grid;grid-template-columns:{{ tlCols }};gap:0;padding:14px 0 16px;"><span style="font-family:'DM Mono',monospace;font-size:12px;letter-spacing:.06em;color:#8a8a92;padding-top:15px;">Heures après</span><span data-axe="1"></span><div style="padding-top:12px;min-width:0;"><span data-tl-titre="1" style="font-size:17px;line-height:1.45;font-weight:500;">Altman signe</span><div data-tl-det="1" style="font-size:15.5px;line-height:1.6;color:#4a4a55;text-wrap:pretty;">OpenAI se plie aux exigences. Le mémo interne d'Amodei fuite — Karp y apparaît comme l'intermédiaire qui avait proposé à Anthropic un « service de dissimulation » pour ses employés récalcitrants.</div></div></li>
       </ol>
 
       <p>La menace de nationalisation n'est pas une prédiction économique. C'est une offre de protection mafieuse articulée en public, devant les financeurs des concurrents de Palantir. Le message réel : soit vous devenez des composants dans notre infrastructure, soit l'État vous démantèle. Dans les deux cas, vous perdez votre souveraineté. Choisissez l'option où vous gardez au moins vos revenus.</p>
@@ -451,12 +441,12 @@
       <p><strong>L'écosystème Thiel comme filet de sécurité.</strong> Palantir n'est pas seul. Anduril — une startup de défense co-fondée par d'anciens employés Palantir, financée par Thiel — vient de signer un contrat de 20 milliards sur 10 ans avec l'Army en mars 2026. Palantir + Anduril = les deux jambes du même corps. Thiel prépare déjà 2028, orchestrant une possible candidature présidentielle de Vance. Le plan ne dépend pas de Trump. Trump est un vecteur, pas la finalité.</p>
       <p><strong>La stack complète.</strong> En 2026, Thiel investit dans Objection.ai — une startup qui « évalue les affirmations faites par les journalistes ». Palantir surveille les corps. Objection.ai surveille les narratifs. Rivada Space Networks — dans lequel Thiel est impliqué — déploiera ses satellites en 2027. Surveillance terrestre + contrôle narratif + surveillance orbitale. C'est une infrastructure de pouvoir complète, pas une série d'investissements disparates.</p>
 
-      <div style="border:1px solid #cfcabb;border-left:3px solid #7a7a86;border-radius:8px;background:#f0efe8;margin:6px 0;">
-        <button onClick="{{ tAnduril }}" style="width:100%;display:flex;justify-content:space-between;align-items:center;gap:12px;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:#7a7a86;padding:11px 15px;background:none;border:none;cursor:pointer;text-align:left;">
+      <div style="border:1px solid #3d660033;border-left:2px solid #3d6600;border-radius:8px;background:rgba(61,102,0,.06);margin:6px 0;">
+        <button onClick="{{ tAnduril }}" style="width:100%;display:flex;justify-content:space-between;align-items:center;gap:12px;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:#3d6600;padding:11px 15px;background:none;border:none;cursor:pointer;text-align:left;">
           <span>gris — les quatre couches du verrou</span><span>{{ cAnduril }}</span>
         </button>
         <sc-if value="{{ oAnduril }}" hint-placeholder-val="{{ false }}">
-        <div style="padding:0 16px 15px;color:#5f5f6b;font-size:15.5px;line-height:1.6;display:flex;flex-direction:column;gap:11px;">
+        <div style="padding:0 16px 15px;color:#1a1a1f;font-size:15.5px;line-height:1.6;display:flex;flex-direction:column;gap:11px;">
           <p><strong style="color:#4a4a55;">1. Le temps</strong> — cycles d'acquisition Army de 10 à 15 ans ; contrats jusqu'en 2035 minimum.</p>
           <p><strong style="color:#4a4a55;">2. Les personnes</strong> — un ancien ingénieur Palantir CIO du Département de la Santé ; des anciens dans DOGE et au recrutement.</p>
           <p><strong style="color:#4a4a55;">3. L'écosystème</strong> — Anduril, co-fondée par d'anciens employés Palantir, financée par Thiel : 20 Md sur 10 ans avec l'Army, mars 2026.</p>
@@ -487,12 +477,12 @@
       <div style="font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#8a8a92;">Colophon</div>
       <p style="font-family:'DM Mono',monospace;font-size:13px;line-height:1.85;letter-spacing:.02em;color:#4a4a55;">NICOLAS — PARIS, AVRIL 2026 · NRx · Palantir · Infrastructure · Pouvoir · BLOOM</p>
 
-      <div style="border:1px solid #cfcabb;border-left:3px solid #7a7a86;border-radius:8px;background:#f0efe8;">
-        <button onClick="{{ tSources }}" style="width:100%;display:flex;justify-content:space-between;align-items:center;gap:12px;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:#7a7a86;padding:11px 15px;background:none;border:none;cursor:pointer;text-align:left;">
+      <div style="border:1px solid #3d660033;border-left:2px solid #3d6600;border-radius:8px;background:rgba(61,102,0,.06);">
+        <button onClick="{{ tSources }}" style="width:100%;display:flex;justify-content:space-between;align-items:center;gap:12px;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:#3d6600;padding:11px 15px;background:none;border:none;cursor:pointer;text-align:left;">
           <span>gris — les sources nommées dans le texte</span><span>{{ cSources }}</span>
         </button>
         <sc-if value="{{ oSources }}" hint-placeholder-val="{{ false }}">
-        <div style="padding:0 16px 15px;color:#5f5f6b;font-size:15.5px;line-height:1.6;display:flex;flex-direction:column;gap:11px;">
+        <div style="padding:0 16px 15px;color:#1a1a1f;font-size:15.5px;line-height:1.6;display:flex;flex-direction:column;gap:11px;">
           <p><strong style="color:#4a4a55;">Wired</strong> — enquête sur Palantir, avril 2026, basée sur des Slack leakés et des interviews d'employés actuels et anciens. Citée en <span style="font-family:'DM Mono',monospace;font-size:12px;">1:08</span>.</p>
           <p><strong style="color:#4a4a55;">Politico</strong> — « invité d'honneur informel », « influence démesurée sur la droite trumpiste ». <span style="font-family:'DM Mono',monospace;font-size:12px;">1:03</span>.</p>
           <p><strong style="color:#4a4a55;">Palladium Magazine</strong> — Wolf Tivy, organisateur de la soirée. <span style="font-family:'DM Mono',monospace;font-size:12px;">1:04</span>.</p>
@@ -549,7 +539,7 @@ class Component extends DCLogic {
     const chromeH = () => {
       const hd = document.querySelector("header");
       const bar = document.querySelector("[data-stick]");
-      return (hd ? hd.getBoundingClientRect().height : 50) + (bar ? bar.getBoundingClientRect().height : 53) + 17;
+      return (hd ? hd.getBoundingClientRect().height : 50) + (bar ? bar.getBoundingClientRect().height : 0) + 17;
     };
     const syncMargins = () => {
       const m = Math.round(chromeH()) + "px";
@@ -620,7 +610,7 @@ class Component extends DCLogic {
   }
 
   toggle(k) {
-    return () => this.setState((s) => ({ open: Object.assign({}, s.open, { [k]: !s.open[k] }) }));
+    return () => this.setState((s) => ({ open: Object.assign({}, s.open, { [k]: s.open[k] === false }) }));
   }
 
   railStyle(n) {
@@ -634,18 +624,12 @@ class Component extends DCLogic {
     const out = {
       curAddr: this.state.addr,
       readCols: this.state.wide ? "200px minmax(0,1fr)" : "minmax(0,1fr)",
-      tlCols: this.state.wide ? "108px minmax(0,1fr)" : "minmax(0,1fr)",
-      openAllGris: () => {
-        const o = {};
-        keys.forEach((k) => { o[k.toLowerCase()] = true; });
-        this.setState({ open: o });
-      },
-      closeAllGris: () => this.setState({ open: {} })
+      tlCols: this.state.wide ? "108px 26px minmax(0,1fr)" : "minmax(0,1fr)",
     };
     for (let i = 1; i <= 10; i++) out["r" + i] = this.railStyle(i);
     keys.forEach((k) => {
       const key = k.toLowerCase();
-      const on = !!this.state.open[key];
+      const on = this.state.open[key] !== false;   // ouvert tant qu'on ne l'a pas fermé
       out["o" + k] = on;
       out["c" + k] = on ? "replier ▴" : "déplier ▾";
       out["t" + k] = this.toggle(key);
