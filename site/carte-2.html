@@ -62,6 +62,7 @@
     </h1>
     <p style="font-size:clamp(19px,2.2vw,30px);line-height:1.3;letter-spacing:-.02em;max-width:900px;text-wrap:pretty;animation:fadeUp .9s .5s forwards;">La société du simulacre. Comment nous avons cessé de le voir.</p>
     <p style="font-family:'DM Mono',monospace;font-size:13px;line-height:1.75;color:#4a4a55;max-width:620px;border-left:2px solid #c4283a;padding-left:18px;animation:fadeUp .9s .65s forwards;">Neuf portes, 221 fragments. Pas de flux : un fragment à la fois, et l'on choisit d'en tirer un autre.</p>
+    <button onClick="{{ tirer }}" style="align-self:flex-start;border:1px solid #c4283a;border-radius:40px;padding:14px 26px;background:none;color:#c4283a;font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.16em;text-transform:uppercase;cursor:pointer;display:inline-flex;align-items:center;gap:12px;transition:background .35s cubic-bezier(.16,1,.3,1),color .35s ease,gap .35s ease;animation:fadeUp .9s .75s forwards;" style-hover="background:#c4283a;color:#f7f5ef;gap:20px;">Tirer un fragment <span>→</span></button>
   </div>
   <div style="max-width:1100px;width:100%;margin:0 auto;display:flex;align-items:flex-end;justify-content:space-between;gap:26px;flex-wrap:wrap;animation:fadeUp .9s .8s forwards;">
     <div style="display:flex;gap:9px;flex-wrap:wrap;font-family:'DM Mono',monospace;font-size:10.5px;letter-spacing:.08em;color:#4a4a55;">
@@ -84,7 +85,6 @@
         <a href="{{ p.href }}" style="border:1px solid #b8b39c;border-radius:20px;padding:5px 11px;color:#4a4a55;white-space:nowrap;flex:none;transition:border-color .25s ease,color .25s ease;" style-hover="border-color:#c4283a;color:#c4283a;">{{ p.label }}</a>
       </sc-for>
     </div>
-    <button onClick="{{ tirer }}" style="border:1px solid #c4283a;border-radius:20px;padding:6px 14px;background:none;color:#c4283a;font-family:'DM Mono',monospace;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;cursor:pointer;transition:background .3s ease,color .3s ease;" style-hover="background:#c4283a;color:#f7f5ef;">Un tirage</button>
     <button onClick="{{ toggleGris }}" style="border:1px solid #b8b39c;border-radius:20px;padding:6px 12px;background:none;color:#4a4a55;font-family:'DM Mono',monospace;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;cursor:pointer;transition:border-color .25s ease,color .25s ease;" style-hover="border-color:#7a7a86;color:#1a1a1f;">{{ grisLabel }}</button>
   </div>
 </div>
@@ -117,7 +117,7 @@
       <div style="display:flex;flex-direction:column;gap:0;">
         <sc-for list="{{ ch.frags }}" as="f" hint-placeholder-count="4">
           <div id="{{ f.anchor }}" style="scroll-margin-top:130px;display:grid;grid-template-columns:{{ fragCols }};gap:26px;padding:24px 0;border-bottom:1px solid #e2decf;">
-            <div style="font-family:'DM Mono',monospace;font-size:clamp(26px,3vw,44px);line-height:1;color:#4a4a55;letter-spacing:-.02em;">{{ f.num }}</div>
+            <div style="font-family:'DM Mono',monospace;font-size:clamp(26px,3vw,44px);line-height:1;color:#c4283a;letter-spacing:-.02em;">{{ f.num }}</div>
             <div style="display:flex;flex-direction:column;gap:13px;min-width:0;">
               <sc-for list="{{ f.paras }}" as="p" hint-placeholder-count="1">
                 <p style="text-wrap:pretty;">{{ p }}</p>
@@ -142,13 +142,7 @@
 
 <sc-if value="{{ hasTirage }}" hint-placeholder-val="{{ false }}">
   <div style="position:fixed;inset:0;z-index:8500;background:#f7f5ef;display:flex;flex-direction:column;">
-    <div style="flex:none;display:flex;align-items:center;justify-content:space-between;gap:18px;padding:18px 30px;border-bottom:1px solid #d0ccbb;font-family:'DM Mono',monospace;font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:#8a8a92;">
-      <span>Le tirage — un fragment, au hasard contrôlé</span>
-      <div style="display:flex;gap:9px;">
-        <button onClick="{{ tirer }}" style="border:1px solid #c4283a;border-radius:20px;padding:7px 14px;background:none;color:#c4283a;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;cursor:pointer;transition:background .3s ease,color .3s ease;" style-hover="background:#c4283a;color:#f7f5ef;">En tirer un autre</button>
-        <button onClick="{{ closeTirage }}" style="border:1px solid #b8b39c;border-radius:20px;padding:7px 14px;background:none;color:#4a4a55;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;cursor:pointer;">Fermer</button>
-      </div>
-    </div>
+    <div style="flex:none;padding:18px 30px;border-bottom:1px solid #d0ccbb;font-family:'DM Mono',monospace;font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:#8a8a92;">Le tirage — un fragment, au hasard contrôlé</div>
     <div style="flex:1;overflow-y:auto;padding:40px 30px 60px;">
       <div style="max-width:900px;margin:0 auto;display:flex;flex-direction:column;gap:26px;">
         <div style="font-family:'DM Mono',monospace;font-size:clamp(70px,17vw,220px);line-height:.86;color:#c4283a;letter-spacing:-.04em;">{{ tirageNum }}</div>
@@ -157,6 +151,12 @@
           <sc-for list="{{ tiragePar }}" as="p" hint-placeholder-count="1">
             <p style="text-wrap:pretty;">{{ p }}</p>
           </sc-for>
+        </div>
+        <!-- les deux gestes viennent APRÈS le fragment, empilés : on relance,
+             ou on ferme. Rien ne les met en concurrence avec la lecture. -->
+        <div style="display:flex;flex-direction:column;gap:11px;align-items:flex-start;margin-top:12px;border-top:1px solid #d0ccbb;padding-top:30px;">
+          <button onClick="{{ tirer }}" style="border:1px solid #c4283a;border-radius:40px;padding:14px 26px;background:#c4283a;color:#f7f5ef;font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.16em;text-transform:uppercase;cursor:pointer;display:inline-flex;align-items:center;gap:12px;transition:gap .35s cubic-bezier(.16,1,.3,1),background .35s ease;" style-hover="gap:20px;background:#a81f2f;">En tirer un autre <span>→</span></button>
+          <button onClick="{{ closeTirage }}" style="border:1px solid #b8b39c;border-radius:40px;padding:12px 24px;background:none;color:#4a4a55;font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.16em;text-transform:uppercase;cursor:pointer;transition:border-color .3s ease,color .3s ease;" style-hover="border-color:#1a1a1f;color:#1a1a1f;">Fermer</button>
         </div>
       </div>
     </div>
