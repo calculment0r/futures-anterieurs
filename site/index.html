@@ -29,7 +29,7 @@
   @media(prefers-reduced-motion:reduce){[data-rv].pre,[data-mask].pre{opacity:1;transform:none;clip-path:none;}*{animation:none !important;}}
   /* téléphone : la pile de dalles épinglées redevient un flux normal, sinon les colonnes empilées débordent */
   @media(max-width:820px){
-    [data-screen-label^="Carte 0"]{position:static !important;min-height:0 !important;padding:54px 20px 58px !important;}
+    [data-screen-label^="Carte 0"],[data-screen-label^="Outil 0"]{position:static !important;min-height:0 !important;padding:54px 20px 58px !important;}
     [data-rail]{display:none !important;}
     header{padding:14px 18px !important;}
     header nav{gap:14px !important;}
@@ -67,6 +67,10 @@
   <sc-if value="{{ off3 }}" hint-placeholder-val="{{ true }}"><span style="display:block;width:2px;height:16px;background:{{ railDim }};"></span></sc-if>
   <sc-if value="{{ at4 }}" hint-placeholder-val="{{ false }}"><span style="display:block;width:2px;height:40px;background:#b8a98f;transform-origin:center;animation:barIn .5s cubic-bezier(.16,1,.3,1) forwards;"></span></sc-if>
   <sc-if value="{{ off4 }}" hint-placeholder-val="{{ true }}"><span style="display:block;width:2px;height:16px;background:{{ railDim }};"></span></sc-if>
+  <sc-if value="{{ at5 }}" hint-placeholder-val="{{ false }}"><span style="display:block;width:2px;height:40px;background:#3d6600;transform-origin:center;animation:barIn .5s cubic-bezier(.16,1,.3,1) forwards;"></span></sc-if>
+  <sc-if value="{{ off5 }}" hint-placeholder-val="{{ true }}"><span style="display:block;width:2px;height:16px;background:{{ railDim }};"></span></sc-if>
+  <sc-if value="{{ at6 }}" hint-placeholder-val="{{ false }}"><span style="display:block;width:2px;height:40px;background:#7d2b7a;transform-origin:center;animation:barIn .5s cubic-bezier(.16,1,.3,1) forwards;"></span></sc-if>
+  <sc-if value="{{ off6 }}" hint-placeholder-val="{{ true }}"><span style="display:block;width:2px;height:16px;background:{{ railDim }};"></span></sc-if>
 </div>
 
 <section id="porte" data-screen-label="Accroche" style="position:relative;min-height:100svh;display:flex;flex-direction:column;justify-content:space-between;padding:clamp(84px,11vh,120px) 32px 34px;background:#f7f5ef;">
@@ -276,10 +280,60 @@
   </div>
 </section>
 
-<section data-screen-label="Ce qu'on ne fera pas" style="position:relative;z-index:5;background:#f7f5ef;border-top:1px solid #d0ccbb;padding:104px 0 110px;overflow:hidden;">
+<section id="instruments" data-screen-label="Les instruments">
+  <div data-screen-label="Outil 01" style="position:sticky;top:0;z-index:5;min-height:100svh;background:#f7f5ef;border-top:1px solid #d0ccbb;display:flex;flex-direction:column;justify-content:center;padding:88px 32px 44px;">
+    <div style="max-width:1340px;margin:0 auto;width:100%;display:flex;flex-wrap:wrap;gap:clamp(26px,3.4vw,54px);align-items:flex-start;">
+
+      <div style="flex:0 1 196px;display:flex;flex-direction:column;gap:7px;font-family:'DM Mono',monospace;font-size:11px;line-height:1.4;color:#4a4a55;padding-top:4px;">
+        <div style="font-size:9.5px;letter-spacing:.2em;text-transform:uppercase;color:#4a4a55;margin-bottom:5px;">Les cinq colonnes</div>
+        <span style="color:#3d6600;">les arcs · carte 1</span><span style="color:#c4283a;">les fragments · carte 2</span><span style="color:#1f5fc4;">le carnet · carte 3</span><span style="color:#10357a;">la lettre · dix passages</span><span style="color:#6b5f4a;">le fil · carte 4</span><span style="color:#8a8a92;">sécession · hors chemin</span>
+      </div>
+
+      <div style="flex:3 1 400px;display:flex;flex-direction:column;gap:18px;min-width:0;">
+        <div style="font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:#3d6600;">Instrument 01 · la carte du corpus</div>
+        <a href="propagation.html" style="display:block;"><h2 style="font-weight:700;text-transform:uppercase;letter-spacing:-.042em;line-height:.9;font-size:clamp(29px,5.4vw,92px);transition:letter-spacing .5s cubic-bezier(.16,1,.3,1),color .4s ease;" style-hover="letter-spacing:-.028em;color:#3d6600;">La propagation</h2></a>
+        <p style="font-size:clamp(18px,1.8vw,24px);line-height:1.35;letter-spacing:-.015em;max-width:620px;text-wrap:pretty;">Ce que la carte 1 pose, et où ça ressort. Cinq colonnes, une seule descente.</p>
+        <div style="display:flex;gap:9px;flex-wrap:wrap;font-family:'DM Mono',monospace;font-size:10.5px;letter-spacing:.08em;color:#4a4a55;"><span style="border:1px solid #d0ccbb;border-radius:20px;padding:4px 11px;">Généalogie</span><span style="border:1px solid #d0ccbb;border-radius:20px;padding:4px 11px;">Proximité</span><span style="border:1px solid #d0ccbb;border-radius:20px;padding:4px 11px;">Sécession</span><span style="border:1px solid #d0ccbb;border-radius:20px;padding:4px 11px;">Dix arcs</span></div>
+        <a href="propagation.html" style="font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.16em;text-transform:uppercase;padding:14px 26px;border-radius:40px;border:1px solid #d0ccbb;color:#3d6600;display:inline-flex;align-items:center;gap:12px;align-self:flex-start;margin-top:4px;transition:background .35s cubic-bezier(.16,1,.3,1),color .35s ease,border-color .35s ease,gap .35s ease;" style-hover="background:#3d6600;color:#f7f5ef;border-color:#3d6600;gap:20px;">Ouvrir la carte <span>→</span></a>
+      </div>
+
+      <div style="flex:1.15 1 250px;display:flex;flex-direction:column;gap:16px;border-left:1px solid #d0ccbb;padding-left:clamp(18px,2vw,28px);min-width:0;">
+        <div style="font-family:'DM Mono',monospace;font-size:9.5px;letter-spacing:.2em;text-transform:uppercase;color:#4a4a55;">Aperçu</div>
+        <p style="font-size:15px;line-height:1.55;color:#4a4a55;text-wrap:pretty;">Dix catégories découpent la carte 1. On en suit une, et le corpus s'allume dans son sillage — fragments, unités du carnet, portes de la lettre, tours du fil. Ce qui ne chemine pas descend sous la carte.</p>
+        <div style="display:flex;flex-direction:column;gap:9px;font-family:'DM Mono',monospace;font-size:11px;line-height:1.5;color:#1a1a1f;border-top:1px solid #d0ccbb;padding-top:15px;"><span><span style="color:#4a4a55;">faisceau</span> la part du corpus admise à cheminer</span><span><span style="color:#4a4a55;">trait</span> plein pour la chaîne suivie</span><span><span style="color:#4a4a55;">récit</span> un texte rédigé par arc</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div data-screen-label="Outil 02" style="position:sticky;top:0;z-index:6;min-height:100svh;background:#efece2;border-top:1px solid #d0ccbb;display:flex;flex-direction:column;justify-content:center;padding:88px 32px 44px;">
+    <div style="max-width:1340px;margin:0 auto;width:100%;display:flex;flex-wrap:wrap;gap:clamp(26px,3.4vw,54px);align-items:flex-start;">
+
+      <div style="flex:0 1 196px;display:flex;flex-direction:column;gap:7px;font-family:'DM Mono',monospace;font-size:11px;line-height:1.4;color:#4a4a55;padding-top:4px;">
+        <div style="font-size:9.5px;letter-spacing:.2em;text-transform:uppercase;color:#4a4a55;margin-bottom:5px;">Les sept axes</div>
+        <span style="color:#c4283a;">Simulacre & régimes du vrai</span><span style="color:#10357a;">Gouvernementalité & pilotage</span><span style="color:#6b5f4a;">Technique & matérialité</span><span style="color:#a8551c;">Sujet & dépossession</span><span style="color:#1f5fc4;">Temps, mémoire & histoire</span><span style="color:#3d6600;">Le Réel & le Dehors</span><span style="color:#7d2b7a;">Collectif, sécession & sortie</span>
+      </div>
+
+      <div style="flex:3 1 400px;display:flex;flex-direction:column;gap:18px;min-width:0;">
+        <div style="font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:#7d2b7a;">Instrument 02 · le voisinage intellectuel</div>
+        <a href="auteurs.html" style="display:block;"><h2 style="font-weight:700;text-transform:uppercase;letter-spacing:-.042em;line-height:.9;font-size:clamp(29px,5.4vw,92px);transition:letter-spacing .5s cubic-bezier(.16,1,.3,1),color .4s ease;" style-hover="letter-spacing:-.028em;color:#7d2b7a;">Les auteurs</h2></a>
+        <p style="font-size:clamp(18px,1.8vw,24px);line-height:1.35;letter-spacing:-.015em;max-width:620px;text-wrap:pretty;">Soixante noms, et ce qui les relie. On en prend un, on le promène.</p>
+        <div style="display:flex;gap:9px;flex-wrap:wrap;font-family:'DM Mono',monospace;font-size:10.5px;letter-spacing:.08em;color:#4a4a55;"><span style="border:1px solid #d0ccbb;border-radius:20px;padding:4px 11px;">Filiations</span><span style="border:1px solid #d0ccbb;border-radius:20px;padding:4px 11px;">Oppositions</span><span style="border:1px solid #d0ccbb;border-radius:20px;padding:4px 11px;">Sept axes</span><span style="border:1px solid #d0ccbb;border-radius:20px;padding:4px 11px;">133 liens</span></div>
+        <a href="auteurs.html" style="font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.16em;text-transform:uppercase;padding:14px 26px;border-radius:40px;border:1px solid #d0ccbb;color:#7d2b7a;display:inline-flex;align-items:center;gap:12px;align-self:flex-start;margin-top:4px;transition:background .35s cubic-bezier(.16,1,.3,1),color .35s ease,border-color .35s ease,gap .35s ease;" style-hover="background:#7d2b7a;color:#f7f5ef;border-color:#7d2b7a;gap:20px;">Ouvrir le graphe <span>→</span></a>
+      </div>
+
+      <div style="flex:1.15 1 250px;display:flex;flex-direction:column;gap:16px;border-left:1px solid #d0ccbb;padding-left:clamp(18px,2vw,28px);min-width:0;">
+        <div style="font-family:'DM Mono',monospace;font-size:9.5px;letter-spacing:.2em;text-transform:uppercase;color:#4a4a55;">Aperçu</div>
+        <p style="font-size:15px;line-height:1.55;color:#4a4a55;text-wrap:pretty;">Un lien n'existe que si deux auteurs sont assez proches : il se noue, se tend, se défait quand ils s'éloignent. Rien ne se lit sans déplacer quelqu'un.</p>
+        <div style="display:flex;flex-direction:column;gap:9px;font-family:'DM Mono',monospace;font-size:11px;line-height:1.5;color:#1a1a1f;border-top:1px solid #d0ccbb;padding-top:15px;"><span><span style="color:#4a4a55;">contour</span> nommé · masqué · affine</span><span><span style="color:#4a4a55;">halo</span> les neuf auteurs de référence</span><span><span style="color:#4a4a55;">taille</span> le nombre de liens</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section data-screen-label="Ce qu'on ne fera pas" style="position:relative;z-index:7;background:#f7f5ef;border-top:1px solid #d0ccbb;padding:104px 0 110px;overflow:hidden;">
   <div style="max-width:1240px;margin:0 auto;padding:0 32px;display:flex;flex-direction:column;gap:14px;">
     <div data-rv="1" style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:#8a8a92;">Ce qu'on ne fera pas</div>
-    <h2 data-mask="1" style="font-weight:700;text-transform:uppercase;letter-spacing:-.04em;line-height:.92;font-size:clamp(26px,5.2vw,84px);max-width:1000px;">Chaque non est un passage du corpus appliqué</h2>
+    <h2 data-mask="1" style="font-weight:700;text-transform:uppercase;letter-spacing:-.04em;line-height:.92;font-size:clamp(26px,5.2vw,84px);max-width:1000px;">Aucune de ces absences n'est un oubli</h2>
   </div>
   <div style="display:flex;width:max-content;margin-top:52px;animation:drift 46s linear infinite;" style-hover="animation-play-state:paused;">
     <div style="display:flex;gap:14px;padding-right:14px;font-family:'DM Mono',monospace;font-size:13px;letter-spacing:.04em;color:#4a4a55;white-space:nowrap;">
@@ -294,7 +348,7 @@
   </div>
 </section>
 
-<footer style="position:relative;z-index:5;background:#17171c;color:#9a9ab0;padding:64px 32px 40px;font-family:'DM Mono',monospace;font-size:11.5px;line-height:1.9;letter-spacing:.04em;">
+<footer style="position:relative;z-index:7;background:#17171c;color:#9a9ab0;padding:64px 32px 40px;font-family:'DM Mono',monospace;font-size:11.5px;line-height:1.9;letter-spacing:.04em;">
   <div style="max-width:1240px;margin:0 auto;display:flex;flex-wrap:wrap;gap:40px;justify-content:space-between;align-items:flex-end;">
     <div style="display:flex;flex-direction:column;gap:6px;">
       <span style="color:#e8e8f0;text-transform:uppercase;letter-spacing:.2em;">Futures Antérieurs</span>
@@ -348,7 +402,9 @@ class Component extends DCLogic {
     const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
     this.readCorpus();
 
-    this.slabs = [1, 2, 3, 4].map((n) => document.querySelector('[data-screen-label="Carte 0' + n + '"]'));
+    // les six dalles épinglées : les quatre cartes, puis les deux instruments
+    this.slabs = ['Carte 01', 'Carte 02', 'Carte 03', 'Carte 04', 'Outil 01', 'Outil 02']
+      .map((l) => document.querySelector('[data-screen-label="' + l + '"]'));
     this.foot = document.querySelector("footer");
 
     // révélations : on pose l'état caché seulement si l'observer est disponible
@@ -466,7 +522,9 @@ class Component extends DCLogic {
       at1: a === 1, off1: a !== 1,
       at2: a === 2, off2: a !== 2,
       at3: a === 3, off3: a !== 3,
-      at4: a === 4, off4: a !== 4
+      at4: a === 4, off4: a !== 4,
+      at5: a === 5, off5: a !== 5,
+      at6: a === 6, off6: a !== 6
     };
   }
 }
