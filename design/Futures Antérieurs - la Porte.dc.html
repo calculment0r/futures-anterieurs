@@ -57,18 +57,18 @@
 
 <div style="position:fixed;inset:0;z-index:9000;pointer-events:none;mix-blend-mode:multiply;animation:flick 7s ease-in-out infinite;background-image:url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22160%22 height=%22160%22><filter id=%22n%22><feTurbulence type=%22fractalNoise%22 baseFrequency=%220.85%22 numOctaves=%224%22/></filter><rect width=%22160%22 height=%22160%22 filter=%22url(%23n)%22 opacity=%220.32%22/></svg>');"></div>
 
-<header style="position:fixed;top:0;left:0;right:0;z-index:8000;display:flex;align-items:center;justify-content:space-between;gap:24px;padding:18px 32px;font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:#f7f5ef;mix-blend-mode:difference;">
-  <a href="#porte" style="display:flex;align-items:center;gap:10px;color:#f7f5ef;flex:none;">
-    <span style="width:7px;height:7px;border-radius:50%;background:#f7f5ef;display:inline-block;flex:none;"></span>
+<header style="position:fixed;top:0;left:0;right:0;z-index:8000;display:flex;align-items:center;justify-content:space-between;gap:24px;padding:18px 32px;font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.18em;text-transform:uppercase;transition:background .45s ease,border-color .45s ease,color .45s ease;{{ bandeau }}">
+  <a href="#porte" style="display:flex;align-items:center;gap:10px;color:inherit;flex:none;">
+    <span style="width:7px;height:7px;border-radius:50%;background:currentColor;display:inline-block;flex:none;"></span>
     <span data-marque="1">Futures Antérieurs</span>
   </a>
   <nav data-outils="1" style="display:flex;gap:20px;align-items:center;flex:none;">
-    <a href="#cartes" style="color:#f7f5ef;opacity:.6;transition:opacity .3s ease,letter-spacing .3s ease;" style-hover="opacity:1;letter-spacing:.22em;">Les quatre cartes</a>
-    <a href="#adresses" style="color:#f7f5ef;opacity:.6;transition:opacity .3s ease,letter-spacing .3s ease;" style-hover="opacity:1;letter-spacing:.22em;">La grammaire</a>
-    <a href="./Futures Antérieurs - la Propagation.dc.html" style="color:#f7f5ef;opacity:.6;transition:opacity .3s ease,letter-spacing .3s ease;" style-hover="opacity:1;letter-spacing:.22em;">La propagation</a>
-    <a href="auteurs.html" style="color:#f7f5ef;opacity:.6;transition:opacity .3s ease,letter-spacing .3s ease;" style-hover="opacity:1;letter-spacing:.22em;">Les auteurs</a>
-    <a href="./Futures Antérieurs - les Passages.dc.html" style="color:#f7f5ef;opacity:.6;transition:opacity .3s ease,letter-spacing .3s ease;" style-hover="opacity:1;letter-spacing:.22em;">Les passages</a>
-    <a href="./Futures Antérieurs - les Instruments.dc.html" style="color:#f7f5ef;opacity:.6;transition:opacity .3s ease,letter-spacing .3s ease;" style-hover="opacity:1;letter-spacing:.22em;">Les instruments</a>
+    <a href="#cartes" style="color:inherit;opacity:.62;transition:opacity .3s ease,letter-spacing .3s ease;" style-hover="opacity:1;letter-spacing:.22em;">Les quatre cartes</a>
+    <a href="#adresses" style="color:inherit;opacity:.62;transition:opacity .3s ease,letter-spacing .3s ease;" style-hover="opacity:1;letter-spacing:.22em;">La grammaire</a>
+    <a href="./Futures Antérieurs - la Propagation.dc.html" style="color:inherit;opacity:.62;transition:opacity .3s ease,letter-spacing .3s ease;" style-hover="opacity:1;letter-spacing:.22em;">La propagation</a>
+    <a href="auteurs.html" style="color:inherit;opacity:.62;transition:opacity .3s ease,letter-spacing .3s ease;" style-hover="opacity:1;letter-spacing:.22em;">Les auteurs</a>
+    <a href="./Futures Antérieurs - les Passages.dc.html" style="color:inherit;opacity:.62;transition:opacity .3s ease,letter-spacing .3s ease;" style-hover="opacity:1;letter-spacing:.22em;">Les passages</a>
+    <a href="./Futures Antérieurs - les Instruments.dc.html" style="color:inherit;opacity:.62;transition:opacity .3s ease,letter-spacing .3s ease;" style-hover="opacity:1;letter-spacing:.22em;">Les instruments</a>
   </nav>
 </header>
 
@@ -544,6 +544,10 @@ class Component extends DCLogic {
     return {
       m1: this.state.m1, m2: this.state.m2, m3: this.state.m3, m4: this.state.m4,
       railDim: this.state.dark ? "#3a3a46" : "#c9c4b0",
+      // la bande de l'en-tête prend la couleur de la dalle qu'elle couvre
+      bandeau: this.state.dark
+        ? "background:#17171c;border-bottom:1px solid #2a2a33;color:#e8e8f0;"
+        : "background:#f7f5ef;border-bottom:1px solid rgba(208,204,187,.5);color:#1a1a1f;",
       at1: a === 1, off1: a !== 1,
       at2: a === 2, off2: a !== 2,
       at3: a === 3, off3: a !== 3,
