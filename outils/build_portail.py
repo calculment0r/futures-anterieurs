@@ -88,9 +88,6 @@ def couper(html: str, fichier: str) -> str:
         # « la grammaire d'adressage » : la section et son entrée de nav
         html = re.sub(r'<section id="adresses"[\s\S]*?</section>\s*', "", html)
         html = re.sub(r'<a href="#adresses"[\s\S]*?</a>\s*', "", html)
-        # la nav ne compte plus que deux entrées : ne pas masquer la dernière
-        html = html.replace(
-            "  @media(max-width:520px){\n    header nav a:last-child{display:none;}\n  }\n", "")
         # plus aucune section #adresses à révéler en bas de page
         html = re.sub(r'#manifeste,#adresses\{', "#manifeste{", html)
 

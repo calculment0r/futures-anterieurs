@@ -35,6 +35,16 @@
     header nav{gap:14px !important;}
     #porte{padding:74px 20px 26px !important;}
     #manifeste{padding:70px 20px 76px !important;}
+    /* la colonne latérale d'une dalle — sommaire d'une carte, axes d'un outil —
+       tombait au-dessus du titre une fois la dalle dépliée en colonne unique.
+       Elle sort : le titre, la logline et le bouton suffisent à décider. */
+    [data-flanc]{display:none !important;}
+    /* les trois outils tiennent sur une ligne, ou l'en-tête se plie en trois */
+    [data-outils]{gap:11px !important;font-size:9.5px !important;letter-spacing:.08em !important;}
+    [data-outils] a{white-space:nowrap;}
+  }
+  @media(max-width:430px){
+    [data-marque]{display:none;}
   }
 </style>
 </head>
@@ -47,11 +57,11 @@
 <div style="position:fixed;inset:0;z-index:9000;pointer-events:none;mix-blend-mode:multiply;animation:flick 7s ease-in-out infinite;background-image:url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22160%22 height=%22160%22><filter id=%22n%22><feTurbulence type=%22fractalNoise%22 baseFrequency=%220.85%22 numOctaves=%224%22/></filter><rect width=%22160%22 height=%22160%22 filter=%22url(%23n)%22 opacity=%220.32%22/></svg>');"></div>
 
 <header style="position:fixed;top:0;left:0;right:0;z-index:8000;display:flex;align-items:center;justify-content:space-between;gap:24px;padding:18px 32px;font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:#f7f5ef;mix-blend-mode:difference;">
-  <a href="#porte" style="display:flex;align-items:center;gap:10px;color:#f7f5ef;">
-    <span style="width:7px;height:7px;border-radius:50%;background:#f7f5ef;display:inline-block;"></span>
-    <span>Futures Antérieurs</span>
+  <a href="#porte" style="display:flex;align-items:center;gap:10px;color:#f7f5ef;flex:none;">
+    <span style="width:7px;height:7px;border-radius:50%;background:#f7f5ef;display:inline-block;flex:none;"></span>
+    <span data-marque="1">Futures Antérieurs</span>
   </a>
-  <nav style="display:flex;gap:20px;align-items:center;">
+  <nav data-outils="1" style="display:flex;gap:20px;align-items:center;flex:none;">
     <a href="#cartes" style="color:#f7f5ef;opacity:.6;transition:opacity .3s ease,letter-spacing .3s ease;" style-hover="opacity:1;letter-spacing:.22em;">Les quatre cartes</a>
     <a href="propagation.html" style="color:#f7f5ef;opacity:.6;transition:opacity .3s ease,letter-spacing .3s ease;" style-hover="opacity:1;letter-spacing:.22em;">La propagation</a>
     <a href="auteurs.html" style="color:#f7f5ef;opacity:.6;transition:opacity .3s ease,letter-spacing .3s ease;" style-hover="opacity:1;letter-spacing:.22em;">Les auteurs</a>
@@ -98,15 +108,16 @@
 
 <section id="manifeste" data-screen-label="Manifeste" style="position:relative;background:#f7f5ef;border-top:1px solid #d0ccbb;padding:110px 32px 120px;">
   <div style="max-width:1000px;margin:0 auto;display:flex;flex-direction:column;gap:44px;">
-    <div data-rv="1" style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:#8a8a92;">Ce que la série affirme</div>
+    <div data-rv="1" style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:#8a8a92;">Ce qu'il y a ici</div>
 
     <div style="display:flex;flex-direction:column;gap:26px;font-size:clamp(19px,2vw,26px);line-height:1.45;letter-spacing:-.015em;text-wrap:pretty;">
-      <p data-rv="1" data-d="0">Quatre textes, écrits entre avril et juillet 2026. Le premier montre ce qui est. Le deuxième, comment nous avons cessé de le voir. Le troisième oriente. Le quatrième est un transcript : la voix d'en face, non réécrite.</p>
+      <p data-rv="1" data-d="0">Quatre textes, écrits entre avril et juillet 2026. Le premier suit une philosophie de blog obscure jusqu'aux couloirs du pouvoir américain, et montre que l'infrastructure est déjà posée. Le deuxième, en deux cent vingt et un fragments, dit comment nous avons cessé de la voir. Le troisième ne décrit plus : il oriente, et cherche la sortie. Le quatrième est un transcript — une nuit de travail avec une machine, sa chaîne de pensée comprise, non réécrite.</p>
       <p data-rv="1" data-d="1">Ils ne forment pas une thèse. Ils forment une position.</p>
-      <p data-rv="1" data-d="2" style="color:#4a4a55;">Ce site n'en est pas la vitrine. Il en est la cinquième carte — la première mise en pratique de ce qu'ils affirment. Aucun résumé. Aucun assistant. Aucune mesure d'audience. Les textes n'ont pas été édités pour l'écran. Le corpus se télécharge.</p>
+      <p data-rv="1" data-d="2">Deux instruments les tiennent ensemble, et ne sont pas des ornements. <span style="color:#3d6600;">La propagation</span> calcule ce que les quatre textes ont en commun sans qu'on le leur ait dit : on épingle une des dix catégories du premier, et le corpus s'allume dans son sillage — quels fragments elle éclaire, quelle unité du carnet elle atteint, où elle ressort dans la nuit. <span style="color:#7d2b7a;">Les auteurs</span> posent sur un même plan les soixante noms convoqués ; un lien n'y existe que si deux d'entre eux sont assez proches. On en prend un, on le promène, et le voisinage se refait autour de lui.</p>
+      <p data-rv="1" data-d="3" style="color:#4a4a55;">Ce site n'en est pas la vitrine. Il en est la cinquième carte — la première mise en pratique de ce que les quatre affirment. Aucun résumé. Aucun assistant. Aucune mesure d'audience. Les textes ne sont pas recopiés dans les pages : ils sont lus à l'affichage depuis leurs fichiers source, et le corpus se télécharge.</p>
     </div>
 
-    <blockquote data-rv="1" data-d="3" style="border-top:1px solid #d0ccbb;padding-top:30px;display:flex;flex-direction:column;gap:14px;">
+    <blockquote data-rv="1" data-d="4" style="border-top:1px solid #d0ccbb;padding-top:30px;display:flex;flex-direction:column;gap:14px;">
       <p style="font-size:clamp(17px,1.8vw,22px);line-height:1.5;color:#1a1a1f;max-width:880px;text-wrap:pretty;">une pratique souveraine doit être constituée selon les principes qu'elle défend. on ne construit pas l'autonomie cognitive avec des outils qui produisent la dépendance.</p>
       <span style="font-family:'DM Mono',monospace;font-size:12px;letter-spacing:.1em;color:#4a7a00;">2:§102</span>
     </blockquote>
@@ -118,7 +129,7 @@
   <div data-screen-label="Carte 01" style="position:sticky;top:0;z-index:1;min-height:100svh;background:#f7f5ef;border-top:1px solid #d0ccbb;display:flex;flex-direction:column;justify-content:center;padding:88px 32px 44px;">
     <div style="max-width:1340px;margin:0 auto;width:100%;display:flex;flex-wrap:wrap;gap:clamp(26px,3.4vw,54px);align-items:flex-start;">
 
-      <div style="flex:0 1 196px;display:flex;flex-direction:column;gap:7px;font-family:'DM Mono',monospace;font-size:11px;line-height:1.4;color:#4a4a55;padding-top:4px;">
+      <div data-flanc="1" style="flex:0 1 196px;display:flex;flex-direction:column;gap:7px;font-family:'DM Mono',monospace;font-size:11px;line-height:1.4;color:#4a4a55;padding-top:4px;">
         <div style="font-size:9.5px;letter-spacing:.2em;text-transform:uppercase;color:#4a4a55;margin-bottom:5px;">Sommaire · {{ m1 }}</div>
         <a href="carte-1.html#1-01" style="transition:color .25s ease;" style-hover="color:#4a7a00;">1:01 · Prologue</a>
         <a href="carte-1.html#1-02" style="transition:color .25s ease;" style-hover="color:#4a7a00;">1:02 · Les philosophes</a>
@@ -156,7 +167,7 @@
   <div data-screen-label="Carte 02" style="position:sticky;top:0;z-index:2;min-height:100svh;background:#efece2;border-top:1px solid #d0ccbb;display:flex;flex-direction:column;justify-content:center;padding:88px 32px 44px;">
     <div style="max-width:1340px;margin:0 auto;width:100%;display:flex;flex-wrap:wrap;gap:clamp(26px,3.4vw,54px);align-items:flex-start;">
 
-      <div style="flex:0 1 196px;display:flex;flex-direction:column;gap:7px;font-family:'DM Mono',monospace;font-size:11px;line-height:1.4;color:#4a4a55;padding-top:4px;">
+      <div data-flanc="1" style="flex:0 1 196px;display:flex;flex-direction:column;gap:7px;font-family:'DM Mono',monospace;font-size:11px;line-height:1.4;color:#4a4a55;padding-top:4px;">
         <div style="font-size:9.5px;letter-spacing:.2em;text-transform:uppercase;color:#4a4a55;margin-bottom:5px;">{{ m2 }}</div>
         <a href="carte-2.html#ch1" style="transition:color .25s ease;" style-hover="color:#c4283a;">2:ch1 · Exonoèse</a>
         <a href="carte-2.html#ch2" style="transition:color .25s ease;" style-hover="color:#c4283a;">2:ch2 · Narcisse Technē</a>
@@ -191,7 +202,7 @@
   <div data-screen-label="Carte 03" style="position:sticky;top:0;z-index:3;min-height:100svh;background:#e6e2d5;border-top:1px solid #c9c4b0;display:flex;flex-direction:column;justify-content:center;padding:88px 32px 44px;">
     <div style="max-width:1340px;margin:0 auto;width:100%;display:flex;flex-wrap:wrap;gap:clamp(26px,3.4vw,54px);align-items:flex-start;">
 
-      <div style="flex:0 1 196px;display:flex;flex-direction:column;gap:7px;font-family:'DM Mono',monospace;font-size:11px;line-height:1.4;color:#4a4a55;padding-top:4px;">
+      <div data-flanc="1" style="flex:0 1 196px;display:flex;flex-direction:column;gap:7px;font-family:'DM Mono',monospace;font-size:11px;line-height:1.4;color:#4a4a55;padding-top:4px;">
         <div style="font-size:9.5px;letter-spacing:.2em;text-transform:uppercase;color:#4a4a55;margin-bottom:5px;">{{ m3 }}</div>
         <a href="carte-3.html#p-3-pref" style="transition:color .25s ease;" style-hover="color:#1f5fc4;">3:pref · Préface</a>
         <a href="carte-3.html#p-3-I" style="transition:color .25s ease;" style-hover="color:#1f5fc4;">3:I · L'Archipel</a>
@@ -224,7 +235,7 @@
   <div data-screen-label="Carte 04" style="position:sticky;top:0;z-index:4;min-height:100svh;background:#17171c;color:#e8e8f0;display:flex;flex-direction:column;justify-content:center;padding:88px 32px 44px;">
     <div style="max-width:1340px;margin:0 auto;width:100%;display:flex;flex-wrap:wrap;gap:clamp(26px,3.4vw,54px);align-items:flex-start;">
 
-      <div style="flex:0 1 196px;display:flex;flex-direction:column;gap:7px;font-family:'DM Mono',monospace;font-size:11px;line-height:1.4;color:#9a9ab0;padding-top:4px;">
+      <div data-flanc="1" style="flex:0 1 196px;display:flex;flex-direction:column;gap:7px;font-family:'DM Mono',monospace;font-size:11px;line-height:1.4;color:#9a9ab0;padding-top:4px;">
         <div style="font-size:9.5px;letter-spacing:.2em;text-transform:uppercase;color:#b8a98f;margin-bottom:5px;">Le fil · {{ m4 }}</div>
         <a href="carte-4.html#seuil" style="transition:color .25s ease;" style-hover="color:#b8a98f;">4:seuil · la nuit posée à plat</a>
         <a href="carte-4.html#4-H32" style="transition:color .25s ease;" style-hover="color:#b8a98f;">4:H32 · l'incipit — « Tu l'avais. »</a>
@@ -261,7 +272,7 @@
   <div data-screen-label="Outil 01" style="position:sticky;top:0;z-index:5;min-height:100svh;background:#f7f5ef;border-top:1px solid #d0ccbb;display:flex;flex-direction:column;justify-content:center;padding:88px 32px 44px;">
     <div style="max-width:1340px;margin:0 auto;width:100%;display:flex;flex-wrap:wrap;gap:clamp(26px,3.4vw,54px);align-items:flex-start;">
 
-      <div style="flex:0 1 196px;display:flex;flex-direction:column;gap:7px;font-family:'DM Mono',monospace;font-size:11px;line-height:1.4;color:#4a4a55;padding-top:4px;">
+      <div data-flanc="1" style="flex:0 1 196px;display:flex;flex-direction:column;gap:7px;font-family:'DM Mono',monospace;font-size:11px;line-height:1.4;color:#4a4a55;padding-top:4px;">
         <div style="font-size:9.5px;letter-spacing:.2em;text-transform:uppercase;color:#4a4a55;margin-bottom:5px;">Les cinq colonnes</div>
         <span style="color:#3d6600;">les arcs · carte 1</span><span style="color:#c4283a;">les fragments · carte 2</span><span style="color:#1f5fc4;">le carnet · carte 3</span><span style="color:#10357a;">la lettre · dix passages</span><span style="color:#6b5f4a;">le fil · carte 4</span><span style="color:#8a8a92;">sécession · hors chemin</span>
       </div>
@@ -284,7 +295,7 @@
   <div data-screen-label="Outil 02" style="position:sticky;top:0;z-index:6;min-height:100svh;background:#efece2;border-top:1px solid #d0ccbb;display:flex;flex-direction:column;justify-content:center;padding:88px 32px 44px;">
     <div style="max-width:1340px;margin:0 auto;width:100%;display:flex;flex-wrap:wrap;gap:clamp(26px,3.4vw,54px);align-items:flex-start;">
 
-      <div style="flex:0 1 196px;display:flex;flex-direction:column;gap:7px;font-family:'DM Mono',monospace;font-size:11px;line-height:1.4;color:#4a4a55;padding-top:4px;">
+      <div data-flanc="1" style="flex:0 1 196px;display:flex;flex-direction:column;gap:7px;font-family:'DM Mono',monospace;font-size:11px;line-height:1.4;color:#4a4a55;padding-top:4px;">
         <div style="font-size:9.5px;letter-spacing:.2em;text-transform:uppercase;color:#4a4a55;margin-bottom:5px;">Les sept axes</div>
         <span style="color:#c4283a;">Simulacre & régimes du vrai</span><span style="color:#10357a;">Gouvernementalité & pilotage</span><span style="color:#6b5f4a;">Technique & matérialité</span><span style="color:#a8551c;">Sujet & dépossession</span><span style="color:#1f5fc4;">Temps, mémoire & histoire</span><span style="color:#3d6600;">Le Réel & le Dehors</span><span style="color:#7d2b7a;">Collectif, sécession & sortie</span>
       </div>
