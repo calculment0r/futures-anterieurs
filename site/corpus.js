@@ -101,6 +101,7 @@ export function parse4(md) {
   const body = frontMatter(md).body;
   const lines = body.split("\n");
   const seuil = [];
+  const coda = [];
   const turns = [];
   let zone = "seuil", turn = null, quote = null, inComment = false;
 
@@ -117,6 +118,8 @@ export function parse4(md) {
     if (inComment) { if (l.indexOf("-->") >= 0) inComment = false; return; }
     if (l.indexOf("## Le fil") === 0) { zone = "fil"; return; }
     if (l.indexOf("## Seuil") === 0) { zone = "seuil"; return; }
+    // la coda ferme le fil : on quitte le dernier tour, plus rien ne s'y range
+    if (l.indexOf("## Ce qui reste") === 0) { flushQuote(); zone = "coda"; turn = null; return; }
 
     const mh = l.match(/^### (4:[HA]\d+)\s*—\s*(Cal|Arche)\s*·\s*(.+)$/);
     if (mh) {
@@ -139,14 +142,16 @@ export function parse4(md) {
 
     if (l.charAt(0) === "*" && l.slice(-1) === "*") {
       const t = l.replace(/^\*+|\*+$/g, "").trim();
+      if (zone === "coda") { coda.push(t); return; }
       if (!turn) return;
       if (t.indexOf("— Arche agit sur les fichiers") === 0) turn.tools = t.replace(/^—\s*/, "");
       else turn.notes.push(t);
       return;
     }
     if (zone === "seuil") seuil.push(l);
+    else if (zone === "coda") coda.push(l);
     else if (turn) turn.paras.push(l);
   });
   flushQuote();
-  return { seuil: seuil, turns: turns };
+  return { seuil: seuil, coda: coda, turns: turns };
 }

@@ -42,6 +42,11 @@ GARDES = {
 # ── les écrans qu'on vire : tout lien vers eux disparaît avec son élément ────
 VIRES = ["les Passages", "les Instruments"]
 
+# La page des auteurs n'a pas de prototype — elle est écrite à la main dans
+# site/. Les cartes y mènent quand même : le lien s'écrit comme les autres dans
+# le prototype, et se résout ici.
+HORS_PROTO = {"./Futures Antérieurs - les Auteurs.dc.html": "auteurs.html"}
+
 CORPUS = [
     "1_HYPERSTION.md", "2_FRAGMENTS.md", "3_KUBERNAN.md", "4_ARCHIBALD.md",
     "liens.json", "passages.json", "concepts.json", "evenements.json",
@@ -73,15 +78,6 @@ def extraire(src: str, fichier: str):
 
 def couper(html: str, fichier: str) -> str:
     """Retire les écrans virés et tout ce qui y mène."""
-    # Le colophon des cartes 2 à 4 est une paire de boutons dont le second
-    # menait aux instruments. On ne le supprime pas — on le rebranche sur la
-    # propagation : la forme du colophon est conservée, et le seul autre écran
-    # qu'on garde redevient atteignable depuis un article.
-    html = re.sub(
-        r'(<a href=")\./Futures Antérieurs - les Instruments\.dc\.html("[^>]*>)Les instruments(\s*<span>→</span></a>)',
-        r'\1./Futures Antérieurs - la Propagation.dc.html\2La propagation\3',
-        html)
-
     for vire in VIRES:
         # l'ancre entière part avec son libellé, jamais un href orphelin
         motif = r'<a\s+href="\./Futures Antérieurs - ' + re.escape(vire) + \
@@ -108,6 +104,8 @@ def relier(html: str) -> str:
     """Les liens entre écrans deviennent des noms de fichiers servables."""
     for proto, sortie in GARDES.items():
         html = html.replace("./" + proto, sortie)
+    for lien, sortie in HORS_PROTO.items():
+        html = html.replace(lien, sortie)
     return html
 
 
