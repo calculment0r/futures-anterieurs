@@ -41,8 +41,11 @@
       -webkit-overflow-scrolling:touch;}
     [data-somm]::-webkit-scrollbar{height:0;}
     [data-somm] > div:first-child{display:none;}
-    [data-somm] a{flex:none;white-space:nowrap;padding:7px 12px;margin:0 !important;
-      border:1px solid #d0ccbb;border-radius:20px;margin-right:7px !important;}
+    [data-somm] a{flex:none;white-space:nowrap;padding:7px 13px;margin:0 !important;
+      border:none;border-radius:20px;background:rgba(31,95,196,.065);margin-right:7px !important;}
+    [data-somm] a [data-adr]{display:none;}
+    [data-somm] a{border-left:none !important;padding-left:13px !important;}
+    [data-somm] a[style*="#1f5fc4"]{background:rgba(31,95,196,.15) !important;}
   }
   @media(max-width:820px){
     body{font-size:17px;}
@@ -114,7 +117,7 @@
   <nav data-somm="1">
     <div style="letter-spacing:.2em;text-transform:uppercase;color:#8a8a92;font-size:9.5px;margin-bottom:8px;">Sommaire</div>
     <sc-for list="{{ somm }}" as="e" hint-placeholder-count="7">
-      <a href="{{ e.href }}" style="{{ e.style }}">{{ e.label }}</a>
+      <a href="{{ e.href }}" style="{{ e.style }}"><span data-adr="1">{{ e.adr }}</span><span data-mot="1">{{ e.mot }}</span></a>
     </sc-for>
     <a href="#colophon" style="margin-top:10px;">colophon</a>
   </nav>
@@ -308,7 +311,7 @@ class Component extends DCLogic {
       readCols: "190px minmax(0,1fr)",
       somm: parts.map((p) => ({
         href: "#" + anchorOf(p.id),
-        label: p.id.replace("3:", "") + " · " + p.titre,
+        adr: p.id.replace("3:", "") + " · ", mot: p.titre,
         style: this.state.addr === p.id ? "color:#1f5fc4;" : ""
       })),
       plain: plain,

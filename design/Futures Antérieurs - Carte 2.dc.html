@@ -69,8 +69,11 @@
       -webkit-overflow-scrolling:touch;}
     [data-somm]::-webkit-scrollbar{height:0;}
     [data-somm] > div:first-child{display:none;}
-    [data-somm] a{flex:none;white-space:nowrap;padding:7px 12px;margin:0 !important;
-      border:1px solid #d0ccbb;border-radius:20px;margin-right:7px !important;}
+    [data-somm] a{flex:none;white-space:nowrap;padding:7px 13px;margin:0 !important;
+      border:none;border-radius:20px;background:rgba(196,40,58,.065);margin-right:7px !important;}
+    [data-somm] a [data-adr]{display:none;}
+    [data-somm] a{border-left:none !important;padding-left:13px !important;}
+    [data-somm] a[style*="#c4283a"]{background:rgba(196,40,58,.15) !important;}
   }
   [data-portes]{-webkit-overflow-scrolling:touch;scrollbar-width:none;}
   [data-portes]::-webkit-scrollbar{height:0;}
@@ -113,7 +116,7 @@
   <nav data-somm="1">
     <div style="letter-spacing:.2em;text-transform:uppercase;color:#8a8a92;font-size:9.5px;margin-bottom:8px;">Les neuf portes</div>
     <sc-for list="{{ portes }}" as="pt" hint-placeholder-count="9">
-      <a href="{{ pt.href }}" style="{{ pt.style }}">{{ pt.label }}</a>
+      <a href="{{ pt.href }}" style="{{ pt.style }}"><span data-adr="1">{{ pt.adr }}</span><span data-mot="1">{{ pt.mot }}</span></a>
     </sc-for>
     <a href="#colophon" style="margin-top:10px;">colophon</a>
   </nav>
@@ -383,7 +386,7 @@ class Component extends DCLogic {
       // le chapitre où l'on se trouve se marque, comme le rail de la carte 1
       portes: this.state.chapters.map((ch) => ({
         href: "#" + ch.anchor,
-        label: ch.id.replace("2:", "") + " · " + ch.titre,
+        adr: ch.id.replace("2:", "") + " · ", mot: ch.titre,
         style: this.state.addr === ch.id ? "color:#c4283a;" : ""
       })),
       tirer: () => {
