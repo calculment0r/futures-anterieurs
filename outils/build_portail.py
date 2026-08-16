@@ -182,6 +182,17 @@ def main():
 
     shutil.copy2(projet / "corpus.js", site / "corpus.js")
     print("  corpus.js")
+
+    # les images du projet vivent à la racine du bundle et sont servies
+    # depuis assets/, comme les polices
+    (site / "assets").mkdir(exist_ok=True)
+    for img in ("oeil.jpg",):
+        src = projet / img
+        if not src.exists():
+            print(f"  ⚠ {img} absent du bundle", file=sys.stderr)
+            continue
+        shutil.copy2(src, site / "assets" / img)
+        print(f"  assets/{img}")
     for nom in CORPUS:
         src = projet / "corpus" / nom
         if not src.exists():
