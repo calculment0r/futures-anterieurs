@@ -26,9 +26,9 @@ A5, 148 × 210 mm. Marges 12 mm, deux colonnes, gouttière 5,5 mm. Soit **124 ×
 
 | | 4 pages de texte *(une page de tête)* | 5 pages de texte *(sans page de tête)* |
 |---|--:|--:|
-| **L'intégrale** — 221 fragments | **3,06 pt** | **3,65 pt** |
-| **Un chapitre** — Exonoèse, 34 fragments | 7,24 pt | **8,51 pt** |
-| **Un parcours** — 27 fragments, 9 chapitres | 7,99 pt | **9,21 pt** |
+| **L'intégrale** — 221 fragments | **3,22 pt** | **3,65 pt** |
+| **Un chapitre** — Exonoèse, 34 fragments | 7,65 pt | **8,51 pt** |
+| **Un parcours** — 27 fragments, 9 chapitres | 8,53 pt | **9,21 pt** |
 
 Repères : un livre de poche se compose autour de 9-10 pt ; une revue dense descend à 8 ; les mentions légales d'un contrat tiennent à 6 ; **sous 6 pt, on ne lit plus, on regarde**.
 
@@ -43,6 +43,12 @@ Cela n'interdit pas d'imprimer le bloc entier : à 3 pt il reste un **objet**, u
 ## Le parcours
 
 La sélection n'est pas arbitraire : ce sont, chapitre par chapitre, les **trois fragments les mieux reliés au reste du corpus** selon le calcul de la propagation — ceux que les arcs de la carte 1 éclairent le plus et qui atteignent une unité du carnet. Le lecteur reçoit la forme des neuf chapitres, pas un échantillon au hasard.
+
+## Les fichiers
+
+- `maquette-parametrable.html` — la maquette qui recalcule : format, pages, marges, colonnes, corps, interligne, choix de l'extrait. Publiée aussi en artefact. Elle a besoin de JavaScript.
+- `parcours.html`, `chapitre.html`, `integrale.html` et leurs variantes `-sans-tete` — **statiques**, pré-paginés, polices embarquées. Aucun script : ils s'ouvrent partout, y compris dans un aperçu qui n'exécute rien, et s'impriment tels quels.
+- `build_static.mjs` — ce qui fabrique les six fichiers statiques : il mesure dans un vrai navigateur, puis coule le résultat dans le fichier.
 
 ## Pour sortir le PDF
 
