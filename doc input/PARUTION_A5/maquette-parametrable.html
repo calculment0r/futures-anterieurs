@@ -95,6 +95,18 @@ button:focus-visible,select:focus-visible,input:focus-visible{outline:2px solid 
   break-after:avoid-column;border-top:.3pt solid #c9c4b0;padding-top:calc(var(--saut)*.9);}
 .flot h2:first-child{margin-top:0;border-top:none;padding-top:0;}
 .tete{height:100%;display:flex;flex-direction:column;}
+/* le bandeau : il traverse les colonnes, le texte reprend dessous */
+.bandeau{column-span:all;display:flex;flex-direction:column;gap:2.5mm;
+  margin:0 0 6mm;padding-bottom:4mm;border-bottom:.4pt solid #b8b39c;}
+.bandeau .sur{margin-bottom:1mm;}
+.bandeau h1{font-size:30pt;line-height:.88;letter-spacing:-.035em;font-weight:700;
+  text-transform:uppercase;margin:0;}
+.bandeau .sst{font-size:11pt;line-height:1.2;color:#4a4a55;margin:0;}
+.bandeau .chapo{font-size:8.4pt;line-height:1.5;color:#2f2f36;margin:2mm 0 0;max-width:108mm;}
+/* le pied de la dernière page porte la provenance */
+.pied{column-span:all;margin-top:6mm;padding-top:3.5mm;border-top:.4pt solid #b8b39c;
+  display:flex;flex-wrap:wrap;gap:3mm 9mm;font-family:var(--f-outil);font-size:6.8pt;
+  letter-spacing:.09em;color:var(--gris-p);}
 .sur{font-family:var(--f-outil);font-size:7pt;letter-spacing:.2em;text-transform:uppercase;
   color:var(--gris-p);}
 .tete h1{font-size:34pt;line-height:.9;letter-spacing:-.03em;font-weight:700;
@@ -105,6 +117,17 @@ button:focus-visible,select:focus-visible,input:focus-visible{outline:2px solid 
   flex-direction:column;gap:1.2mm;font-family:var(--f-outil);font-size:6.6pt;
   letter-spacing:.08em;color:var(--gris-p);}
 @media(prefers-reduced-motion:reduce){*{transition:none!important;}}
+/* ouvert dans un vrai navigateur, le document s'imprime au format réglé */
+@media print{
+  @page{size:var(--pw,148mm) var(--ph,210mm);margin:0;}
+  body{background:#fff;padding:0;}
+  .cadre{display:block;padding:0;}
+  .reglage,.regle{display:none;}
+  .scene{overflow:visible;}
+  .feuilles{zoom:1!important;gap:0;}
+  .sheet{box-shadow:none;margin:0;break-after:page;}
+  .sheet:last-child{break-after:auto;}
+}
 </style>
 
 <div class="cadre">
@@ -129,7 +152,12 @@ button:focus-visible,select:focus-visible,input:focus-visible{outline:2px solid 
       </select></label>
     <label id="parN"><span class="t">Fragments par chapitre <b class="v" id="vParN">3</b></span>
       <input type="range" id="parn" min="1" max="8" step="1" value="3"></label>
-    <div class="bascule"><input type="checkbox" id="tete" checked><label for="tete" style="flex-direction:row">Page de tête</label></div>
+    <label><span class="t">Le titre</span>
+      <select id="tete">
+        <option value="bandeau" selected>Bandeau — haut de la première page</option>
+        <option value="page">Page entière</option>
+        <option value="rien">Aucun</option>
+      </select></label>
     <div class="bascule"><input type="checkbox" id="inter" checked><label for="inter" style="flex-direction:row">Intertitres de chapitre</label></div>
     <div class="bascule"><input type="checkbox" id="nums" checked><label for="nums" style="flex-direction:row">Numéros des fragments</label></div>
   </fieldset>
@@ -205,7 +233,7 @@ const esc = (s) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, 
 function lire(){
   const [l, h] = $('format').value.split(',').map(Number);
   return { quoi:$('quoi').value, parn:+$('parn').value,
-    tete:$('tete').checked, inter:$('inter').checked, nums:$('nums').checked,
+    tete:$('tete').value, inter:$('inter').checked, nums:$('nums').checked,
     l, h, pages:+$('pages').value, marge:+$('marge').value, cols:+$('cols').value,
     gout:+$('gout').value, auto:$('auto').checked, corps:+$('corps').value,
     ligne:+$('ligne').value, saut:+$('saut').value, align:$('align').value,
@@ -236,23 +264,32 @@ function texte(l, r){
   return o;
 }
 
-function pageTete(r, l){
-  const quoi = r.quoi === 'integrale' ? 'Les 221 fragments, neuf chapitres.'
-    : r.quoi === 'parcours' ? `${r.parn === 1 ? 'Un fragment' : r.parn + ' fragments'} par chapitre, les mieux reliés au reste du corpus.`
-    : `${chaps[+r.quoi]}, en entier.`;
-  return `<div class="tete"><div class="sur">Futures antérieurs · deuxième bifurcation</div>
+const MOTS = ['Un','Deux','Trois','Quatre','Cinq','Six','Sept','Huit','Neuf','Dix'];
+function chapo(l){
+  const n = l.length;
+  const dit = n === 221 ? 'Ils sont tous ici'
+    : n <= 10 ? MOTS[n - 1] + (n === 1 ? ' seul est ici' : ' sont ici')
+    : n + ' sont ici';
+  return `La représentation maintenait un écart, même falsifié, entre le monde et son image.
+    Le Simulacre l’a supprimé : il n’y a plus de monde requis derrière la réponse.
+    Deux cent vingt et un fragments en tiennent le relevé. ${dit}.`;
+}
+const PROV = ['Collectif Focus, 2026',
+  '<i>Fragments — la société du simulacre</i>, deuxième des quatre bifurcations de <i>Futures antérieurs</i>',
+  'calculment0r.github.io/futures-anterieurs'];
+
+function titrage(l, bandeau){
+  const h = `<div class="sur">Futures antérieurs · deuxième bifurcation</div>
     <h1>Fragments</h1><div class="sst">La société du simulacre</div>
-    <p class="chapo">${quoi} Extrait de <i>Fragments</i>, deuxième des quatre bifurcations
-    de <i>Futures antérieurs</i> — le corpus entier se lit et se télécharge en ligne.</p>
-    <div class="prov"><span>Nicolas — collectif Focus, 2026</span>
-      <span>221 fragments, neuf chapitres</span>
-      <span>calculment0r.github.io/futures-anterieurs</span></div></div>`;
+    <p class="chapo">${chapo(l)}</p>`;
+  return bandeau ? `<div class="bandeau">${h}</div>`
+    : `<div class="tete">${h}<div class="prov">${PROV.map((x) => `<span>${x}</span>`).join('')}</div></div>`;
 }
 
 let jeton = 0;
 function poser(){
   const r = lire(), l = choisir(r), sig = l.reduce((a, f) => a + f[2].length, 0);
-  const nTexte = r.pages - (r.tete ? 1 : 0);
+  const nTexte = r.pages - (r.tete === 'page' ? 1 : 0);
   $('vParN').textContent = r.parn; $('vPages').textContent = r.pages;
   $('vMarge').textContent = r.marge; $('vCols').textContent = r.cols;
   $('vGout').textContent = r.gout.toFixed(1); $('vLigne').textContent = r.ligne.toFixed(2);
@@ -263,24 +300,28 @@ function poser(){
   $('nSig').textContent = sig.toLocaleString('fr-FR');
   $('nSurf').textContent = (r.l - 2 * r.marge) + ' × ' + (r.h - 2 * r.marge) + ' mm';
   document.querySelector('.feuilles').style.setProperty('--z', r.zoom / 100);
+  document.documentElement.style.setProperty('--pw', r.l + 'mm');
+  document.documentElement.style.setProperty('--ph', r.h + 'mm');
 
   if (nTexte < 1){ $('etat').textContent = 'Il faut au moins une page de texte.'; return; }
 
   const hote = $('feuilles');
-  hote.innerHTML = (r.tete ? `<div class="sheet" data-folio="1 / ${r.pages}"></div>` : '') +
+  const pleine = r.tete === 'page';
+  hote.innerHTML = (pleine ? `<div class="sheet" data-folio="1 / ${r.pages}"></div>` : '') +
     Array.from({ length: nTexte }, (_, i) =>
-      `<div class="sheet" data-folio="${i + (r.tete ? 2 : 1)} / ${r.pages}"><div class="flot"></div></div>`).join('');
+      `<div class="sheet" data-folio="${i + (pleine ? 2 : 1)} / ${r.pages}"><div class="flot"></div></div>`).join('');
   const feuilles = [...hote.children];
   feuilles.forEach((s) => {
     s.style.width = r.l + 'mm'; s.style.height = r.h + 'mm'; s.style.padding = r.marge + 'mm';
   });
-  if (r.tete) feuilles[0].innerHTML = pageTete(r, l);
+  if (pleine) feuilles[0].innerHTML = titrage(l, false);
   const zones = [...hote.querySelectorAll('.flot')];
   zones.forEach((z) => {
     z.style.columnCount = r.cols; z.style.columnGap = r.gout + 'mm'; z.style.textAlign = r.align;
   });
 
-  const html = texte(l, r);
+  const html = (r.tete === 'bandeau' ? titrage(l, true) : '') + texte(l, r)
+    + `<div class="pied">${PROV.map((x) => `<span>${x}</span>`).join('')}</div>`;
   const appliquer = (pt) => {
     hote.style.setProperty('--saut', (pt * r.saut).toFixed(2) + 'pt');
     zones.forEach((z) => { z.style.fontSize = pt.toFixed(2) + 'pt'; z.style.lineHeight = r.ligne; });
@@ -343,7 +384,7 @@ function ligneReglage(){
   const r = lire();
   const nom = r.quoi === 'parcours' ? `parcours ${r.parn}/chapitre`
     : r.quoi === 'integrale' ? 'intégrale' : chaps[+r.quoi];
-  return `${nom} · ${r.l}×${r.h} mm · ${r.pages} pages${r.tete ? ' (tête incluse)' : ''} · ` +
+  return `${nom} · ${r.l}×${r.h} mm · ${r.pages} pages · titre ${r.tete} · ` +
     `marge ${r.marge} · ${r.cols} col / ${r.gout} mm · corps ${$('vCorps').textContent} pt · ` +
     `interligne ${r.ligne} · blanc ${r.saut} · ${r.align === 'left' ? 'fer à gauche' : 'justifié'}` +
     `${r.inter ? '' : ' · sans intertitres'}${r.nums ? '' : ' · sans numéros'}`;
