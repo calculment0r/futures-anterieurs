@@ -1,0 +1,31 @@
+{
+  "etabli_par": "lecture éditoriale, chapitre par chapitre",
+  "sert_a": "l'ordre d'importance des dix meilleurs fragments de chaque chapitre. L'extrait en prend les n premiers ; l'affichage, lui, garde toujours l'ordre des numéros.",
+  "criteres": [
+    "tient seul, hors contexte, devant un lecteur qui ne connaît pas le corpus",
+    "porte la thèse du chapitre, pas un de ses détails",
+    "a une clausule qui coupe",
+    "ne redouble pas un fragment mieux classé — ni dans son chapitre, ni dans un autre"
+  ],
+  "au_dela_de_dix": "les fragments non classés suivent, dans l'ordre des numéros.",
+  "chapitres": [
+    { "n": 1, "titre": "Exonoèse",
+      "rang": [1, 30, 4, 25, 9, 27, 21, 2, 28, 14] },
+    { "n": 2, "titre": "Narcisse Technē",
+      "rang": [52, 45, 47, 48, 46, 37, 51, 38, 53, 50] },
+    { "n": 3, "titre": "Fragmentations calibrées",
+      "rang": [64, 57, 71, 63, 68, 65, 56, 70, 67, 72] },
+    { "n": 4, "titre": "Unititudes",
+      "rang": [100, 82, 86, 98, 87, 105, 89, 77, 111, 124] },
+    { "n": 5, "titre": "Chronofossile",
+      "rang": [130, 125, 134, 141, 143, 131, 140, 136, 127, 142] },
+    { "n": 6, "titre": "Still Loading",
+      "rang": [164, 163, 157, 151, 150, 156, 162, 161, 153, 160] },
+    { "n": 7, "titre": "Atmotechnie",
+      "rang": [170, 175, 171, 167, 173, 174, 168, 169, 177, 166] },
+    { "n": 8, "titre": "Inflammation acéphale",
+      "rang": [184, 190, 180, 193, 198, 189, 196, 195, 200, 207] },
+    { "n": 9, "titre": "Hyperstition / Hyperstructure",
+      "rang": [221, 216, 213, 212, 218, 214, 220, 219, 215, 217] }
+  ]
+}

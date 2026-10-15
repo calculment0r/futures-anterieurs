@@ -42,16 +42,20 @@ GARDES = {
 # ── les écrans qu'on vire : tout lien vers eux disparaît avec son élément ────
 VIRES = ["les Passages", "les Instruments"]
 
-# La page des auteurs n'a pas de prototype — elle est écrite à la main dans
-# site/. Les cartes y mènent quand même : le lien s'écrit comme les autres dans
-# le prototype, et se résout ici.
-HORS_PROTO = {"./Futures Antérieurs - les Auteurs.dc.html": "auteurs.html"}
+# Les pages des auteurs et de la composition n'ont pas de prototype — elles
+# sont écrites à la main dans site/. Les cartes y mènent quand même : le lien
+# s'écrit comme les autres dans le prototype, et se résout ici.
+HORS_PROTO = {
+    "./Futures Antérieurs - les Auteurs.dc.html": "auteurs.html",
+    "./Futures Antérieurs - la Composition.dc.html": "composition.html",
+}
 
 CORPUS = [
     "1_HYPERSTION.md", "2_FRAGMENTS.md", "3_KUBERNAN.md", "4_ARCHIBALD.md",
     "liens.json", "passages.json", "concepts.json", "evenements.json",
     "auteurs.json",
     "fragments-liens.json",
+    "fragments-rang.json",
 ]
 
 PROPS = {"index.html": "{ scrollLisse: true }"}
