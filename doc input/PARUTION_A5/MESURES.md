@@ -64,15 +64,30 @@ Au-delà de dix par chapitre, le classement est épuisé : les suivants viennent
 
 Aucun navigateur ne garantit le dictionnaire de coupure française : là où il manque — le Chromium de cette machine, par exemple —, un texte justifié s'ouvre en rivières de blanc. La composition place donc ses points de coupe elle-même, à la règle syllabique, avant de poser le texte : voyelle, groupe de consonnes, et les groupes qui ne se séparent pas (*ch, ph, th, gn*, consonne + *l* ou *r*). Trois lettres minimum de chaque côté, rien autour d'un *x*, et pas de nom propre coupé. Le résultat est identique dans tous les navigateurs — ce qu'une maquette d'impression exige.
 
+## Le PDF, polices comprises
+
+Host Grotesk est servie en police variable (axe de graisse 300–800, instance par défaut : Light). À l'impression, Chromium ne sait pas embarquer une police variable comme une vraie police : il la convertit en **Type 3**, des dessins de glyphes sans hinting ni métriques. Dans bien des lecteurs PDF, les lettres s'y épaississent et se collent — c'était le défaut du premier PDF sorti de l'établi.
+
+La composition imprime donc avec deux instances **statiques** de Host Grotesk (400 pour le texte, 700 pour le titre), tirées de la variable par `outils/fontes_papier.py` et rangées dans `site/assets/fonts/papier/`. Le PDF en embarque des sous-ensembles TrueType, comme pour DM Mono : plus aucun Type 3, et un fichier plus léger (72 ko au lieu de 116). Une police déposée par la revue s'embarque comme son format l'autorise — une police variable déposée retombera dans le même défaut.
+
+La mesure se fait à l'échelle de l'impression (zoom 1) et avec `text-rendering: geometricPrecision`, des avances de glyphes linéaires : la pagination mesurée à l'écran est celle du PDF, page par page — vérifié, mêmes fragments sur les mêmes pages. Le corps retenu est le plus grand qui tient, moins 0,3 % : de la marge pour les arrondis d'un autre navigateur. Imprimé, le papier est blanc ; le crème n'est que l'établi.
+
+## Le temps de composition
+
+La première version déplaçait les fragments un à un de feuille en feuille, en remesurant toute la mise en page à chaque déplacement : **12,6 s** pour afficher la page, 22 s à 12 fragments par chapitre, **84 s** pour l'intégrale. La mesure lit maintenant la géométrie d'un seul coup par feuille — le premier fragment dont un morceau sort à droite ouvre la feuille suivante — et la dichotomie s'arrête au vingtième de point. Mêmes résultats (l'ancienne règle, rejouée sur le nouveau résultat, confirme : ça tient au corps trouvé, ça déborde un peu au-dessus), en **0,7 s**, 0,9 s et 2,2 s. La page peint un retour pendant qu'elle calcule : une feuille fantôme au chargement, une pastille « mesure du corps · 4/10 » ensuite, et le calcul cède la main à l'écran entre deux passes — un réglage plus récent annule le précédent.
+
 ## Les fichiers
 
 - **`site/composition.html` — l'établi en ligne**, troisième instrument du site. C'est la version qui vaut : elle lit le corpus et le classement à l'affichage, pose ses propres césures, justifie, accepte qu'on y dépose une police, et imprime le PDF au format réglé. C'est le lien qu'on donne à une revue : elle fait sa mise en page elle-même et sort son PDF, sans rien nous demander.
 - `maquette-parametrable.html` — l'ancêtre hors ligne de la précédente, publiée aussi en artefact. Gardée pour mémoire.
-- `parcours.html`, `chapitre.html`, `integrale.html` et leurs variantes `-sans-tete` — **statiques**, pré-paginés, polices embarquées. Aucun script : ils s'ouvrent partout, y compris dans un aperçu qui n'exécute rien, et s'impriment tels quels.
+- `labial-composition.pdf` — **le fichier à déposer**, sorti de l'établi.
+- `parcours.html`, `chapitre.html`, `integrale.html` et leurs variantes `-sans-tete`, ainsi que les `labial-3-par-chapitre.pdf` et `labial-4-par-chapitre.pdf` — les maquettes d'avant l'établi : **statiques**, pré-paginées, sans script. Leurs PDF portent les polices en Type 3 et n'ont pas de signature ; à garder pour mémoire, pas pour la parution.
 - `build_static.mjs` — ce qui fabrique les six fichiers statiques : il mesure dans un vrai navigateur, puis coule le résultat dans le fichier.
 
 ## Pour sortir le PDF
 
 Ouvrir la composition, régler, imprimer — « Enregistrer au format PDF », marges « aucune », en-têtes et pieds de page décochés. Le `@page` est réécrit en clair à chaque changement de format : le PDF sort aux dimensions du cahier, marges nulles, puisque les marges sont dans la feuille. La règle de 100 mm en haut de l'écran sert à vérifier l'échelle de l'affichage ; à l'impression elle disparaît, avec l'établi et le bandeau.
 
-Réglage de la parution LABIAL, vérifié : parcours 4 par chapitre, A5, 5 pages, bandeau de tête, marge 9, 2 colonnes, gouttière 10,5, justifié, césures, fragments insécables — **8,6 pt, 36 fragments, dernière page remplie à 100 %**.
+Réglage de la parution LABIAL, vérifié : parcours 4 par chapitre, A5, 5 pages, bandeau de tête, signature sous le titre, marge 9, 2 colonnes, gouttière 10,5, justifié, césures, fragments insécables — **8,2 pt, 36 fragments**, dernière page remplie à 75 %.
+
+*Correction.* Une première version annonçait 8,6 pt et « 100 % remplie ». Les deux chiffres étaient faux. Le pied de provenance — « Collectif Focus, 2026 », « Extrait de… », l'adresse — traversait les colonnes et tombait sous leur hauteur fixée : il sortait de la dernière page, coupé, sans que la mesure (qui ne regardait que la largeur) puisse le voir. Il vit maintenant sous les colonnes, dans la dernière feuille, et le corps trouvé en tient compte. Quant à « % remplie », la mesure d'alors donnait toujours 100 % ; elle lit maintenant la hauteur réellement occupée dans les colonnes de la dernière page.
