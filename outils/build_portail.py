@@ -47,7 +47,6 @@ VIRES = ["les Passages", "les Instruments"]
 # s'écrit comme les autres dans le prototype, et se résout ici.
 HORS_PROTO = {
     "./Futures Antérieurs - les Auteurs.dc.html": "auteurs.html",
-    "./Futures Antérieurs - la Composition.dc.html": "composition.html",
 }
 
 CORPUS = [
@@ -55,7 +54,6 @@ CORPUS = [
     "liens.json", "passages.json", "concepts.json", "evenements.json",
     "auteurs.json",
     "fragments-liens.json",
-    "fragments-rang.json",
 ]
 
 PROPS = {"index.html": "{ scrollLisse: true }"}
